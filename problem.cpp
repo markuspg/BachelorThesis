@@ -76,6 +76,16 @@ Problem::Problem (std::string filename) {
 	input_file_stream.close();
 }
 
+Problem::Problem (const Problem &problem):
+	machines_quantity (problem.get_machines_quantity ()),
+	processes_quantity (problem.get_processes_quantity ()),
+	process_interval (problem.get_process_interval ())
+{
+	machines = problem.get_machines_pointer ();
+	processes = problem.get_processes_pointer ();
+}
+
+
 Problem::~Problem () {
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		delete machines[i];
