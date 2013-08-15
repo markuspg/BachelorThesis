@@ -11,7 +11,7 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 	processes_quantity (n_processes),
 	process_interval (workload_interval)
 {
-	std::cout << "Creating new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n";
+	std::cout << "\nCreating new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 
 	// Create Machines
 	machines = new Machine* [machines_quantity];
@@ -39,7 +39,7 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 }
 
 Problem::Problem (std::string filename) {
-	std::cout << "The problem saved in " << filename << " will be loaded.\n\n";
+	std::cout << "\nThe problem saved in " << filename << " will be loaded.\n";
 
 	// Open a saved problem as input
 	std::ifstream input_file_stream (filename);
@@ -53,7 +53,7 @@ Problem::Problem (std::string filename) {
 	std::getline (input_file_stream, str, ';');
 	std::istringstream (str) >> process_interval;
 
-	std::cout << "\nCreating a new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n";
+	std::cout << "\nCreating a new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 
 	// Create Machines
 	machines = new Machine* [machines_quantity];
