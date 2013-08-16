@@ -34,11 +34,14 @@ void Scheduler::apply_STUPID_algorithm () {
 
 void Scheduler::create_start_solution (unsigned int choice) {
 	switch (choice) {
-		case 1:
+		case STUPID:
 			apply_STUPID_algorithm ();
 			break;
-		case 2:
+		case iLPT:
 			apply_iLPT_algorithm ();
+			break;
+		case sLPT:
+			apply_sLPT_algorithm ();
 			break;
 		default:
 			std::cerr << "ERROR: Invalid start solution algorithm\n";

@@ -4,6 +4,9 @@
 #include <sstream>
 #include <vector>
 
+// enums representing the available algorithms
+enum START_SOLUTION {STUPID, iLPT, sLPT};
+
 #include "object.cpp"
 #include "process.cpp"
 #include "machine.cpp"
