@@ -1,12 +1,12 @@
 /*! A class to generate and represent starting solutions */
 class Scheduler : public Problem {
 	public:
-		/** Solver's constructor
+		/** Scheduler's constructor
 		 *
 		 * @param problem A problem to generate a starting solution for
 		 *
 		 */
-		Solver (const Problem &problem);
+		Scheduler (const Problem &problem);
 
 		/*! Applies the intelligent LPT (assign job to machine with lowest workload) algorithm to create a starting solution for the given instance stored in the Scheduler */
 		void apply_iLPT_algorithm ();
@@ -22,4 +22,6 @@ class Scheduler : public Problem {
 		 * @param algo The algorithm to use
 		 */
 		void create_start_solution (unsigned int choice);
+
+		unsigned short int query_lowest_workload_machine ();
 };

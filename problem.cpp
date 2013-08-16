@@ -25,7 +25,7 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 	process_durations.reserve (processes_quantity);
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
 		process_durations.push_back (rand () % workload_interval + 1);
-		std::cout << "Process duration: " << process_durations.at (j) << "\n";
+		std::cout << "\tProcess duration: " << process_durations.at (j) << "\n";
 	}
 	// Sort the vector in descending order
 	std::sort (process_durations.begin (), process_durations.end (), compare);
@@ -106,19 +106,19 @@ void Problem::query_problem_state () {
 	std::cout << "\nThe problem's state:\n";
 
 	// Output information about Processes
-	std::cout << processes_quantity << " processes\n";
+	std::cout << "\t" << processes_quantity << " processes\n";
 	unsigned int overall_completion_time = 0;
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		std::cout << "\tProcess " << processes[i]->get_id () << ", duration: " << processes[i]->get_processing_time () << "\n";
+		std::cout << "\t  Process " << processes[i]->get_id () << ", duration: " << processes[i]->get_processing_time () << "\n";
 		overall_completion_time += processes[i]->get_processing_time ();
 	}
-	std::cout << "With an over all completion time of " << overall_completion_time << "\n";
+	std::cout << "\t  =>With an over all completion time of " << overall_completion_time << "\n";
 
 	// Output information about Machines
-	std::cout << "\n" << machines_quantity << " machines\n";
+	std::cout << "\t" << machines_quantity << " machines\n";
 
 	// Output information about the process interval
-	std::cout << "\n" << process_interval << " interval span\n";
+	std::cout << "\t" << process_interval << " interval span\n";
 }
 
 void Problem::save_problem_instance (std::string *filename) {

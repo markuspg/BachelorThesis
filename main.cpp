@@ -11,6 +11,7 @@ enum START_SOLUTION {STUPID, iLPT, sLPT};
 #include "process.cpp"
 #include "machine.cpp"
 #include "problem.cpp"
+#include "scheduler.cpp"
 
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
@@ -36,4 +37,10 @@ int main (int argc, char *argv[]) {
 
 		problem = new Problem (machines, processes, interval);
 	}
+
+	// Query the Problem's state
+	problem->query_problem_state ();
+
+	Scheduler *scheduler = new Scheduler (*problem);
+	scheduler->create_start_solution (iLPT);
 }
