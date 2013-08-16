@@ -121,15 +121,17 @@ void Problem::query_problem_state () {
 	std::cout << "\n" << process_interval << " interval span\n";
 }
 
-void Problem::save_problem () {
-	// Get the name of the file to write to
-	std::string filename ("problem.pbl");
-	std::cout << "\nPlease enter the file name where the problem's instance shall be saved (default: 'problem.pbl'): ";
-	std::cin >> filename;
-	std::cout << "The problem will be saved in " << filename << "\n";
+void Problem::save_problem_instance (std::string *filename) {
+	if (filename == nullptr) {
+		// Get the name of the file to write to
+		filename = new std::string ("problem.pbl");
+		std::cout << "\nPlease enter the file name where the problem's instance shall be saved (default: 'problem.pbl'): ";
+		std::cin >> *filename;
+		std::cout << "The problem will be saved in " << *filename << "\n";
+	}
 	
 	// Store the Problem's data in the file
-	std::ofstream output_file_stream (filename);
+	std::ofstream output_file_stream (*filename);
 	output_file_stream << machines_quantity << ";" << processes_quantity << ";" << process_interval << ";";
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
 		output_file_stream << processes[i]->get_processing_time () << ";";

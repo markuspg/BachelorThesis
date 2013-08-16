@@ -64,8 +64,11 @@ class Problem {
 		/*! Writes the problem to the stdout */
 		void query_problem_state ();
 
-		/*! Saves the Problem instance to a file */
-		void save_problem ();
+		/** Saves the Problem instance to a file
+		 *
+		 * @param filename The filename the problem's instance data shall be written to. If not given, the user will be asked for it
+		 */
+		void save_problem_instance (std::string *filename);
 
 	protected:
 		Machine **machines;
