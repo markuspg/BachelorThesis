@@ -102,6 +102,18 @@ Problem::~Problem () {
 	return (i > j);
 }*/
 
+bool Problem::check_validity () {
+	for (unsigned int i = 0; i < processes_quantity; i++) {
+		if (processes[i]->get_assigned_machine () == 0) {
+			std::cout << "Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
+			return false;
+		}
+	}
+
+	std::cout << "All Processes are assigned => feasible solution.\n";
+	return true;
+}
+
 void Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 

@@ -25,6 +25,12 @@ class Problem {
 		 */
 		~Problem ();
 
+		/** Checks if the current state is a feasible solution
+		 *
+		 * @return True, if the solution is feasible
+		 */
+		bool check_validity ();
+
 		/** Returns a pointer to the Machines
 		 *
 		 * @return A pointer to the Machines

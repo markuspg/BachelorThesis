@@ -11,8 +11,13 @@ void Scheduler::apply_iLPT_algorithm () {
 		unsigned short int lowest_workload_machine = query_lowest_workload_machine ();
 		std::cout << "\tMachine with lowest workload: " << machines[lowest_workload_machine]->get_id ();
 		machines[lowest_workload_machine]->assign_process_to_machine (processes[i]);
+		processes[i]->set_assigned_machine (machines[lowest_workload_machine]->get_id ());
 		std::cout << "\n\t  Assigning process " << processes[i]->get_id () << " with a duration of " << processes[i]->get_processing_time () << " to machine " << machines[lowest_workload_machine]->get_id () << "\n";
 	}
+}
+
+void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
+	std::cout << "\nApplying randomized LPT algorihm\n";
 }
 
 void Scheduler::apply_sLPT_algorithm () {
@@ -33,13 +38,16 @@ void Scheduler::apply_STUPID_algorithm () {
 	}
 }
 
-void Scheduler::create_start_solution (unsigned int choice) {
+void Scheduler::create_start_solution (unsigned int choice, unsigned short int iterations) {
 	switch (choice) {
 		case STUPID:
 			apply_STUPID_algorithm ();
 			break;
 		case iLPT:
 			apply_iLPT_algorithm ();
+			break;
+		case rLPT:
+			apply_rLPT_algorithm (iterations);
 			break;
 		case sLPT:
 			apply_sLPT_algorithm ();

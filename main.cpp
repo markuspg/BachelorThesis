@@ -5,7 +5,7 @@
 #include <vector>
 
 // enums representing the available algorithms
-enum START_SOLUTION {STUPID, iLPT, sLPT};
+enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 
 #include "object.cpp"
 #include "process.cpp"
@@ -42,5 +42,5 @@ int main (int argc, char *argv[]) {
 	problem->query_state ();
 
 	Scheduler *scheduler = new Scheduler (*problem);
-	scheduler->create_start_solution (iLPT);
+	scheduler->create_start_solution (iLPT, 1);
 }
