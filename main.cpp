@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
 	}
 
 	// Query the Problem's state
-	problem->query_problem_state ();
+	problem->query_state ();
 
 	Scheduler *scheduler = new Scheduler (*problem);
 	scheduler->create_start_solution (iLPT);

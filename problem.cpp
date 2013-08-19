@@ -102,7 +102,7 @@ Problem::~Problem () {
 	return (i > j);
 }*/
 
-void Problem::query_problem_state () {
+void Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 
 	// Output information about Processes
@@ -121,7 +121,22 @@ void Problem::query_problem_state () {
 	std::cout << "\t" << process_interval << " interval span\n";
 }
 
-void Problem::save_problem_instance (std::string *filename) {
+unsigned short int Problem::query_lowest_workload_machine () {
+	unsigned short int lowest_workload_machine = 0;
+	unsigned int lowest_workload = 0;
+	lowest_workload = machines[0]->get_completion_time ();
+	for (unsigned short int i = 1; i < machines_quantity; i++) {
+		if (machines[i]->get_completion_time () < lowest_workload) {
+			lowest_workload = machines[i]->get_completion_time ();
+			lowest_workload_machine = i;
+
+		}
+	}
+
+	return lowest_workload_machine;
+}
+
+void Problem::save_instance (std::string *filename) {
 	if (filename == nullptr) {
 		// Get the name of the file to write to
 		filename = new std::string ("problem.pbl");

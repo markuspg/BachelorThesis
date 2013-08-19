@@ -48,17 +48,3 @@ void Scheduler::create_start_solution (unsigned int choice) {
 			std::cerr << "ERROR: Invalid start solution algorithm\n";
 	}
 }
-
-unsigned short int Scheduler::query_lowest_workload_machine () {
-	unsigned short int lowest_workload_machine = 0;
-	unsigned int lowest_workload = 0;
-	lowest_workload = machines[0]->get_completion_time ();
-	for (unsigned short int i = 1; i < machines_quantity; i++) {
-		if (machines[i]->get_completion_time () < lowest_workload) {
-			lowest_workload = machines[i]->get_completion_time ();
-			lowest_workload_machine = i;
-		}
-	}
-
-	return lowest_workload_machine;
-}

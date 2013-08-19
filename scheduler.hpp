@@ -17,15 +17,9 @@ class Scheduler : public Problem {
 		/*! Applies the STUPID algorithm to create a starting solution for the given instance stored in the Scheduler */
 		void apply_STUPID_algorithm ();
 
-		/** Create a start solution using the given algorithm (1 = STUPID, 2 = LPT)
+		/** Create a start solution using the given algorithm (STUPID, iLPT, sLPT)
 		 *
 		 * @param algo The algorithm to use
 		 */
 		void create_start_solution (unsigned int algo);
-
-		/** Query the Machine with the shortest completion time
-		 *
-		 * @return The index of the Machine with the shortest completion time
-		 */
-		unsigned short int query_lowest_workload_machine ();
 };

@@ -21,7 +21,8 @@ class Problem {
 		 */
 		Problem (const Problem &rhs);
 
-		/*! Problem's destructor */
+		/** Problem's destructor
+		 */
 		~Problem ();
 
 		/** Returns a pointer to the Machines
@@ -54,14 +55,20 @@ class Problem {
 		 */
 		unsigned short int get_processes_quantity () const {return processes_quantity;}
 
-		/*! Writes the problem to the stdout */
-		void query_problem_state ();
+		/*! Writes the Problem's state to stdout */
+		void query_state ();
+
+		/** Query the Machine with the shortest completion time
+		 *
+		 * @return The index of the Machine with the shortest completion time
+		 */
+		unsigned short int query_lowest_workload_machine ();
 
 		/** Saves the Problem instance to a file
 		 *
 		 * @param filename The filename the problem's instance data shall be written to. If not given, the user will be asked for it
 		 */
-		void save_problem_instance (std::string *filename);
+		void save_instance (std::string *filename);
 
 	protected:
 		Machine **machines; //!< A pointer to the Machines of the Problem
