@@ -10,10 +10,10 @@ class Process: public Object {
 
 		/** Returns the Process' processing time
 		 *
-		 * @return 
+		 * @return The processing time of the Process
 		 */
 		unsigned int get_processing_time () const {return processing_time;}
 
 	private:
-		unsigned int processing_time;
+		unsigned int processing_time; //!< The processing time needed to complete the Process
 };

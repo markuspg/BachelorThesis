@@ -4,7 +4,7 @@ class Problem {
 		/** Problem's constructor for new problems
 		 *
 		 * @param m_machines The quantity of Machines the Problem's instance shall have
-		 * @param m_processes The quantity of Processes the Problem's instance shall have
+		 * @param n_processes The quantity of Processes the Problem's instance shall have
 		 * @param workload_interval The interval the process durations shall be contained in
 		 */
 		Problem (unsigned short int m_machines, unsigned short int n_processes, unsigned int workload_interval);
@@ -19,17 +19,10 @@ class Problem {
 		 *
 		 * @param rhs The Problem instance to copy
 		 */
-		Problem (const Problem &problem);
+		Problem (const Problem &rhs);
 
 		/*! Problem's destructor */
 		~Problem ();
-
-		/** Compares two integers and returns true if the first one is bigger than the second one
-		 *
-		 * @param i The first integer
-		 * @param j The second integer
-		 */
-		// bool compare (unsigned int i, unsigned int j);
 
 		/** Returns a pointer to the Machines
 		 *
@@ -71,9 +64,9 @@ class Problem {
 		void save_problem_instance (std::string *filename);
 
 	protected:
-		Machine **machines;
-		unsigned short int machines_quantity;
-		Process **processes;
-		unsigned short int processes_quantity;
-		unsigned int process_interval;
+		Machine **machines; //!< A pointer to the Machines of the Problem
+		unsigned short int machines_quantity; //!< The quantity of Machines in the Problem
+		Process **processes; //!< A pointer to the Processes forming the Problem
+		unsigned short int processes_quantity; //!< The quantity of Processes of the Problem
+		unsigned int process_interval; //!< The upper bound of the Process durations interval
 };

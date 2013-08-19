@@ -30,7 +30,7 @@ class Machine : public Object {
 		std::vector<Process*> *get_processes ();
 		
 	private:
-		bool changed;
-		unsigned int machine_completion_time;
-		std::vector<Process*> v_processes;
+		bool changed; //!< Saves if the completion time of the Machine changed
+		unsigned int machine_completion_time; //!< The completion time of the machine
+		std::vector<Process*> v_processes; //!< A vector containing pointers to the assigned Processes
 };

@@ -21,7 +21,11 @@ class Scheduler : public Problem {
 		 *
 		 * @param algo The algorithm to use
 		 */
-		void create_start_solution (unsigned int choice);
+		void create_start_solution (unsigned int algo);
 
+		/** Query the Machine with the shortest completion time
+		 *
+		 * @return The index of the Machine with the shortest completion time
+		 */
 		unsigned short int query_lowest_workload_machine ();
 };
