@@ -12,7 +12,7 @@ class Process: public Object {
 		 *
 		 * @return The Machine's id the Process is assigned to or 0, if the Process is not assigned
 		 */
-		unsigned short int get_assigned_machine () const {return assigned_machine;}
+		unsigned short int get_assigned_machine () const {return assigned_machines_id;}
 
 		/** Returns the Process' processing time
 		 *
@@ -22,11 +22,11 @@ class Process: public Object {
 
 		/** Sets the Machine the Process is assigned to
 		 *
-		 * @param The id of the Machine the Process is assigned to
+		 * @param mid The id of the Machine the Process is assigned to
 		 */
-		void set_assigned_machine (unsigned int mid);
+		void set_assigned_machines_id (unsigned int mid);
 
 	private:
-		unsigned short int assigned_machine; //!< Stores if the Process is assigned to a Machine
+		unsigned short int assigned_machines_id; //!< Stores if the Process is assigned to a Machine (>0 if assigned to a Machine)
 		unsigned int processing_time; //!< The processing time needed to complete the Process
 };

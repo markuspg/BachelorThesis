@@ -108,6 +108,9 @@ bool Problem::check_validity () {
 			std::cout << "Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
 			return false;
 		}
+		if (processes[i]->get_assigned_machine () > machines_quantity) {
+			std::cout << "Process " << processes[i]->get_id () << " is not assigned to a valid machine.\n";
+		}
 	}
 
 	std::cout << "All Processes are assigned => feasible solution.\n";
@@ -118,7 +121,7 @@ void Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 
 	// Output information about Processes
-	std::cout << "\t" << processes_quantity << " processes\n";
+	std::cout << "\t" << processes_quantity << " processes with durations interval [1," << process_interval << "]\n";
 	unsigned int overall_completion_time = 0;
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
 		std::cout << "\t  Process " << processes[i]->get_id () << ", duration: " << processes[i]->get_processing_time () << "\n";
@@ -128,9 +131,7 @@ void Problem::query_state () {
 
 	// Output information about Machines
 	std::cout << "\t" << machines_quantity << " machines\n";
-
-	// Output information about the process interval
-	std::cout << "\t" << process_interval << " interval span\n";
+	// Query the Machine's 
 }
 
 unsigned short int Problem::query_lowest_workload_machine () {
@@ -145,7 +146,7 @@ unsigned short int Problem::query_lowest_workload_machine () {
 		}
 	}
 
-	return lowest_workload_machine;
+	return (lowest_workload_machine + 1);
 }
 
 void Problem::save_instance (std::string *filename) {
