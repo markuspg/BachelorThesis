@@ -149,6 +149,9 @@ void Problem::query_state () {
 				std::cout << "\t\t" << (*it)->get_id () << "=>" << (*it)->get_processing_time () << "\n";
 			}
 
+			// Output the complete completion time of the Machine
+			std::cout << "\t\t=>Machine " << machines[j]->get_id () << " completion time: " << machines[j]->get_completion_time () << "\n";
+
 			delete vecptr;
 		}
 	}
