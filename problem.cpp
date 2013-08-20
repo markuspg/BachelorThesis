@@ -38,7 +38,10 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 	}
 }
 
-Problem::Problem (std::string filename) {
+Problem::Problem (std::string filename):
+	machines (nulltpr),
+	processes (nullptr)
+{
 	std::cout << "\nThe problem saved in " << filename << " will be loaded.\n";
 
 	// Open a saved problem as input
@@ -104,12 +107,15 @@ Problem::~Problem () {
 
 bool Problem::check_validity () {
 	for (unsigned int i = 0; i < processes_quantity; i++) {
+		// Check if every Process is assigned to a Machine
 		if (processes[i]->get_assigned_machine () == 0) {
 			std::cout << "Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
 			return false;
 		}
+		// Check if all Processes are assigned to valid Machines
 		if (processes[i]->get_assigned_machine () > machines_quantity) {
 			std::cout << "Process " << processes[i]->get_id () << " is not assigned to a valid machine.\n";
+			return false;
 		}
 	}
 

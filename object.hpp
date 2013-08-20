@@ -6,6 +6,7 @@ class Object {
 		 * @param object_id The Object's id
 		 */
 		Object (unsigned short int object_id);
+
 		/** Returns the Object's id
 		 *
 		 * @return The Object's id

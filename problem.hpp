@@ -64,9 +64,9 @@ class Problem {
 		/*! Writes the Problem's state to stdout */
 		void query_state ();
 
-		/** Query the Machine with the shortest completion time
+		/** Query the id of the Machine with the shortest completion time
 		 *
-		 * @return The index of the Machine with the shortest completion time
+		 * @return The id of the Machine with the shortest completion time
 		 */
 		unsigned short int query_lowest_workload_machine ();
 

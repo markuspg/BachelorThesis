@@ -8,7 +8,7 @@ class Process: public Object {
 		 */
 		Process (unsigned short int pid, unsigned int time);
 
-		/** Returns the Machine the Process is assigned to
+		/** Returns the Machine's id the Process is assigned to
 		 *
 		 * @return The Machine's id the Process is assigned to or 0, if the Process is not assigned
 		 */
@@ -20,7 +20,7 @@ class Process: public Object {
 		 */
 		unsigned int get_processing_time () const {return processing_time;}
 
-		/** Sets the Machine the Process is assigned to
+		/** Sets the Machine's id  the Process is assigned to
 		 *
 		 * @param mid The id of the Machine the Process is assigned to
 		 */

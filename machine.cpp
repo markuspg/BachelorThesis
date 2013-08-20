@@ -6,6 +6,7 @@ Machine::Machine (unsigned short int mid, unsigned short int processes):
 	machine_completion_time (0)
 {
 	v_processes.reserve (processes);
+	std::cout << "\tCreating Machine able to contain " << processes << " Processes\n";
 }
 
 void Machine::assign_process_to_machine (Process *process) {
