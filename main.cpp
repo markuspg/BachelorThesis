@@ -43,4 +43,6 @@ int main (int argc, char *argv[]) {
 
 	Scheduler *scheduler = new Scheduler (*problem);
 	scheduler->create_start_solution (iLPT, 1);
+
+	problem->query_state ();
 }

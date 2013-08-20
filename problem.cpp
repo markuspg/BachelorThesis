@@ -39,7 +39,7 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 }
 
 Problem::Problem (std::string filename):
-	machines (nulltpr),
+	machines (nullptr),
 	processes (nullptr)
 {
 	std::cout << "\nThe problem saved in " << filename << " will be loaded.\n";
@@ -109,17 +109,17 @@ bool Problem::check_validity () {
 	for (unsigned int i = 0; i < processes_quantity; i++) {
 		// Check if every Process is assigned to a Machine
 		if (processes[i]->get_assigned_machine () == 0) {
-			std::cout << "Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
+			std::cout << "\t  Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
 			return false;
 		}
 		// Check if all Processes are assigned to valid Machines
 		if (processes[i]->get_assigned_machine () > machines_quantity) {
-			std::cout << "Process " << processes[i]->get_id () << " is not assigned to a valid machine.\n";
+			std::cout << "\t  Process " << processes[i]->get_id () << " is not assigned to a valid machine.\n";
 			return false;
 		}
 	}
 
-	std::cout << "All Processes are assigned => feasible solution.\n";
+	std::cout << "\t  All Processes are assigned => feasible solution.\n";
 	return true;
 }
 
@@ -137,7 +137,20 @@ void Problem::query_state () {
 
 	// Output information about Machines
 	std::cout << "\t" << machines_quantity << " machines\n";
-	// Query the Machine's 
+	// Query the Machine's Processes after having checked, if the current solution is feasible
+	if (check_validity ()) {
+		for (unsigned int j = 0; j < machines_quantity; j++) {
+			std::vector <Process*> *vecptr = nullptr;
+			vecptr = machines[j]->get_processes ();
+			std::cout << "\t    Processes assigned to Machine " << machines[j]->get_id () << "\n";
+
+			// Iterate over all assigned Processes and output the ids and processing times
+			for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
+				std::cout << "\t\t" << (*it)->get_id () << "=>" << (*it)->get_processing_time () << "\n";
+			}
+		}
+	}
+
 }
 
 unsigned short int Problem::query_lowest_workload_machine () {
