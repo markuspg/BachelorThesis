@@ -148,6 +148,8 @@ void Problem::query_state () {
 			for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
 				std::cout << "\t\t" << (*it)->get_id () << "=>" << (*it)->get_processing_time () << "\n";
 			}
+
+			delete vecptr;
 		}
 	}
 
