@@ -31,6 +31,9 @@ class Problem {
 		 */
 		bool check_validity ();
 
+		/*! Flushes the assignments */
+		void flush ();
+
 		/** Returns a pointer to the Machines
 		 *
 		 * @return A pointer to the Machines

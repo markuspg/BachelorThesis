@@ -123,6 +123,27 @@ bool Problem::check_validity () {
 	return true;
 }
 
+void Problem::flush () {
+	std::cout << "Flushing ...\n";
+
+	// Flush the information stored in the Processes
+	for (unsigned short int i = 0; i < processes_quantity; i++) {
+		processes[i]->set_assigned_machines_id(0);
+	}
+	
+	// Flush the information stored in the Machines
+	for (unsigned short int j = 0; j < machines_quantity; j++) {
+		std::vector <Process*> *vecptr = nullptr;
+		vecptr = machines[j]->get_processes ();
+		// Iterate over the vector of pointers to Processes and set them all to nullptr
+		for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
+			*it = nullptr;
+		}
+
+		delete vecptr;
+	}
+}
+
 void Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 
