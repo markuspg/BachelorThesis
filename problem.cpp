@@ -9,7 +9,8 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 	machines_quantity (m_machines),
 	processes (nullptr),
 	processes_quantity (n_processes),
-	process_interval (workload_interval)
+	process_interval (workload_interval),
+	temporary_storage (nullptr)
 {
 	std::cout << "\nCreating new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 
@@ -137,6 +138,29 @@ void Problem::flush () {
 	}
 }
 
+void Problem::load_stored_solution () {
+	// Load the data stored in temporary_storage and delete it afterwards
+	// Load the assignments of the Machines
+	temporary_storage->load_temporarily_stored_solution (machines);
+	delete temporary_storage;
+	temporary_storage = nullptr;
+
+	// Restore the assignments stored in the Processes
+	for (unsigned short int i = 0; i < machines_quantity; i++) {
+		std::vector<Process*> *vecptr = nullptr;
+		vecptr = machines[i]->get_processes ();
+		unsigned short int id = machines[i]->get_id ();
+
+		for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
+			processes[(*it)->get_id () - 1]->set_assigned_machines_id (id);
+		}
+
+		machines[i]->compute_completion_time ();
+
+		delete vecptr;
+	}
+}
+
 unsigned int Problem::query_lowest_completion_time () {
 	unsigned int lowest_completion_time = machines[0]->get_completion_time ();
 
@@ -196,6 +220,18 @@ void Problem::query_state () {
 		}
 	}
 
+}
+
+void Problem::store_current_solution () {
+	// Checks if the current solution is valid
+	if (check_validity ()) {
+		// Stores the current solution to temporary_storage
+		std::cout << "\nThe solution is valid and will be temporarily stored.\n";
+		temporary_storage = new TemporaryStorage (query_lowest_completion_time (), processes_quantity, machines_quantity, machines);
+	}
+	else {
+		std::cout << "\nERROR: The solution was not valid and will therefore not be stored.\n";
+	}
 }
 
 void Problem::save_instance (std::string *filename) {

@@ -5,11 +5,11 @@ TemporaryStorage::TemporaryStorage (unsigned int current_solution, unsigned shor
 	solution_value (current_solution),
 	v_processes (nullptr)
 {
-	std::cout << "\nCreating a temporary storage containing " << machines_quantity << " Machine's assignments.\n";
+	std::cout << "\tCreating a temporary storage containing " << machines_quantity << " Machine's assignments.\n";
 	v_processes = new std::vector<Process*> *[m_machines];
 	for (unsigned short int i = 0; i < m_machines; i++) {
 		v_processes[i] = p_machines[i]->get_processes ();
-		std::cout << "\tAdded a vector containing " << v_processes[i]->size () << " elements representing Machine " << p_machines[i]->get_id () << ".\n";
+		std::cout << "\t  Added a vector containing " << v_processes[i]->size () << " elements representing Machine " << p_machines[i]->get_id () << ".\n";
 	}
 }
 
@@ -27,6 +27,7 @@ void TemporaryStorage::load_temporarily_stored_solution (Machine **p_machines) {
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		std::cout << "\tFlushing Machine " << p_machines[i]->get_id () << ".\n";
 		p_machines[i]->flush ();
+		std::cout << "\tAssigning old solution vector.\n";
 		p_machines[i]->set_assigned_processes_vector (*v_processes[i]);
 	}
 }

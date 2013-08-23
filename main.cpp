@@ -46,4 +46,6 @@ int main (int argc, char *argv[]) {
 	scheduler->create_start_solution (iLPT, 1);
 
 	scheduler->query_state ();
+
+	scheduler->store_current_solution ();
 }

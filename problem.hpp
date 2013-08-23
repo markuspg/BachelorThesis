@@ -64,6 +64,9 @@ class Problem {
 		 */
 		unsigned short int get_processes_quantity () const {return processes_quantity;}
 
+		/*! Loads the temporarily stored solution */
+		void load_stored_solution ();
+
 		/** Queries the completion time of the first completing Machine
 		 *
 		 * @return The lowest completion time (Which shall be maximized)
@@ -79,6 +82,9 @@ class Problem {
 		/*! Writes the Problem's state to stdout */
 		void query_state ();
 
+		/*! Saves the current solution in the TemporaryStorage especially designed therefore */
+		void store_current_solution ();
+
 		/** Saves the Problem instance to a file
 		 *
 		 * @param filename The filename the problem's instance data shall be written to. If not given, the user will be asked for it
@@ -91,4 +97,5 @@ class Problem {
 		Process **processes; //!< A pointer to the Processes forming the Problem
 		unsigned short int processes_quantity; //!< The quantity of Processes of the Problem
 		unsigned int process_interval; //!< The upper bound of the Process durations interval
+		TemporaryStorage *temporary_storage;
 };
