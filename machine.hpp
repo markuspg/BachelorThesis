@@ -14,6 +14,9 @@ class Machine : public Object {
 		 */
 		void assign_process_to_machine (Process *process);
 
+		/*! Flushes the Machine's Process vector */
+		void flush ();
+
 		/** Returns the Machine's completion time
 		 *
 		 * @return The Machine's completion time

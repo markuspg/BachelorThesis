@@ -114,7 +114,7 @@ bool Problem::check_validity () {
 		}
 		// Check if all Processes are assigned to valid Machines
 		if (processes[i]->get_assigned_machine () > machines_quantity) {
-			std::cout << "\t  Process " << processes[i]->get_id () << " is not assigned to a valid machine.\n";
+			std::cout << "\t  Process " << processes[i]->get_id () << " is not assigned to a valid machine => no feasible solution.\n";
 			return false;
 		}
 	}
@@ -124,7 +124,7 @@ bool Problem::check_validity () {
 }
 
 void Problem::flush () {
-	std::cout << "Flushing ...\n";
+	std::cout << "\nFlushing ...\n";
 
 	// Flush the information stored in the Processes
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
@@ -133,14 +133,7 @@ void Problem::flush () {
 	
 	// Flush the information stored in the Machines
 	for (unsigned short int j = 0; j < machines_quantity; j++) {
-		std::vector <Process*> *vecptr = nullptr;
-		vecptr = machines[j]->get_processes ();
-		// Iterate over the vector of pointers to Processes and set them all to nullptr
-		for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
-			*it = nullptr;
-		}
-
-		delete vecptr;
+		machines[j]->flush ();
 	}
 }
 
