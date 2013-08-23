@@ -8,7 +8,7 @@ Scheduler::Scheduler (const Problem &problem):
 void Scheduler::apply_iLPT_algorithm () {
 	std::cout << "\nApplying intelligent LPT algorihm\n";
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		unsigned short int lowest_workload_machine = query_lowest_workload_machine ();
+		unsigned short int lowest_workload_machine = query_lowest_workload_machines_id ();
 		std::cout << "\tMachine with lowest workload: " << machines[lowest_workload_machine - 1]->get_id ();
 		machines[lowest_workload_machine - 1]->assign_process_to_machine (processes[i]);
 		processes[i]->set_assigned_machines_id (machines[lowest_workload_machine - 1]->get_id ());

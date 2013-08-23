@@ -172,7 +172,7 @@ void Problem::query_state () {
 
 }
 
-unsigned short int Problem::query_lowest_workload_machine () {
+unsigned short int Problem::query_lowest_workload_machines_id () {
 	unsigned short int lowest_workload_machine = 0;
 	unsigned int lowest_workload = 0;
 	lowest_workload = machines[0]->get_completion_time ();

@@ -71,7 +71,7 @@ class Problem {
 		 *
 		 * @return The id of the Machine with the shortest completion time
 		 */
-		unsigned short int query_lowest_workload_machine ();
+		unsigned short int query_lowest_workload_machines_id ();
 
 		/** Saves the Problem instance to a file
 		 *
