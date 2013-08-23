@@ -137,6 +137,32 @@ void Problem::flush () {
 	}
 }
 
+unsigned int Problem::query_lowest_completion_time () {
+	unsigned int lowest_completion_time = machines[0]->get_completion_time ();
+
+	// Iterate over all Machines, query their completion times and return the lowest
+	for (unsigned short int i = 1; i < machines_quantity; i++) {
+		if (machines[i]->get_completion_time () < lowest_completion_time)
+			lowest_completion_time = machines[i]->get_completion_time ();
+	}
+
+	return lowest_completion_time;
+}
+
+unsigned short int Problem::query_lowest_workload_machines_id () {
+	unsigned short int lowest_workload_machine = 0;
+	unsigned int lowest_workload = 0;
+	lowest_workload = machines[0]->get_completion_time ();
+	for (unsigned short int i = 1; i < machines_quantity; i++) {
+		if (machines[i]->get_completion_time () < lowest_workload) {
+			lowest_workload = machines[i]->get_completion_time ();
+			lowest_workload_machine = i;
+		}
+	}
+
+	return (lowest_workload_machine + 1);
+}
+
 void Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 
@@ -170,21 +196,6 @@ void Problem::query_state () {
 		}
 	}
 
-}
-
-unsigned short int Problem::query_lowest_workload_machines_id () {
-	unsigned short int lowest_workload_machine = 0;
-	unsigned int lowest_workload = 0;
-	lowest_workload = machines[0]->get_completion_time ();
-	for (unsigned short int i = 1; i < machines_quantity; i++) {
-		if (machines[i]->get_completion_time () < lowest_workload) {
-			lowest_workload = machines[i]->get_completion_time ();
-			lowest_workload_machine = i;
-
-		}
-	}
-
-	return (lowest_workload_machine + 1);
 }
 
 void Problem::save_instance (std::string *filename) {

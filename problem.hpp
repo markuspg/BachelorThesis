@@ -64,14 +64,20 @@ class Problem {
 		 */
 		unsigned short int get_processes_quantity () const {return processes_quantity;}
 
-		/*! Writes the Problem's state to stdout */
-		void query_state ();
+		/* Queries the completion time of the first completing Machine
+		 *
+		 * @return The lowest completion time (Which shall be maximized)
+		 */
+		unsigned int query_lowest_completion_time ();
 
 		/** Query the id of the Machine with the shortest completion time
 		 *
 		 * @return The id of the Machine with the shortest completion time
 		 */
 		unsigned short int query_lowest_workload_machines_id ();
+
+		/*! Writes the Problem's state to stdout */
+		void query_state ();
 
 		/** Saves the Problem instance to a file
 		 *
