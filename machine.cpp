@@ -47,3 +47,7 @@ std::vector<Process*> *Machine::get_processes () {
 
 	return vecptr;
 }
+
+void Machine::set_assigned_processes_vector (std::vector<Process*> processes_vector) {
+	v_processes = processes_vector;
+}

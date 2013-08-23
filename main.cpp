@@ -10,6 +10,7 @@ enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 #include "object.cpp"
 #include "process.cpp"
 #include "machine.cpp"
+#include "tempstorage.cpp"
 #include "problem.cpp"
 #include "scheduler.cpp"
 

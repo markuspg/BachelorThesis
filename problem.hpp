@@ -64,7 +64,7 @@ class Problem {
 		 */
 		unsigned short int get_processes_quantity () const {return processes_quantity;}
 
-		/* Queries the completion time of the first completing Machine
+		/** Queries the completion time of the first completing Machine
 		 *
 		 * @return The lowest completion time (Which shall be maximized)
 		 */

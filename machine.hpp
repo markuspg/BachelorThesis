@@ -28,6 +28,12 @@ class Machine : public Object {
 		 * @return A vector of the Machine's Processes
 		 */
 		std::vector<Process*> *get_processes ();
+
+		/** Sets the Processes assigned to the Machine to the given std::vector<Process*>
+		 *
+		 * @param processes_vector A std::vector containing pointers to the assigned Processes
+		 */
+		void set_assigned_processes_vector (std::vector<Process*> processes_vector);
 		
 	private:
 		/*! Computes the Machine's completion time */
