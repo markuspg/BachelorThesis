@@ -225,6 +225,8 @@ void Problem::query_state () {
 
 			delete vecptr;
 		}
+
+		std::cout << "\tThe current target solution value is " << query_lowest_completion_time () << "\n";
 	}
 
 }
