@@ -30,6 +30,7 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 	unsigned int best_solution = 0;
 	std::cout << "best_solution's value is " << best_solution << "\n";
 	for (unsigned short int j = 0; j < iterations; j++) {
+		std::cout << "Iteration " << j + 1;
 		flush ();
 		std::vector<Process*> v_processes_cpy (*v_processes);
 		// Iterate over all Processes
@@ -46,11 +47,11 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 		// Check if the solution of the iteration is better than the hitherto solution and store it if it is
 		if (query_lowest_completion_time () > best_solution) {
 			best_solution = query_lowest_completion_time ();
-			std::cout << "Iteration " << j + 1 << "\nThe new solution " << best_solution << " is superior and will be stored.\n";
+			std::cout << "The new solution " << best_solution << " is superior and will be stored.\n";
 			store_current_solution ();
 		}
 		else {
-			std::cout << "Iteration " << j + 1 << "\nThe new solution " << query_lowest_completion_time () << " is not superior.\n";
+			std::cout << "The new solution " << query_lowest_completion_time () << " is not superior.\n";
 		}
 	}
 
