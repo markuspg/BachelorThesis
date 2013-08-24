@@ -27,9 +27,9 @@ void Machine::compute_completion_time () {
 }
 
 void Machine::flush () {
-	for (std::vector<Process*>::iterator it = v_processes.begin (); it != v_processes.end (); ++it) {
-		*it = nullptr;
-	}
+	v_processes.clear ();
+	machine_completion_time = 0;
+	changed = true;
 }
 
 unsigned int Machine::get_completion_time () {

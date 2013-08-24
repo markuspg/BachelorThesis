@@ -25,6 +25,13 @@ class Problem {
 		 */
 		~Problem ();
 
+		/** Assigns a Process to a Machine
+		 *
+		 * @param pid The id of the Process
+		 * @param mid The id of the Machine
+		 */
+		void assign_process_to_machine (unsigned short int pid, unsigned short int mid);
+
 		/** Checks if the current state is a feasible solution
 		 *
 		 * @return True, if the solution is feasible

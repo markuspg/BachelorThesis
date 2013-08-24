@@ -106,6 +106,13 @@ Problem::~Problem () {
 	return (i > j);
 }*/
 
+void Problem::assign_process_to_machine (unsigned short int pid, unsigned short int mid) {
+	std::cout << "\t  Assigning process " << processes[pid - 1]->get_id () << " with a duration of " << processes[pid - 1]->get_processing_time () << " to machine " << machines[mid - 1]->get_id () << "\n";
+	machines[mid - 1]->assign_process_to_machine (processes[pid - 1]);
+	processes[pid - 1]->set_assigned_machines_id (mid);
+}
+
+
 bool Problem::check_validity () {
 	for (unsigned int i = 0; i < processes_quantity; i++) {
 		// Check if every Process is assigned to a Machine

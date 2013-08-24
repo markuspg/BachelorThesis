@@ -17,6 +17,9 @@ enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
 
+	// Initalize the random number generator
+	srand (time (NULL));
+
 	// Create a pointer to the problem to be solved
 	Problem *problem = nullptr;
 
@@ -43,9 +46,7 @@ int main (int argc, char *argv[]) {
 	problem->query_state ();
 
 	Scheduler *scheduler = new Scheduler (*problem);
-	scheduler->create_start_solution (iLPT, 1);
+	scheduler->create_start_solution (rLPT, 50);
 
 	scheduler->query_state ();
-
-	scheduler->store_current_solution ();
 }
