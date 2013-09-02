@@ -8,6 +8,12 @@ class Process: public Object {
 		 */
 		Process (unsigned short int pid, unsigned int time);
 
+		/** A copy constructor for the Process
+		 *
+		 * @param rhs The Process instance to copy
+		 */
+		Process (const Process &rhs);
+
 		/** Returns the Machine's id the Process is assigned to
 		 *
 		 * @return The Machine's id the Process is assigned to or 0, if the Process is not assigned
