@@ -8,6 +8,12 @@ class Machine : public Object {
 		 */
 		Machine (unsigned short int mid, unsigned short int processes);
 
+		/** A copy constructor for the Machine
+		 *
+		 * @param rhs The Machine instance to copy
+		 */
+		Machine (const Machine &rhs);
+
 		/** Assigns a Process to the Machine
 		 *
 		 * @param process A pointer to the Process to assign
@@ -30,7 +36,7 @@ class Machine : public Object {
 		 *
 		 * @return A vector of the Machine's Processes
 		 */
-		std::vector<Process*> *get_processes ();
+		std::vector<Process*> *get_processes () const;
 
 		/** Sets the Processes assigned to the Machine to the given std::vector<Process*>
 		 *

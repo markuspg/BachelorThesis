@@ -9,6 +9,18 @@ Machine::Machine (unsigned short int mid, unsigned short int processes):
 	std::cout << "\tCreating Machine " << mid << " able to contain " << processes << " Processes\n";
 }
 
+Machine::Machine (const Machine &machine):
+	changed (true),
+	Object (machine.get_id ()),
+	machine_completion_time (0)
+{
+	std::vector<Process*> *vecptr = nullptr;
+	vecptr = machine.get_processes ();
+	v_processes = *vecptr;
+	delete vecptr;
+	compute_completion_time ();
+}
+
 void Machine::assign_process_to_machine (Process *process) {
 	v_processes.push_back (process);
 	changed = true;
@@ -42,7 +54,7 @@ unsigned int Machine::get_completion_time () {
 	}
 }
 
-std::vector<Process*> *Machine::get_processes () {
+std::vector<Process*> *Machine::get_processes () const {
 	std::vector<Process*> *vecptr = new std::vector<Process*> (v_processes);
 
 	return vecptr;
