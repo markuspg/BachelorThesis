@@ -40,13 +40,16 @@ int main (int argc, char *argv[]) {
 		std::cin >> interval;
 
 		problem = new Problem (machines, processes, interval);
+		problem->save_instance (nullptr);
 	}
 
 	// Query the Problem's state
 	problem->query_state ();
 
+	// Creating the start solution using the Scheduler class
 	Scheduler *scheduler = new Scheduler (*problem);
 	scheduler->create_start_solution (rLPT, 50);
 
 	scheduler->query_state ();
+	scheduler->save_instance (nullptr);
 }

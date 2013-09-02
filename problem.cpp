@@ -254,10 +254,30 @@ void Problem::save_instance (std::string *filename) {
 	
 	// Store the Problem's data in the file
 	std::ofstream output_file_stream (*filename);
-	output_file_stream << machines_quantity << ";" << processes_quantity << ";" << process_interval << ";";
+	output_file_stream << "# Machines\n" << machines_quantity << "\n# Processes\n" << processes_quantity << "\n# Processing times upper bound\n" << process_interval << "\n";
+
+	// Store the Process durations
+	output_file_stream << "# Process durations\n";
 	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		output_file_stream << processes[i]->get_processing_time () << ";";
+		if (i > 0)
+			output_file_stream << ";";
+		output_file_stream << processes[i]->get_processing_time ();
 	}
-	output_file_stream << "\n";
+
+	// Check if the current solution is valid and store Machine assignemts if so
+	if (check_validity ()) {
+		output_file_stream << "\n# Machine assignments\n";
+		for (unsigned short int j = 0; j < machines_quantity; j++) {
+			std::vector <Process*> *vecptr = nullptr;
+			output_file_stream << "# Machine " << machines[j]->get_id () << "\n";
+			vecptr = machines[j]->get_processes ();
+			for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
+				if (it != vecptr->begin ())
+					output_file_stream << ";";
+				output_file_stream << (*it)->get_id ();
+			}
+			output_file_stream << "\n";
+		}
+	}
 	output_file_stream.close ();
 }
