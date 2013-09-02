@@ -116,12 +116,12 @@ void Problem::assign_process_to_machine (unsigned short int pid, unsigned short 
 bool Problem::check_validity () {
 	for (unsigned int i = 0; i < processes_quantity; i++) {
 		// Check if every Process is assigned to a Machine
-		if (processes[i]->get_assigned_machine () == 0) {
+		if (processes[i]->get_assigned_machines_id () == 0) {
 			std::cout << "\t  Process " << processes[i]->get_id () << " is not yet assigned => no feasible solution.\n";
 			return false;
 		}
 		// Check if all Processes are assigned to valid Machines
-		if (processes[i]->get_assigned_machine () > machines_quantity) {
+		if (processes[i]->get_assigned_machines_id () > machines_quantity) {
 			std::cout << "\t  Process " << processes[i]->get_id () << " is not assigned to a valid machine => no feasible solution.\n";
 			return false;
 		}

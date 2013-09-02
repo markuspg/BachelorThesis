@@ -10,7 +10,7 @@ Process::Process (unsigned short int pid, unsigned int time):
 
 Process::Process (const Process &process):
 	Object (process.get_id ()),
-	assigned_machines_id (process.get_assigned_machine ()),
+	assigned_machines_id (process.get_assigned_machines_id ()),
 	processing_time (process.get_processing_time ())
 {
 	std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";

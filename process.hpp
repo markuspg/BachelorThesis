@@ -18,7 +18,7 @@ class Process: public Object {
 		 *
 		 * @return The Machine's id the Process is assigned to or 0, if the Process is not assigned
 		 */
-		unsigned short int get_assigned_machine () const {return assigned_machines_id;}
+		unsigned short int get_assigned_machines_id () const {return assigned_machines_id;}
 
 		/** Returns the Process' processing time
 		 *
