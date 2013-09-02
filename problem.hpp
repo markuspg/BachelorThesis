@@ -104,5 +104,5 @@ class Problem {
 		Process **processes; //!< A pointer to the Processes forming the Problem
 		unsigned short int processes_quantity; //!< The quantity of Processes of the Problem
 		unsigned int process_interval; //!< The upper bound of the Process durations interval
-		TemporaryStorage *temporary_storage;
+		TemporaryStorage *temporary_storage; //!< An object to temporarily store assignments
 };
