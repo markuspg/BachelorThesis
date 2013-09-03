@@ -50,7 +50,7 @@ int main (int argc, char *argv[]) {
 
 	// Creating the start solution using the Scheduler class
 	Scheduler *scheduler = new Scheduler (*problem);
-	scheduler->create_start_solution (rLPT, 50);
+	scheduler->create_start_solution (iLPT, 50);
 
 	scheduler->query_state ();
 	scheduler->save_instance (nullptr);

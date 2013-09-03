@@ -12,7 +12,7 @@ Problem::Problem (unsigned short int m_machines, unsigned short int n_processes,
 	process_interval (workload_interval),
 	temporary_storage (nullptr)
 {
-	std::cout << "\nCreating new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 
 	// Create Machines
 	machines = new Machine* [machines_quantity];
@@ -57,7 +57,7 @@ Problem::Problem (std::string filename):
 	std::getline (input_file_stream, str, ';');
 	std::istringstream (str) >> process_interval;
 
-	std::cout << "\nCreating a new problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	std::cout << "\nCreating a new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 
 	// Create Machines
 	machines = new Machine* [machines_quantity];
@@ -85,14 +85,28 @@ Problem::Problem (const Problem &problem):
 	processes_quantity (problem.get_processes_quantity ()),
 	process_interval (problem.get_process_interval ())
 {
-	machines = problem.get_machines_pointer ();
-	processes = problem.get_processes_pointer ();
+	std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	// Create Machines
+	Machine **temp_machines = nullptr;
+	temp_machines = problem.get_machines_pointer ();
+	machines = new Machine* [machines_quantity];
+	for (unsigned short int j = 0; j < machines_quantity; j++) {
+		machines[j] = new Machine (*temp_machines[j]);
+	}
+
+	// Create Processes
+	Process **temp_processes = nullptr;
+	temp_processes = problem.get_processes_pointer ();
+	processes = new Process* [processes_quantity];
+	for (unsigned short int i = 0; i < processes_quantity; i++) {
+		processes[i] = new Process (*temp_processes[i]);
+	}
 }
 
 
 Problem::~Problem () {
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		delete machines[i];
+	for (unsigned short int j = 0; j < machines_quantity; j++) {
+		delete machines[j];
 	}
 	delete [] machines;
 	
