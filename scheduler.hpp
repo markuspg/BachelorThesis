@@ -25,5 +25,5 @@ class Scheduler : public Problem {
 		 * @param algo The algorithm to use
 		 * @param iterations The count of iterations the algorithm shall be applied (only affects non-deterministic algorithms)
 		 */
-		void create_start_solution (unsigned int algo, unsigned short int iterations);
+		void create_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };
