@@ -26,6 +26,8 @@ int main (int argc, char *argv[]) {
 
 	// Create a pointer to the problem to be solved
 	Problem *problem = nullptr;
+	// Declare a BoundCalc object to compute boundaries
+	BoundCalc *boundcalc = nullptr;
 
 	if (argc > 1) {
 		problem = new Problem (argv[1]);
@@ -45,6 +47,7 @@ int main (int argc, char *argv[]) {
 
 		problem = new Problem (machines, processes, interval);
 		problem->save_instance (nullptr);
+		boundcalc = new BoundCalc (*problem);
 	}
 
 	// Query the Problem's state
