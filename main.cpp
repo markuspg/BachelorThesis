@@ -5,6 +5,7 @@
 #include <vector>
 
 // enums representing the available algorithms
+enum IMPROVEMENT_ALGOS {PAIRWISE};
 enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 
 #include "object.cpp"

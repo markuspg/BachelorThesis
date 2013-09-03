@@ -91,6 +91,6 @@ void Scheduler::create_start_solution (unsigned int choice, unsigned short int i
 			apply_sLPT_algorithm ();
 			break;
 		default:
-			std::cerr << "ERROR: Invalid start solution algorithm\n";
+			std::cerr << "\nERROR: Invalid start solution algorithm\n";
 	}
 }
