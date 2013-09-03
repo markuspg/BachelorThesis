@@ -6,6 +6,7 @@
 
 // enums representing the available algorithms
 enum IMPROVEMENT_ALGOS {PAIRWISE};
+enum UPPER_BOUND_ALGOS {NAIVE};
 enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 
 #include "object.cpp"
@@ -13,6 +14,7 @@ enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 #include "machine.cpp"
 #include "tempstorage.cpp"
 #include "problem.cpp"
+#include "bound_calculator.cpp"
 #include "scheduler.cpp"
 #include "improver.cpp"
 
