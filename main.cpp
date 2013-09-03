@@ -14,6 +14,7 @@ enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 #include "tempstorage.cpp"
 #include "problem.cpp"
 #include "scheduler.cpp"
+#include "improver.cpp"
 
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
@@ -53,4 +54,8 @@ int main (int argc, char *argv[]) {
 
 	scheduler->query_state ();
 	scheduler->save_instance (nullptr);
+
+	// Improve the start solution using the Improver class
+	Improver *improver = new Improver (*scheduler);
+	improver->query_state ();
 }
