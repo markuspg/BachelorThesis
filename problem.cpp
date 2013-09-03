@@ -279,5 +279,7 @@ void Problem::save_instance (std::string *filename) {
 			output_file_stream << "\n";
 		}
 	}
+	else
+		output_file_stream << "\n";
 	output_file_stream.close ();
 }
