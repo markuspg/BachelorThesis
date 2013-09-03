@@ -3,7 +3,7 @@ class Improver : public Problem {
 	public:
 		/** Improver's constructor
 		 *
-		 * @param scheduler A problem to generate a starting solution for
+		 * @param problem A problem to generate a starting solution for
 		 *
 		 */
 		Improver (const Problem &problem);
