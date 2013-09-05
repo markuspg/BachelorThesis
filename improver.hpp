@@ -16,5 +16,5 @@ class Improver : public Problem {
 		 * @param algo The algorithm to use
 		 * @param iterations The count of iterations the algorithm shall be applied (only affects non-deterministic algorithms)
 		 */
-		void improve_start_solution (unsigned int algo, unsigned short int iterations);
+		void improve_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };

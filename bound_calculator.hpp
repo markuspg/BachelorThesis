@@ -15,7 +15,7 @@ class BoundCalc : public Problem {
 
 		/** An alias for 'compute_upper_bounds' for lower bounds
 		 *
-		 * @param The algorithm to use
+		 * @param algo The algorithm to use
 		 */
 		float compute_lower_bound (unsigned int algo);
 

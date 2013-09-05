@@ -10,8 +10,8 @@ void Improver::apply_pairwise_algorithm () {
 	std::cout << "\nApplying pairwise interchange algorihm\n";
 }
 
-void Improver::improve_start_solution (unsigned int choice, unsigned short int iterations) {
-	switch (choice) {
+void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
+	switch (algo) {
 		case PAIRWISE:
 			apply_pairwise_algorithm ();
 			break;
