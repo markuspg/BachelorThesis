@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <cmath>
+#include <random>
 #include <sstream>
 #include <vector>
 
@@ -21,9 +23,6 @@ enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
 
-	// Initalize the random number generator
-	srand (time (NULL));
-
 	// Create a pointer to the problem to be solved
 	Problem *problem = nullptr;
 
@@ -31,20 +30,37 @@ int main (int argc, char *argv[]) {
 		problem = new Problem (argv[1]);
 	}
 	else {
-		// Initialize the random number generator
-		srand (time (NULL));
-
+		std::cout << "\nDo you want to enter a problem (1) or generate one by random (2)? => ";
+		unsigned short int choice = 0;
+		std::cin >> choice;
+		
 		unsigned short int machines = 0, processes = 0;
 		unsigned int interval = 0;
-		std::cout << "\nEnter the quantity of machines: ";
-		std::cin >> machines;
-		std::cout << "Enter the quantity of processes: ";
-		std::cin >> processes;
-		std::cout << "Enter the upper bound of the process duration interval: ";
-		std::cin >> interval;
 
-		problem = new Problem (machines, processes, interval);
-		problem->save_instance (nullptr);
+		switch (choice) {
+			case 1:
+				std::cout << "\nEnter the quantity of machines: ";
+				std::cin >> machines;
+				std::cout << "Enter the quantity of processes: ";
+				std::cin >> processes;
+				std::cout << "Enter the upper bound of the process duration interval: ";
+				std::cin >> interval;
+				problem = new Problem (machines, processes, interval);
+				problem->save_instance (nullptr);
+				break;
+			case 2:
+				std::default_random_engine engine{};
+				std::uniform_int_distribution<unsigned short int> generator{};
+				std::uniform_int_distribution<unsigned int> interval_generator{};
+				machines = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{2,10});
+				processes = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{static_cast<unsigned short int>(machines*1.5),static_cast<unsigned short int>(machines*4)});
+				interval = interval_generator (engine, std::uniform_int_distribution<unsigned int>::param_type{1,100});
+				
+				problem = new Problem (machines, processes, interval);
+				problem->save_instance (nullptr);
+				break;
+		}
+
 	}
 
 	// Query the Problem's state
