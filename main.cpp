@@ -30,35 +30,50 @@ int main (int argc, char *argv[]) {
 		problem = new Problem (argv[1]);
 	}
 	else {
-		std::cout << "\nDo you want to enter a problem (1) or generate one by random (2)? => ";
-		unsigned short int choice = 0;
-		std::cin >> choice;
-		
 		unsigned short int machines = 0, processes = 0;
 		unsigned int interval = 0;
+		bool valid_choice = false;
+		unsigned short int choice = 0;
+		
+		std::default_random_engine engine{};
+		std::uniform_int_distribution<unsigned short int> generator{};
+		std::uniform_int_distribution<unsigned int> interval_generator{};
 
-		switch (choice) {
-			case 1:
-				std::cout << "\nEnter the quantity of machines: ";
-				std::cin >> machines;
-				std::cout << "Enter the quantity of processes: ";
-				std::cin >> processes;
-				std::cout << "Enter the upper bound of the process duration interval: ";
-				std::cin >> interval;
-				problem = new Problem (machines, processes, interval);
-				problem->save_instance (nullptr);
-				break;
-			case 2:
-				std::default_random_engine engine{};
-				std::uniform_int_distribution<unsigned short int> generator{};
-				std::uniform_int_distribution<unsigned int> interval_generator{};
-				machines = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{2,10});
-				processes = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{static_cast<unsigned short int>(machines*1.5),static_cast<unsigned short int>(machines*4)});
-				interval = interval_generator (engine, std::uniform_int_distribution<unsigned int>::param_type{1,100});
-				
-				problem = new Problem (machines, processes, interval);
-				problem->save_instance (nullptr);
-				break;
+		while (!valid_choice) {
+			std::cout << "\nDo you want to enter a problem (1) or generate one by random (2)? => ";
+			std::cout << "\nChoose the mode you want to run:\n\t(1) Enter a problem\n\t(2) Randomly generate a problem\n\t(3) Use default values (4;10;100)\n\t=> ";
+			std::cin >> choice;
+		
+			switch (choice) {
+				case 1:
+					valid_choice = true;
+					std::cout << "\nEnter the quantity of machines: ";
+					std::cin >> machines;
+					std::cout << "Enter the quantity of processes: ";
+					std::cin >> processes;
+					std::cout << "Enter the upper bound of the process duration interval: ";
+					std::cin >> interval;
+
+					problem = new Problem (machines, processes, interval);
+					problem->save_instance (nullptr);
+					break;
+				case 2:
+					valid_choice = true;
+					machines = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{2,10});
+					processes = generator (engine, std::uniform_int_distribution<unsigned short int>::param_type{static_cast<unsigned short int>(machines*1.5),static_cast<unsigned short int>(machines*4)});
+					interval = interval_generator (engine, std::uniform_int_distribution<unsigned int>::param_type{1,100});
+					
+					problem = new Problem (machines, processes, interval);
+					problem->save_instance (nullptr);
+					break;
+				case 3:
+					valid_choice = true;
+					problem = new Problem (4, 10, 100);
+					problem->save_instance (nullptr);
+					break;
+				default:
+					std::cerr << "\nERROR: Invalid choice: Mode " << choice << " does not exist\n";
+			}
 		}
 
 	}
