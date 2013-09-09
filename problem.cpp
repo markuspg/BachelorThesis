@@ -48,13 +48,16 @@ Problem::Problem (std::string filename):
 	// Open a saved problem as input
 	std::ifstream input_file_stream (filename);
 
-	// Read the lines, store them as str and convert it into the variables
-	std::string str;
-	std::getline (input_file_stream, str, ';');
+	// Read the lines, store them as str and convert it into the variables (waste is used to omit commentaries)
+	std::string str, waste;
+	std::getline (input_file_stream, waste);
+	std::getline (input_file_stream, str);
 	std::istringstream (str) >> machines_quantity;
-	std::getline (input_file_stream, str, ';');
+	std::getline (input_file_stream, waste);
+	std::getline (input_file_stream, str);
 	std::istringstream (str) >> processes_quantity;
-	std::getline (input_file_stream, str, ';');
+	std::getline (input_file_stream, waste);
+	std::getline (input_file_stream, str);
 	std::istringstream (str) >> process_interval;
 
 	std::cout << "\nCreating a new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
@@ -67,14 +70,17 @@ Problem::Problem (std::string filename):
 
 	// Create Processes
 	// Add the vector's elements to a new Process array
+	std::getline (input_file_stream, waste);
 	processes = new Process* [processes_quantity];
 	unsigned int duration = 0;
-	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		duration = 0;
+	for (unsigned short int i = 0; i < processes_quantity - 1; i++) {
 		std::getline (input_file_stream, str, ';');
 		std::istringstream (str) >> duration;
 		processes[i] = new Process (i + 1, duration);
 	}
+	std::getline (input_file_stream, str);
+	std::istringstream (str) >> duration;
+	processes[processes_quantity - 1] = new Process (processes_quantity, duration);
 	
 	// Close the file
 	input_file_stream.close();

@@ -55,7 +55,7 @@ int main (int argc, char *argv[]) {
 					std::cin >> interval;
 
 					problem = new Problem (machines, processes, interval);
-					problem->save_instance (nullptr);
+					// problem->save_instance (nullptr);
 					break;
 				case 2:
 					valid_choice = true;
@@ -64,12 +64,12 @@ int main (int argc, char *argv[]) {
 					interval = interval_generator (engine, std::uniform_int_distribution<unsigned int>::param_type{1,100});
 					
 					problem = new Problem (machines, processes, interval);
-					problem->save_instance (nullptr);
+					// problem->save_instance (nullptr);
 					break;
 				case 3:
 					valid_choice = true;
 					problem = new Problem (4, 10, 100);
-					problem->save_instance (nullptr);
+					// problem->save_instance (nullptr);
 					break;
 				default:
 					std::cerr << "\nERROR: Invalid choice: Mode " << choice << " does not exist\n";
@@ -86,7 +86,7 @@ int main (int argc, char *argv[]) {
 	scheduler->create_start_solution (iLPT);
 
 	scheduler->query_state ();
-	scheduler->save_instance (nullptr);
+	// scheduler->save_instance (nullptr);
 
 	// Improve the start solution using the Improver class
 	Improver *improver = new Improver (*scheduler);
