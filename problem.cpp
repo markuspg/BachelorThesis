@@ -91,7 +91,7 @@ Problem::Problem (const Problem &problem):
 	processes_quantity (problem.get_processes_quantity ()),
 	process_interval (problem.get_process_interval ())
 {
-	std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	// std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 	// Create Machines
 	Machine **temp_machines = nullptr;
 	temp_machines = problem.get_machines_pointer ();

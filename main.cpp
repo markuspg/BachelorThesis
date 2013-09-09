@@ -82,7 +82,7 @@ int main (int argc, char *argv[]) {
 
 	// Creating the start solution using the Scheduler class
 	Scheduler *scheduler = new Scheduler (*problem);
-	scheduler->create_start_solution (iLPT);
+	scheduler->create_start_solution (sLPT);
 
 	scheduler->query_state ();
 	// scheduler->save_instance (nullptr);
@@ -90,5 +90,5 @@ int main (int argc, char *argv[]) {
 	// Improve the start solution using the Improver class
 	Improver *improver = new Improver (*scheduler);
 	improver->improve_start_solution (PAIRWISE);
-	improver->query_state ();
+	// improver->query_state ();
 }

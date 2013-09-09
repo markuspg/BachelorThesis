@@ -41,18 +41,29 @@ void Improver::apply_pairwise_algorithm () {
 		unsigned int maximum_difference = pa->get_completion_time () - pb->get_completion_time ();
 		std::cout << "The maximum valid difference is " << maximum_difference << ".\n";
 		std::vector<Process*> *a_processes = nullptr, *b_processes = nullptr;
+		// Fetch assigned Processes of both Machines
 		a_processes = pa->get_processes ();
 		b_processes = pb->get_processes ();
-		std::vector<unsigned int> set_a ();
-		std::vector<unsigned int> set_b ();
-		// for (std::vector<Process*>::iterator ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
+		// Create std::vector<Process*> to store advantageous swaps
+		std::vector<Process*> set_a;
+		std::vector<Process*> set_b;
+		// If a swap is advantageous, store it
 		for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
 			for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
-				if (0 <= ((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
-					set_a 
+				if ((*ita)->get_id () < (*itb)->get_id ()) {
+					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
+						// std::cout << "IDA: " << (*ita)->get_id () << "\t\tIDB: " << (*itb)->get_id () << "\n";
+						// std::cout << "PTA: " << (*ita)->get_processing_time () << "\t\tPTB: " << (*itb)->get_processing_time () << "\n";
+						set_a.push_back (*ita);
+						set_b.push_back (*itb);
+					}
 				}
 			}
 		}
+		for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
+			std::cout << "Difference between PID " << (*ita)->get_id () << " & " << (*itb)->get_id () << " is " << (*ita)->get_processing_time () - (*itb)->get_processing_time () << ".\n";
+		}
+
 		delete a_processes;
 		delete b_processes;
 

@@ -13,7 +13,7 @@ Process::Process (const Process &process):
 	assigned_machines_id (process.get_assigned_machines_id ()),
 	processing_time (process.get_processing_time ())
 {
-	std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
+	// std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
 }
 
 void Process::set_assigned_machines_id (unsigned int mid) {
