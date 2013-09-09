@@ -26,10 +26,10 @@ int main (int argc, char *argv[]) {
 	// Create a pointer to the problem to be solved
 	Problem *problem = nullptr;
 
-	if (argc > 1) {
+	// if (argc > 1) {
 		problem = new Problem (argv[1]);
-	}
-	else {
+	// }
+	/* else {
 		unsigned short int machines = 0, processes = 0;
 		unsigned int interval = 0;
 		bool valid_choice = false;
@@ -73,7 +73,7 @@ int main (int argc, char *argv[]) {
 			}
 		}
 
-	}
+	}*/
 
 	// Query the Problem's state
 	problem->query_state ();
