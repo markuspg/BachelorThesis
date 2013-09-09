@@ -200,25 +200,59 @@ unsigned int Problem::query_lowest_completion_time () {
 	return lowest_completion_time;
 }
 
-unsigned short int Problem::query_lowest_workload_machines_id (bool invert) {
-	unsigned short int lowest_workload_machine = 0;
-	unsigned int lowest_workload = machines[0]->get_completion_time ();
-	for (unsigned short int i = 1; i < machines_quantity; i++) {
-		if (!invert) {
-			if (machines[i]->get_completion_time () < lowest_workload) {
-				lowest_workload = machines[i]->get_completion_time ();
-				lowest_workload_machine = i;
+unsigned short int Problem::query_lowest_workload_machines_id (unsigned short int placement, bool invert) {
+	// Create a vector with all Machines which will be popped subsquently later
+	std::vector<Machine*> pop_machines;
+	pop_machines.reserve (machines_quantity);
+	for (unsigned short int i = 0; i < machines_quantity; i++) {
+		pop_machines.push_back (machines[i]);
+		// std::cout << "pop_machines.push_back (Machine " << pop_machines.at (i)->get_id () << ")\n";
+	}
+	// Create the vector, where the popped Machines' ids will be stored
+	std::vector<unsigned short int> push_machine_ids;
+	push_machine_ids.reserve (machines_quantity);
+
+	// Pop the Machine with the lowest or highest workload until 'pop_machines' is empty
+	while (!pop_machines.empty ()) {
+		// Take the first Machine in 'pop_machines' as start value
+		unsigned int best_workload = pop_machines.at (0)->get_completion_time ();
+		// std::cout << "best_workload " << best_workload << "\n";
+		unsigned short int best_workload_machine = 0;
+		// std::cout << "pop_machines.size () = " << pop_machines.size () << "\n";
+		// Search over the complete array starting by index 1, since 0 will never become true
+		for (unsigned short int i = 0; i < pop_machines.size (); i++) {
+			// Search for lowest workload Machine (default: invert == false)
+			if (!invert) {
+				// std::cout << "Checking for lowest workload Machine.\n";
+				// Check if current Machine has a lower workload than the known one
+				if (pop_machines.at (i)->get_completion_time () < best_workload) {
+					// std::cout << "Superior!\n";
+					best_workload = pop_machines.at (i)->get_completion_time ();
+					best_workload_machine = i;
+				}
+			}
+			// Search for highest workload Machine
+			else {
+				// std::cout << "Checking for highest workload Machine.\n";
+				// Check if current Machine has a higher workload than the known one
+				if (pop_machines.at (i)->get_completion_time () > best_workload) {
+					// std::cout << "Superior!\n";
+					best_workload = pop_machines.at (i)->get_completion_time ();
+					best_workload_machine = i;
+				}
 			}
 		}
-		else {
-			if (machines[i]->get_completion_time () > lowest_workload) {
-				lowest_workload = machines[i]->get_completion_time ();
-				lowest_workload_machine = i;
-			}
-		}
+		// std::cout << "best_workload_machine: " << best_workload_machine << "\n";
+		// All but one Machines have been assigned, assign the last one
+		// std::cout << "Machine " << pop_machines.at (best_workload_machine)->get_id () << "/" << pop_machines.at (best_workload_machine)->get_completion_time () << " added \n";
+		push_machine_ids.push_back (pop_machines.at (best_workload_machine)->get_id ());
+		pop_machines.erase (pop_machines.begin () + (best_workload_machine));
 	}
 
-	return (lowest_workload_machine + 1);
+	for (auto it = push_machine_ids.cbegin (); it != push_machine_ids.cend (); ++it) {
+		// std::cout << "Machine " << *it << " with workload " << machines[*it - 1]->get_completion_time () << "\n";
+	}
+	return (push_machine_ids.at (placement));
 }
 
 void Problem::query_state () {

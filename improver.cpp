@@ -18,13 +18,13 @@ void Improver::apply_pairwise_algorithm () {
 
 	while (true) {
 		// Query the maximum workload machine (Step 3: Distinguish PA)
-		Machine *pa = machines[query_lowest_workload_machines_id (true) - 1];
+		Machine *pa = machines[query_lowest_workload_machines_id (0, true) - 1];
 		std::cout << "Maximum workload machine PA is machine " << pa->get_id () << ".\n";
 		
 		// Query  the lowest workload machine (Step 4: Distinguish PB)
-		Machine *pb = machines[query_lowest_workload_machines_id () -1 ];
+		Machine *pb = machines[query_lowest_workload_machines_id (0, false) - 1];
 		std::cout << "Lowest workload machine PB is machine " << pb->get_id () << ".\n";
-		
+
 		// Stop, if the lower bound correlates to the current solution value (Step 5: If LB = M)
 		if (upper_bound == this->query_lowest_completion_time ()) {
 			std::cout << "Current schedule correlates to upper bound => Terminating.\n";

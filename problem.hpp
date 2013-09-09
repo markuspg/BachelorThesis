@@ -82,10 +82,11 @@ class Problem {
 
 		/** Query the id of the Machine with the shortest or longest completion time
 		 *
+		 * @param placement The first (=0), second (=1) or x-th Machine fullfilling the requirement
 		 * @param invert True, if the Machine with the longest completion time shall be returned
 		 * @return The id of the Machine with the shortest completion time
 		 */
-		unsigned short int query_lowest_workload_machines_id (bool invert = false);
+		unsigned short int query_lowest_workload_machines_id (unsigned short int placement = 0, bool invert = false);
 
 		/*! Writes the Problem's state to stdout */
 		void query_state ();
