@@ -202,8 +202,7 @@ unsigned int Problem::query_lowest_completion_time () {
 
 unsigned short int Problem::query_lowest_workload_machines_id (bool invert) {
 	unsigned short int lowest_workload_machine = 0;
-	unsigned int lowest_workload = 0;
-	lowest_workload = machines[0]->get_completion_time ();
+	unsigned int lowest_workload = machines[0]->get_completion_time ();
 	for (unsigned short int i = 1; i < machines_quantity; i++) {
 		if (!invert) {
 			if (machines[i]->get_completion_time () < lowest_workload) {

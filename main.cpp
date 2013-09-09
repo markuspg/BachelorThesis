@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 
+#include <boost/numeric/conversion/converter.hpp>
+
 // enums representing the available algorithms
 enum IMPROVEMENT_ALGOS {PAIRWISE};
 enum UPPER_BOUND_ALGOS {NAIVE};
@@ -87,5 +89,6 @@ int main (int argc, char *argv[]) {
 
 	// Improve the start solution using the Improver class
 	Improver *improver = new Improver (*scheduler);
+	improver->improve_start_solution (PAIRWISE);
 	improver->query_state ();
 }
