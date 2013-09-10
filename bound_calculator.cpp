@@ -8,11 +8,17 @@ BoundCalc::BoundCalc (const Problem &problem):
 
 float BoundCalc::apply_NAIVE_algorithm () {
 	unsigned int cumulated_processing_times = 0;
-	for (unsigned int i = 0; i < processes_quantity; i++) {
+	unsigned short int longest_processing_time = 0;
+	for (unsigned short int i = 0; i < processes_quantity; i++) {
 		cumulated_processing_times += processes[i]->get_processing_time ();
+		if (processes[i]->get_processing_time () > longest_processing_time)
+			longest_processing_time = processes[i]->get_processing_time ();
 	}
-	
-	return ((static_cast<float>(cumulated_processing_times)/static_cast<float>(machines_quantity)) > processes[0]->get_processing_time ()) ? (static_cast<float>(cumulated_processing_times)/static_cast<float>(machines_quantity)) : processes[0]->get_processing_time ();
+
+	// Not using the processes_quantity like in the paper, because it doesn't make any sense
+	float average_machine_runtime = cumulated_processing_times / machines_quantity;
+
+	return (average_machine_runtime > longest_processing_time) ? average_machine_runtime : longest_processing_time;
 }
 
 float BoundCalc::compute_lower_bound (unsigned int algo) {
@@ -22,8 +28,7 @@ float BoundCalc::compute_lower_bound (unsigned int algo) {
 float BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
 	switch (algo) {
 		case NAIVE:
-			apply_NAIVE_algorithm ();
-			break;
+			return apply_NAIVE_algorithm ();
 		default:
 			std::cerr << "\nERROR: Invalid start solution algorithm\n";
 	}
