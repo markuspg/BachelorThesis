@@ -16,10 +16,16 @@ void Improver::apply_pairwise_algorithm () {
 	unsigned int upper_bound = static_cast<unsigned int>(bound_calculator.compute_upper_bound (NAIVE));
 	std::cout << "The upper bound is " << upper_bound << ".\n";
 
-	while (true) {
+	// Create std::vector<Process*> to store advantageous swaps of Step 7
+	std::vector<Process*> set_a;
+	std::vector<Process*> set_b;
+	for (unsigned short int k = 0; k < 5; k++) {
 		// Query the maximum workload machine (Step 3: Distinguish PA)
-		Machine *pa = machines[query_lowest_workload_machines_id (0, true) - 1];
-		std::cout << "Maximum workload machine PA is machine " << pa->get_id () << ".\n";
+		Machine *pa = machines[query_lowest_workload_machines_id (k, true) - 1];
+		if (k == 0)
+			std::cout << "Maximum workload machine PA is machine " << pa->get_id () << ".\n";
+		else
+			std::cout << "The " << k << ". most loaded machine is " << pa->get_id () << ".\n";
 		
 		// Query  the lowest workload machine (Step 4: Distinguish PB)
 		Machine *pb = machines[query_lowest_workload_machines_id (0, false) - 1];
@@ -44,14 +50,12 @@ void Improver::apply_pairwise_algorithm () {
 		// Fetch assigned Processes of both Machines
 		a_processes = pa->get_processes ();
 		b_processes = pb->get_processes ();
-		// Create std::vector<Process*> to store advantageous swaps
-		std::vector<Process*> set_a;
-		std::vector<Process*> set_b;
 		// If a swap is advantageous, store it
 		for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
 			for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
+				// Not using <= in both cases, because it does not lead to an advantageous swap
 				if ((*ita)->get_processing_time () > (*itb)->get_processing_time ()) {
-					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
+					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) < maximum_difference) {
 						set_a.push_back (*ita);
 						set_b.push_back (*itb);
 					}
@@ -64,8 +68,13 @@ void Improver::apply_pairwise_algorithm () {
 
 		delete a_processes;
 		delete b_processes;
-
-		break;
+		
+		if (set_a.size () > 0) {
+			std::cout << "A set of advantageous swaps could be formed.\n";
+			break;
+		}
+		else
+			std::cout << "No set of advantageous swaps could be formed, omitting machine " << pa->get_id () << ".\n";
 	}
 }
 
