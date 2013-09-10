@@ -38,6 +38,16 @@ void Machine::compute_completion_time () {
 	changed = false;
 }
 
+void Machine::delete_process_from_machine (Process *process) {
+	for (auto it = v_processes.begin (); it != v_processes.end (); ++it) {
+		if (*it == process) {
+			std::cout << "Deleting Process " << (*it)->get_id () << "/" << process-get_id () << " from Machine " << this->get_id () << ".\n";
+			v_processes.erase (it);
+			break;
+		}
+	}
+}
+
 void Machine::flush () {
 	v_processes.clear ();
 	machine_completion_time = 0;

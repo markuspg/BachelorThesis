@@ -23,6 +23,12 @@ class Machine : public Object {
 		/*! Computes the Machine's completion time */
 		void compute_completion_time ();
 
+		/** Deletes a Process from the Machine
+		 *
+		 * @param process A pointer to the Process to delete
+		 */
+		void delete_process_from_machine (Process *process);
+
 		/*! Flushes the Machine's Process vector */
 		void flush ();
 
