@@ -12,8 +12,7 @@ void Improver::apply_pairwise_algorithm () {
 	// Compute the naive upper bound (Step 2: Compute lower bound)
 	typedef boost::numeric::converter<int,float> float2int;
 	BoundCalc bound_calculator (*this);
-	// The result can be truncated, because it should be rounded down anyway
-	unsigned int upper_bound = static_cast<unsigned int>(bound_calculator.compute_upper_bound (NAIVE));
+	unsigned int upper_bound = bound_calculator.compute_upper_bound (NAIVE);
 	std::cout << "The upper bound is " << upper_bound << ".\n";
 
 	// Create std::vector<Process*> to store advantageous swaps of Step 7
