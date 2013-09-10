@@ -10,7 +10,7 @@
 
 // enums representing the available algorithms
 enum IMPROVEMENT_ALGOS {PAIRWISE};
-enum UPPER_BOUND_ALGOS {NAIVE};
+enum UPPER_BOUND_ALGOS {NAIVE, SIMPLE};
 enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
 
 #include "object.cpp"

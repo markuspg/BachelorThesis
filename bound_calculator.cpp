@@ -41,6 +41,8 @@ float BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
 	switch (algo) {
 		case NAIVE:
 			return apply_NAIVE_algorithm ();
+		case SIMPLE:
+			return apply_SIMPLE_algorithm ();
 		default:
 			std::cerr << "\nERROR: Invalid start solution algorithm\n";
 	}
