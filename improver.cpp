@@ -76,6 +76,19 @@ void Improver::apply_pairwise_algorithm () {
 		else
 			std::cout << "No set of advantageous swaps could be formed, omitting machine " << pa->get_id () << ".\n";
 	}
+
+	// Select the most advantageous swap (Step 8: Select two jobs a and b)
+	unsigned int best_swap = 0;
+	unsigned short int best_swap_index = 0;
+	unsigned short int counter = 0;
+	for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
+		if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) > best_swap) {
+			best_swap = (*ita)->get_processing_time () - (*itb)->get_processing_time ();
+			best_swap_index = counter;
+		}
+		counter++;
+	}
+	std::cout << "Best swap is " << set_a.at (best_swap_index)->get_id () << " & " << set_b.at (best_swap_index)->get_id () << " is " << set_a.at (best_swap_index)->get_processing_time () - set_b.at (best_swap_index)->get_processing_time () << ".\n";
 }
 
 void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
