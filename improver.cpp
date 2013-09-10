@@ -50,10 +50,8 @@ void Improver::apply_pairwise_algorithm () {
 		// If a swap is advantageous, store it
 		for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
 			for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
-				if ((*ita)->get_id () < (*itb)->get_id ()) {
+				if ((*ita)->get_processing_time () > (*itb)->get_processing_time ()) {
 					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
-						// std::cout << "IDA: " << (*ita)->get_id () << "\t\tIDB: " << (*itb)->get_id () << "\n";
-						// std::cout << "PTA: " << (*ita)->get_processing_time () << "\t\tPTB: " << (*itb)->get_processing_time () << "\n";
 						set_a.push_back (*ita);
 						set_b.push_back (*itb);
 					}
