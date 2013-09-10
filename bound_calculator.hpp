@@ -33,7 +33,19 @@ class BoundCalc : public Problem {
 		 */
 		unsigned int apply_SIMPLE_algorithm ();
 
+		/*! Applies the simple linear-time lower bound algorithm of Dell'Amico and Martello 1995 (L_1 in Haouari and Jemmali)
+		 *
+		 * @return The simple linear-time lower bound
+		 */
+		unsigned int apply_SIMPLE_LINEAR_TIME_algorithm ();
+
+		/*! Converts a valid PC_max lower bound to a PC_min upper bound
+		 *
+		 * @param PCmax_lower_bound a PC_max lower bound to convert
+		 * @return A valid PC_min upper bound
+		 */
 		unsigned int convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound);
 
-		unsigned int cumulated_processing_times;
+		unsigned int cumulated_processing_times; //!< The processing time of all Processes of the Problem
+		unsigned int longest_processing_time; //!< The processing time of the longest Process of the Problem
 };

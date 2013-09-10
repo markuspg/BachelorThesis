@@ -2,12 +2,17 @@
 
 BoundCalc::BoundCalc (const Problem &problem):
 	cumulated_processing_times (0),
+	longest_processing_time (0),
 	Problem (problem)
 {
+	unsigned int processing_time = 0;
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		cumulated_processing_times += processes[j]->get_processing_time ();
+		processing_time = processes[j]->get_processing_time ();
+		cumulated_processing_times += processing_time;
+		if (processing_time > longest_processing_time)
+			longest_processing_time = processing_time;
 	}
-	std::cout << "\nCreating a new BoundCalc instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\tCumulated processing times: " << cumulated_processing_times << "\n\n";
+	std::cout << "\nCreating a new BoundCalc instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\tCumulated processing times:\t" << cumulated_processing_times << "\n\tLongest processing time:\t" << longest_processing_time << "\n\n";
 
 }
 
@@ -34,6 +39,24 @@ unsigned int BoundCalc::apply_SIMPLE_algorithm () {
 	return average_machine_runtime;
 }
 
+unsigned int BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
+	std::cout << "\nApplying SIMPLE_LINEAR_TIME algorithm\n";
+
+	// Calculate the three needed quantities
+	std::cout << "Longest processing time:\t" << longest_processing_time << "\n";
+	unsigned int pmpm1 = processes[machines_quantity - 1]->get_processing_time () + processes[machines_quantity]->get_processing_time ();
+	std::cout << "pmpm1:\t\t\t\t" << pmpm1 << "\n";
+	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / machines_quantity) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+	std::cout << "Average runtime:\t\t" << average_runtime << "\n";
+
+	if ((longest_processing_time >= pmpm1) && (longest_processing_time >= average_runtime))
+		return longest_processing_time;
+	if ((pmpm1 >= longest_processing_time) && (pmpm1 >= average_runtime))
+		return pmpm1;
+	else
+		return average_runtime;
+}
+
 unsigned int BoundCalc::compute_lower_bound (unsigned int algo) {
 	return compute_upper_bound (algo, true);
 }
@@ -44,11 +67,13 @@ unsigned int BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
 			return apply_NAIVE_algorithm ();
 		case SIMPLE:
 			return apply_SIMPLE_algorithm ();
+		case SIMPLE_LINEAR_TIME:
+			return convert_PCmax_lower_bound_to_PCmin_upper_bound (apply_SIMPLE_LINEAR_TIME_algorithm ());
 		default:
-			std::cerr << "\nERROR: Invalid start solution algorithm\n";
+			std::cerr << "\nERROR: Invalid bound calculation algorithm\n";
 	}
 }
 
 unsigned int BoundCalc::convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound) {
-	return ((cumulated_processing_times - PCmax_lower_bound) / (machines_quantity - 1));
+	return static_cast<unsigned int>((cumulated_processing_times - PCmax_lower_bound) / (machines_quantity - 1));
 }
