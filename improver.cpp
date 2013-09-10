@@ -19,16 +19,20 @@ void Improver::apply_pairwise_algorithm () {
 	// Create std::vector<Process*> to store advantageous swaps of Step 7
 	std::vector<Process*> set_a;
 	std::vector<Process*> set_b;
+	
+	//Create pointers to store n-th highest and lowest workload Machines
+	Machine *pa = nullptr;
+	Machine *pb = nullptr;
 	for (unsigned short int k = 0; k < 5; k++) {
 		// Query the maximum workload machine (Step 3: Distinguish PA)
-		Machine *pa = machines[query_lowest_workload_machines_id (k, true) - 1];
+		pa = machines[query_lowest_workload_machines_id (k, true) - 1];
 		if (k == 0)
 			std::cout << "Maximum workload machine PA is machine " << pa->get_id () << ".\n";
 		else
 			std::cout << "The " << k << ". most loaded machine is " << pa->get_id () << ".\n";
 		
 		// Query  the lowest workload machine (Step 4: Distinguish PB)
-		Machine *pb = machines[query_lowest_workload_machines_id (0, false) - 1];
+		pb = machines[query_lowest_workload_machines_id (0, false) - 1];
 		std::cout << "Lowest workload machine PB is machine " << pb->get_id () << ".\n";
 
 		// Stop, if the lower bound correlates to the current solution value (Step 5: If LB = M)
@@ -89,6 +93,12 @@ void Improver::apply_pairwise_algorithm () {
 		counter++;
 	}
 	std::cout << "Best swap is " << set_a.at (best_swap_index)->get_id () << " & " << set_b.at (best_swap_index)->get_id () << " is " << set_a.at (best_swap_index)->get_processing_time () - set_b.at (best_swap_index)->get_processing_time () << ".\n";
+
+	// Do the swap and compute new finish times (Step 9: Exchange two jobs a and b)
+	pa->assign_process_to_machine (set_b.at (best_swap_index));
+	pb->assign_process_to_machine (set_a.at (best_swap_index));
+	pa->delete_process_from_machine (set_a.at (best_swap_index));
+	pb->delete_process_from_machine (set_b.at (best_swap_index));
 }
 
 void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {

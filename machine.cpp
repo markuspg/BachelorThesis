@@ -22,6 +22,7 @@ Machine::Machine (const Machine &machine):
 }
 
 void Machine::assign_process_to_machine (Process *process) {
+	std::cout << "Assigning Process " << process->get_id () << " to Machine " << this->get_id () << ".\n";
 	v_processes.push_back (process);
 	changed = true;
 }
@@ -41,11 +42,12 @@ void Machine::compute_completion_time () {
 void Machine::delete_process_from_machine (Process *process) {
 	for (auto it = v_processes.begin (); it != v_processes.end (); ++it) {
 		if (*it == process) {
-			std::cout << "Deleting Process " << (*it)->get_id () << "/" << process-get_id () << " from Machine " << this->get_id () << ".\n";
+			std::cout << "Deleting Process " << (*it)->get_id () << "/" << process->get_id () << " from Machine " << this->get_id () << ".\n";
 			v_processes.erase (it);
 			break;
 		}
 	}
+	changed = true;
 }
 
 void Machine::flush () {
