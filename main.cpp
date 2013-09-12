@@ -1,7 +1,8 @@
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
-#include <cmath>
+#include <list>
 #include <random>
 #include <sstream>
 #include <vector>
@@ -11,7 +12,7 @@
 // enums representing the available algorithms
 enum IMPROVEMENT_ALGOS {PAIRWISE};
 enum UPPER_BOUND_ALGOS {NAIVE, SIMPLE, SIMPLE_LINEAR_TIME};
-enum START_SOLUTION {STUPID, iLPT, rLPT, sLPT};
+enum START_SOLUTION {iLPT, rLPT, SI, sLPT, STUPID};
 
 #include "object.cpp"
 #include "process.cpp"

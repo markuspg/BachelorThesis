@@ -61,6 +61,14 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 	delete v_processes;
 }
 
+void Scheduler::apply_SI_algorithm () {
+	// Add all Processes to a list
+	std::list<Process*> l_processes;
+	for (unsigned short int j = 0; j < processes_quantity; j++) {
+		l_processes.push_back (processes[j]);
+	}
+}
+
 void Scheduler::apply_sLPT_algorithm () {
 	std::cout << "\nApplying simple LPT algorihm\n";
 	for (unsigned int i = 0, j = 0; i < processes_quantity; i++, j++) {
@@ -87,6 +95,9 @@ void Scheduler::create_start_solution (unsigned int choice, unsigned short int i
 			break;
 		case rLPT:
 			apply_rLPT_algorithm (iterations);
+			break;
+		case SI:
+			apply_SI_algorithm ();
 			break;
 		case sLPT:
 			apply_sLPT_algorithm ();
