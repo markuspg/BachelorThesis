@@ -3,7 +3,8 @@
 BoundCalc::BoundCalc (const Problem &problem):
 	cumulated_processing_times (0),
 	longest_processing_time (0),
-	Problem (problem)
+	Problem (problem),
+	shortest_processing_time (0)
 {
 	unsigned int processing_time = 0;
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
@@ -11,6 +12,8 @@ BoundCalc::BoundCalc (const Problem &problem):
 		cumulated_processing_times += processing_time;
 		if (processing_time > longest_processing_time)
 			longest_processing_time = processing_time;
+		if (processing_time < shortest_processing_time)
+			shortest_processing_time = processing_time;
 	}
 	std::cout << "\nCreating a new BoundCalc instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\tCumulated processing times:\t" << cumulated_processing_times << "\n\tLongest processing time:\t" << longest_processing_time << "\n\n";
 

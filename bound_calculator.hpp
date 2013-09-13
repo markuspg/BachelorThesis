@@ -23,7 +23,7 @@ class BoundCalc : public Problem {
 	private:
 		/*! Applies the NAIVE algorithm to calculate an upper bound from Ghomi and Ghazvini 1998
 		 * 
-		 * @return The maximum of the cumulated processing times divided by the quantity of machines and the longest process
+		 * @return The maximum of the cumulated processing times divided by the quantity of machines and the shortest process
 		 */
 		unsigned int apply_NAIVE_algorithm ();
 
@@ -48,4 +48,5 @@ class BoundCalc : public Problem {
 
 		unsigned int cumulated_processing_times; //!< The processing time of all Processes of the Problem
 		unsigned int longest_processing_time; //!< The processing time of the longest Process of the Problem
+		unsigned int shortest_processing_time; //!< The processing time of the shortest Process of the Problem
 };
