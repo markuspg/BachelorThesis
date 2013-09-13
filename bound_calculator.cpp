@@ -51,8 +51,6 @@ unsigned int BoundCalc::compute_lower_bound (unsigned int algo) {
 
 unsigned int BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
 	switch (algo) {
-		case NAIVE:
-			return apply_NAIVE_algorithm ();
 		case SIMPLE:
 			return apply_SIMPLE_algorithm ();
 		case SIMPLE_LINEAR_TIME:
