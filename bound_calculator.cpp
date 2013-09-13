@@ -21,11 +21,6 @@ BoundCalc::BoundCalc (const Problem &problem):
 
 unsigned int BoundCalc::apply_NAIVE_algorithm () {
 	std::cout << "\nApplying NAIVE algorihm\n";
-	unsigned short int longest_processing_time = 0;
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		if (processes[j]->get_processing_time () > longest_processing_time)
-			longest_processing_time = processes[j]->get_processing_time ();
-	}
 
 	// Not using the processes_quantity like in the paper, because it doesn't make any sense
 	// The result can be truncated, because it should be rounded down anyway
