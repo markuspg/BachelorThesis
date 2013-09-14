@@ -7,8 +7,6 @@
 #include <sstream>
 #include <vector>
 
-#include <boost/numeric/conversion/converter.hpp>
-
 // enums representing the available algorithms
 enum IMPROVEMENT_ALGOS {gPAIRWISE, PAIRWISE};
 enum UPPER_BOUND_ALGOS {NAIVE, SIMPLE, SIMPLE_LINEAR_TIME};

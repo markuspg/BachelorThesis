@@ -10,7 +10,6 @@ void Improver::apply_PAIRWISE_algorithm () {
 	std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
-	typedef boost::numeric::converter<int,float> float2int;
 	BoundCalc bound_calculator (*this);
 	unsigned int upper_bound = bound_calculator.compute_upper_bound (SIMPLE);
 	std::cout << "The upper bound is " << upper_bound << ".\n";
