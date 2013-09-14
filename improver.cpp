@@ -6,7 +6,7 @@ Improver::Improver (const Problem &problem):
 	std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
 }
 
-void Improver::apply_PAIRWISE_algorithm () {
+void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
@@ -60,11 +60,22 @@ void Improver::apply_PAIRWISE_algorithm () {
 			// If a swap is advantageous, store it
 			for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
 				for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
-					// Not using <= in both cases, because it does not lead to an advantageous swap
-					if ((*ita)->get_processing_time () > (*itb)->get_processing_time ()) {
-						if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) < maximum_difference) {
-							set_a.push_back (*ita);
-							set_b.push_back (*itb);
+					if (!greedy) {
+						// Allowing <= yielding in no advantageous swaps for greater exploration of the solution space
+						if ((*ita)->get_processing_time () >= (*itb)->get_processing_time ()) {
+							if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
+								set_a.push_back (*ita);
+								set_b.push_back (*itb);
+							}
+						}
+					}
+					else {
+						// Not using <= in both cases, because it does not lead to an advantageous swap
+						if ((*ita)->get_processing_time () > (*itb)->get_processing_time ()) {
+							if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) < maximum_difference) {
+								set_a.push_back (*ita);
+								set_b.push_back (*itb);
+							}
 						}
 					}
 				}
@@ -92,23 +103,33 @@ void Improver::apply_PAIRWISE_algorithm () {
 		if (set_a.size () > 0) {
 			// Select the most advantageous swap (Step 8: Select two jobs a and b)
 			unsigned int best_swap = 0;
-			unsigned short int best_swap_index = 0;
+			unsigned short int swap_index = 0;
 			unsigned short int counter = 0;
-			
-			for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
-				if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) > best_swap) {
-					best_swap = (*ita)->get_processing_time () - (*itb)->get_processing_time ();
-					best_swap_index = counter;
-				}
-				counter++;
+
+			if (!greedy) {
+				unsigned int seed = 5;
+				std::default_random_engine engine(seed);
+				std::uniform_int_distribution<unsigned int> generator(1, set_a.size ());
+				swap_index = generator (engine) - 1;
+
+				std::cout << "Swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
 			}
-			std::cout << "Best swap is " << set_a.at (best_swap_index)->get_id () << " & " << set_b.at (best_swap_index)->get_id () << " is " << set_a.at (best_swap_index)->get_processing_time () - set_b.at (best_swap_index)->get_processing_time () << ".\n";
+			else {
+				for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
+					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) > best_swap) {
+						best_swap = (*ita)->get_processing_time () - (*itb)->get_processing_time ();
+						swap_index = counter;
+					}
+					counter++;
+				}
+				std::cout << "Best swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
+			}
 			
 			// Do the swap and compute new finish times (Step 9: Exchange two jobs a and b)
-			pa->assign_process_to_machine (set_b.at (best_swap_index));
-			pb->assign_process_to_machine (set_a.at (best_swap_index));
-			pa->delete_process_from_machine (set_a.at (best_swap_index));
-			pb->delete_process_from_machine (set_b.at (best_swap_index));
+			pa->assign_process_to_machine (set_b.at (swap_index));
+			pb->assign_process_to_machine (set_a.at (swap_index));
+			pa->delete_process_from_machine (set_a.at (swap_index));
+			pb->delete_process_from_machine (set_b.at (swap_index));
 			std::cout << "New completion times are:\n\tPA = " << pa->get_completion_time () << "\n\tPB = " << pb->get_completion_time () << "\n";
 			set_a.clear ();
 			set_b.clear ();
@@ -123,6 +144,9 @@ void Improver::apply_PAIRWISE_algorithm () {
 
 void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
 	switch (algo) {
+		case gPAIRWISE:
+			apply_PAIRWISE_algorithm (true);
+			break;
 		case PAIRWISE:
 			apply_PAIRWISE_algorithm ();
 			break;
