@@ -21,6 +21,12 @@ class BoundCalc : public Problem {
 		unsigned int compute_upper_bound (unsigned int algo, bool invert = false);
 	
 	private:
+		/*! Applies the NAIVE algorithm to calculate an PC_max lower bound bound from Ghomi and Ghazvini 1998
+		 *
+		 * @return The maximum of the cumulated processing times divided by the quantity of machines and the longest process
+		 */
+		unsigned int apply_NAIVE_algorithm ();
+
 		/*! Applies the U_0 upper bound from Haouari and Jemmali 2008
 		 *
 		 * @return The average processing time over all machines in the case of perfect balanced distribution

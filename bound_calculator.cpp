@@ -19,6 +19,16 @@ BoundCalc::BoundCalc (const Problem &problem):
 
 }
 
+unsigned int BoundCalc::apply_NAIVE_algorithm () {
+	std::cout << "\nApplying NAIVE algorihm\n";
+
+	// Not using the processes_quantity like in the paper, because it doesn't make any sense
+	// The result can be truncated, because it should be rounded down anyway
+	unsigned int average_machine_runtime = ((static_cast<float>(cumulated_processing_times) / machines_quantity) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+
+	return (average_machine_runtime > longest_processing_time) ? average_machine_runtime : longest_processing_time;
+}
+
 unsigned int BoundCalc::apply_SIMPLE_algorithm () {
 	std::cout << "\nApplying SIMPLE algorihm\n";
 
@@ -51,6 +61,8 @@ unsigned int BoundCalc::compute_lower_bound (unsigned int algo) {
 
 unsigned int BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
 	switch (algo) {
+		case NAIVE:
+			return convert_PCmax_lower_bound_to_PCmin_upper_bound (apply_NAIVE_algorithm ());
 		case SIMPLE:
 			return apply_SIMPLE_algorithm ();
 		case SIMPLE_LINEAR_TIME:
