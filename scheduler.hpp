@@ -14,7 +14,7 @@ class Scheduler : public Problem {
 		/*! Applies the randomized LPT (assign longest or second-longest unassigned job to the next free machine) algorithm to create a starting solution for the given instance stored in the Scheduler */
 		void apply_rLPT_algorithm (unsigned short int iterations);
 
-		/*! Applies the SIMPLE (SI) algorithm from Csirik, Frenk, Labbe and Zhang (1999) to create a starting solution for the given instance stored in the Scheduler */
+		/*! Applies the bin covering SIMPLE (SI) algorithm from Csirik, Frenk, Labbe and Zhang (1999) to create a starting solution for the given instance stored in the Scheduler */
 		void apply_SI_algorithm ();
 
 		/*! Applies the simple LPT (assign longest unassigned job to the next free machine) algorithm to create a starting solution for the given instance stored in the Scheduler */

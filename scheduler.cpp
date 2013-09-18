@@ -62,10 +62,77 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 }
 
 void Scheduler::apply_SI_algorithm () {
-	// Add all Processes to a list
-	std::list<Process*> l_processes;
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		l_processes.push_back (processes[j]);
+	std::cout << "\nApplying SI algorihm\n";
+	// Get the upper bound as start value for the bin capacity
+	BoundCalc bound_calculator (*this);
+	unsigned int upper_bound = bound_calculator.compute_upper_bound (SIMPLE_LINEAR_TIME);
+	std::cout << "The upper bound is " << upper_bound << "\n";
+
+	for (unsigned int k = 0; k < upper_bound; k++) {
+		// Determine the bin capacity of the iteration
+		unsigned int C = upper_bound - k;
+		std::cout << "\nTrying to fill Machines up to a least processing time of " << C << "\n";
+
+		// Add all Processes to a list
+		std::list<Process*> l_processes;
+		for (unsigned short int j = 0; j < processes_quantity; j++) {
+			l_processes.push_back (processes[j]);
+		}
+
+		// Consecutively fill all Machines' schedules
+		for (unsigned int i = 0; i < machines_quantity; i++) {
+			// Assign the first n processes whose cumulated size is smaller than the bin capacity
+			while (true) {
+				if ((machines[i]->get_completion_time () + l_processes.front ()->get_processing_time ()) < C) {
+					// Check if there are still Processes to assign in the list
+					if (l_processes.size () < 1) {
+						break;
+					}
+					assign_process_to_machine (l_processes.front ()->get_id (), machines[i]->get_id ());
+					std::cout << "\t\t  Machine's duration: " << machines[i]->get_completion_time () << "\n";
+					l_processes.pop_front ();
+				}
+				else {
+					std::cout << "\tBiggest first fitting items got assigned, continuing with smallest ones.\n";
+					break;
+				}
+			}
+			// Assign the last n Processes to fill the bin
+			while (true) {
+				if (machines[i]->get_completion_time () < C) {
+					if (l_processes.size () < 1) {
+						break;
+					}
+					assign_process_to_machine (l_processes.back ()->get_id (), machines[i]->get_id ());
+					std::cout << "\t\t  Machine's duration: " << machines[i]->get_completion_time () << "\n";
+					l_processes.pop_back ();
+				}
+				else {
+					std::cout << "\tMachine's schedule is filled, continuing with next Machine.\n\n";
+					break;
+				}
+			}
+		}
+
+		// Check if current solution is valid
+		if (machines[machines_quantity - 1]->get_completion_time () >= C) {
+			// Assign any left over Processes using the LPT algorithm
+			if (l_processes.size () > 0) {
+				std::cout << "All Machines got filled, but not all Processes assigned. Assigning them using the LPT algorithm, then leaving.\n";
+				for (unsigned short int j = 0; j < l_processes.size (); j++) {
+					assign_process_to_machine (l_processes.front ()->get_id (), machines[query_lowest_workload_machines_id ()]->get_id ());
+					l_processes.pop_front ();
+				}
+			}
+			else {
+				std::cout << "All Machines got filled and all Processes got assigned, leaving.\n";
+			}
+			break;
+		}
+		else {
+			std::cout << "Solution not valid, flushing and retrying with a lower bin capacity C.\n";
+			flush ();
+		}
 	}
 }
 

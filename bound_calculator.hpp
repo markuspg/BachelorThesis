@@ -19,6 +19,12 @@ class BoundCalc : public Problem {
 		 * @param invert True, if the lower bound shall be returned
 		 */
 		unsigned int compute_upper_bound (unsigned int algo, bool invert = false);
+
+		/** Returns the quantity of the cumulated processing times of all processes
+		 *
+		 * @return The cumulated processing time of all processes
+		 */
+		unsigned int get_cumulated_processing_times () const {return cumulated_processing_times;}
 	
 	private:
 		/*! Applies the NAIVE algorithm to calculate an PC_max lower bound bound from Ghomi and Ghazvini 1998

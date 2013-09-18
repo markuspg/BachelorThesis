@@ -22,7 +22,7 @@ Machine::Machine (const Machine &machine):
 }
 
 void Machine::assign_process_to_machine (Process *process) {
-	std::cout << "Assigning Process " << process->get_id () << " to Machine " << this->get_id () << ".\n";
+	// std::cout << "Assigning Process " << process->get_id () << " to Machine " << this->get_id () << ".\n";
 	v_processes.push_back (process);
 	changed = true;
 }
