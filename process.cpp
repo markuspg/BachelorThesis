@@ -5,7 +5,7 @@ Process::Process (unsigned short int pid, unsigned int time):
 	assigned_machines_id (0),
 	processing_time (time)
 {
-	std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
+	// std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
 }
 
 Process::Process (const Process &process):

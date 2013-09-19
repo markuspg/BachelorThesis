@@ -172,7 +172,7 @@ void Problem::load_stored_solution () {
 	// Restore the assignments stored in the Processes
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		std::vector<Process*> *vecptr = nullptr;
-		vecptr = machines[i]->get_processes ();
+		vecptr = machines[i]->get_processes_copy ();
 		unsigned short int id = machines[i]->get_id ();
 
 		for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
@@ -270,7 +270,7 @@ void Problem::query_state () {
 	if (check_validity ()) {
 		for (unsigned int j = 0; j < machines_quantity; j++) {
 			std::vector <Process*> *vecptr = nullptr;
-			vecptr = machines[j]->get_processes ();
+			vecptr = machines[j]->get_processes_copy ();
 			std::cout << "\t    Processes assigned to Machine " << machines[j]->get_id () << "\n";
 
 			// Iterate over all assigned Processes and output the ids and processing times
@@ -328,7 +328,7 @@ void Problem::save_instance (std::string *filename) {
 		for (unsigned short int j = 0; j < machines_quantity; j++) {
 			std::vector <Process*> *vecptr = nullptr;
 			output_file_stream << "# Machine " << machines[j]->get_id () << "\n";
-			vecptr = machines[j]->get_processes ();
+			vecptr = machines[j]->get_processes_copy ();
 			for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
 				if (it != vecptr->begin ())
 					output_file_stream << ";";

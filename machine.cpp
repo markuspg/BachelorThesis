@@ -6,7 +6,7 @@ Machine::Machine (unsigned short int mid, unsigned short int processes):
 	machine_completion_time (0)
 {
 	v_processes.reserve (processes);
-	std::cout << "\tCreating Machine " << mid << " able to contain " << processes << " Processes\n";
+	// std::cout << "\tCreating Machine " << mid << " able to contain " << processes << " Processes\n";
 }
 
 Machine::Machine (const Machine &machine):
@@ -15,7 +15,7 @@ Machine::Machine (const Machine &machine):
 	machine_completion_time (0)
 {
 	std::vector<Process*> *vecptr = nullptr;
-	vecptr = machine.get_processes ();
+	vecptr = machine.get_processes_copy ();
 	v_processes = *vecptr;
 	delete vecptr;
 	compute_completion_time ();
@@ -32,7 +32,7 @@ void Machine::compute_completion_time () {
 	machine_completion_time = 0;
 
 	// Recompute it
-	for (std::vector<Process*>::iterator it = v_processes.begin (); it != v_processes.end (); ++it) {
+	for (std::vector<Process*>::const_iterator it = v_processes.cbegin (); it != v_processes.cend (); ++it) {
 		machine_completion_time += (*it)->get_processing_time ();
 	}
 
@@ -40,9 +40,9 @@ void Machine::compute_completion_time () {
 }
 
 void Machine::delete_process_from_machine (Process *process) {
-	for (auto it = v_processes.begin (); it != v_processes.end (); ++it) {
+	for (std::vector<Process*>::iterator it = v_processes.begin (); it != v_processes.end (); ++it) {
 		if (*it == process) {
-			std::cout << "Deleting Process " << (*it)->get_id () << "/" << process->get_id () << " from Machine " << this->get_id () << ".\n";
+			// std::cout << "Deleting Process " << (*it)->get_id () << "/" << process->get_id () << " from Machine " << this->get_id () << ".\n";
 			v_processes.erase (it);
 			break;
 		}
@@ -53,7 +53,7 @@ void Machine::delete_process_from_machine (Process *process) {
 void Machine::flush () {
 	v_processes.clear ();
 	machine_completion_time = 0;
-	changed = true;
+	changed = false;
 }
 
 unsigned int Machine::get_completion_time () {
@@ -66,7 +66,7 @@ unsigned int Machine::get_completion_time () {
 	}
 }
 
-std::vector<Process*> *Machine::get_processes () const {
+std::vector<Process*> *Machine::get_processes_copy () const {
 	std::vector<Process*> *vecptr = new std::vector<Process*> (v_processes);
 
 	return vecptr;
@@ -74,4 +74,6 @@ std::vector<Process*> *Machine::get_processes () const {
 
 void Machine::set_assigned_processes_vector (std::vector<Process*> processes_vector) {
 	v_processes = processes_vector;
+
+	changed = true;
 }

@@ -40,9 +40,9 @@ class Machine : public Object {
 
 		/** Returns the Processes assigned to the Machine
 		 *
-		 * @return A vector of the Machine's Processes
+		 * @return A copy of the vector of the Machine's Processes
 		 */
-		std::vector<Process*> *get_processes () const;
+		std::vector<Process*> *get_processes_copy () const;
 
 		/** Sets the Processes assigned to the Machine to the given std::vector<Process*>
 		 *

@@ -55,8 +55,8 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			std::cout << "The maximum valid difference is " << maximum_difference << ".\n";
 			std::vector<Process*> *a_processes = nullptr, *b_processes = nullptr;
 			// Fetch assigned Processes of both Machines
-			a_processes = pa->get_processes ();
-			b_processes = pb->get_processes ();
+			a_processes = pa->get_processes_copy ();
+			b_processes = pb->get_processes_copy ();
 			// If a swap is advantageous, store it
 			for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
 				for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {

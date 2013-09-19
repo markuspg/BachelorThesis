@@ -8,7 +8,7 @@ TemporaryStorage::TemporaryStorage (unsigned int current_solution, unsigned shor
 	std::cout << "\tCreating a temporary storage containing " << machines_quantity << " Machine's assignments.\n";
 	v_processes = new std::vector<Process*> *[m_machines];
 	for (unsigned short int i = 0; i < m_machines; i++) {
-		v_processes[i] = p_machines[i]->get_processes ();
+		v_processes[i] = p_machines[i]->get_processes_copy ();
 		std::cout << "\t  Added a vector containing " << v_processes[i]->size () << " elements representing Machine " << p_machines[i]->get_id () << ".\n";
 	}
 }
