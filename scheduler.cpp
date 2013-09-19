@@ -3,7 +3,7 @@
 Scheduler::Scheduler (const Problem &problem):
 	Problem (problem)
 {
-	std::cout << "\nCreating a new Scheduler instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	std::cout << "\nCreating a new Scheduler instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
 void Scheduler::apply_iLPT_algorithm () {
