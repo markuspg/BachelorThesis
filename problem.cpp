@@ -165,24 +165,9 @@ void Problem::flush () {
 void Problem::load_stored_solution () {
 	// Load the data stored in temporary_storage and delete it afterwards
 	// Load the assignments of the Machines
-	temporary_storage->load_temporarily_stored_solution (machines);
+	temporary_storage->load_temporarily_stored_solution (machines, processes);
 	delete temporary_storage;
 	temporary_storage = nullptr;
-
-	// Restore the assignments stored in the Processes
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		std::vector<Process*> *vecptr = nullptr;
-		vecptr = machines[i]->get_processes_copy ();
-		unsigned short int id = machines[i]->get_id ();
-
-		for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
-			processes[(*it)->get_id () - 1]->set_assigned_machines_id (id);
-		}
-
-		machines[i]->compute_completion_time ();
-
-		delete vecptr;
-	}
 }
 
 unsigned int Problem::query_lowest_completion_time () {
@@ -294,7 +279,7 @@ void Problem::store_current_solution () {
 	if (check_validity ()) {
 		// Stores the current solution to temporary_storage
 		std::cout << "\nThe solution is valid and will be temporarily stored.\n";
-		temporary_storage = new TemporaryStorage (query_lowest_completion_time (), processes_quantity, machines_quantity, machines);
+		temporary_storage = new TemporaryStorage (query_lowest_completion_time (), machines_quantity, machines);
 	}
 	else {
 		std::cout << "\nERROR: The solution was not valid and will therefore not be stored.\n";

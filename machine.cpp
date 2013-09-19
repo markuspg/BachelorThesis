@@ -73,6 +73,7 @@ std::vector<Process*> *Machine::get_processes_copy () const {
 }
 
 void Machine::set_assigned_processes_vector (std::vector<Process*> processes_vector) {
+	// Copies all elements from 'processes_vector' to 'v_processes'
 	v_processes = processes_vector;
 
 	changed = true;
