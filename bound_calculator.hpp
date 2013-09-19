@@ -27,6 +27,12 @@ class BoundCalc : public Problem {
 		unsigned int get_cumulated_processing_times () const {return cumulated_processing_times;}
 	
 	private:
+		/*! Applies the L_DM lower bound algorithm from Haouari and Jemmali 2008
+		 *
+		 * @return A valid PC_max lower bound
+		 */
+		unsigned int apply_LDM_algrithm ();
+
 		/*! Applies the NAIVE algorithm to calculate an PC_max lower bound bound from Ghomi and Ghazvini 1998
 		 *
 		 * @return The maximum of the cumulated processing times divided by the quantity of machines and the longest process
@@ -51,6 +57,12 @@ class BoundCalc : public Problem {
 		 * @return A valid PC_min upper bound
 		 */
 		unsigned int convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound);
+
+		/*! Returns a valid BPP lower bound LB_BPP from Haouari and Jemmali 2008
+		 *
+		 * @return A valid BPP lower bound
+		 */
+		unsigned short int get_LB_BPP_BP_lower_bound (unsigned int capacity);
 
 		unsigned int cumulated_processing_times; //!< The processing time of all Processes of the Problem
 		unsigned int longest_processing_time; //!< The processing time of the longest Process of the Problem

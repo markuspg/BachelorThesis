@@ -56,11 +56,8 @@ Problem::Problem (std::string filename):
 	std::getline (input_file_stream, waste);
 	std::getline (input_file_stream, str);
 	std::istringstream (str) >> processes_quantity;
-	std::getline (input_file_stream, waste);
-	std::getline (input_file_stream, str);
-	std::istringstream (str) >> process_interval;
 
-	std::cout << "\nCreating a new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	std::cout << "\nCreating a new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 
 	// Create Machines
 	machines = new Machine* [machines_quantity];
