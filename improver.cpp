@@ -3,16 +3,16 @@
 Improver::Improver (const Problem &problem):
 	Problem (problem)
 {
-	std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
+	// std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
 void Improver::apply_PAIRWISE_algorithm (bool greedy) {
-	std::cout << "\nApplying pairwise interchange algorihm\n";
+	// std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
 	BoundCalc bound_calculator (*this);
-	unsigned int upper_bound = bound_calculator.compute_upper_bound (SIMPLE);
-	std::cout << "The upper bound is " << upper_bound << ".\n";
+	unsigned int upper_bound = bound_calculator.compute_upper_bound (NAIVE);
+	// std::cout << "The upper bound is " << upper_bound << ".\n";
 
 	// Create std::vector<Process*> to store advantageous swaps of Step 7
 	std::vector<Process*> set_a;
@@ -27,32 +27,32 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	while (!stop) {
 		for (unsigned short int k = 0; k < machines_quantity - 1; k++) {
 			// Query the maximum workload machine (Step 3: Distinguish PA)
-			std::cout << "Querying maximum workload Machine.\n";
+			// std::cout << "Querying maximum workload Machine.\n";
 			pa = machines[query_lowest_workload_machines_id (k, true) - 1];
 			if (k == 0)
-				std::cout << "Maximum workload Machine PA is machine " << pa->get_id () << ".\n";
+				; // std::cout << "Maximum workload Machine PA is machine " << pa->get_id () << ".\n";
 			else
-				std::cout << "The " << k + 1 << ". most loaded Machine is " << pa->get_id () << ".\n";
+				; // std::cout << "The " << k + 1 << ". most loaded Machine is " << pa->get_id () << ".\n";
 			
 			// Query  the lowest workload machine (Step 4: Distinguish PB)
 			pb = machines[query_lowest_workload_machines_id (0, false) - 1];
-			std::cout << "Lowest workload machine PB is Machine " << pb->get_id () << ".\n";
+			// std::cout << "Lowest workload machine PB is Machine " << pb->get_id () << ".\n";
 			
-			// Stop, if the lower bound correlates to the current solution value (Step 5: If LB = M)
+			// Stop, if the upper bound correlates to the current solution value (Step 5: If LB = M)
 			if (upper_bound == this->query_lowest_completion_time ()) {
-				std::cout << "Current schedule correlates to upper bound => Terminating.\n";
+				// std::cout << "Current schedule correlates to upper bound => Terminating.\n";
 				return;
 			}
 			
 			// Stop if all machines have the same load (Step 6: Terminate if F_PA = F_PB)
 			if (pa->get_completion_time () == pb->get_completion_time ()) {
-				std::cout << "Current schedule has all Machines finishing the same time => Terminating.\n";
+				// std::cout << "Current schedule has all Machines finishing the same time => Terminating.\n";
 				return;
 			}
 			
 			// Evaluate all advantageous swaps (Step 7: Form sets A and B)
 			unsigned int maximum_difference = pa->get_completion_time () - pb->get_completion_time ();
-			std::cout << "The maximum valid difference is " << maximum_difference << ".\n";
+			// std::cout << "The maximum valid difference is " << maximum_difference << ".\n";
 			std::vector<Process*> *a_processes = nullptr, *b_processes = nullptr;
 			// Fetch assigned Processes of both Machines
 			a_processes = pa->get_processes_copy ();
@@ -81,7 +81,7 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 				}
 			}
 			for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
-				std::cout << "Difference between PID " << (*ita)->get_id () << " & " << (*itb)->get_id () << " is " << (*ita)->get_processing_time () - (*itb)->get_processing_time () << ".\n";
+				// std::cout << "Difference between PID " << (*ita)->get_id () << " & " << (*itb)->get_id () << " is " << (*ita)->get_processing_time () - (*itb)->get_processing_time () << ".\n";
 			}
 			
 			delete a_processes;
@@ -90,11 +90,11 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			b_processes = nullptr;
 			
 			if (set_a.size () > 0) {
-				std::cout << "A set of advantageous swaps could be formed.\n";
+				// std::cout << "A set of advantageous swaps could be formed.\n";
 				break;
 			}
 			else {
-				std::cout << "No set of advantageous swaps could be formed, omitting Machine " << pa->get_id () << ".\n";
+				// std::cout << "No set of advantageous swaps could be formed, omitting Machine " << pa->get_id () << ".\n";
 				set_a.clear ();
 				set_b.clear ();
 			}
@@ -107,12 +107,11 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			unsigned short int counter = 0;
 
 			if (!greedy) {
-				unsigned int seed = 5;
-				std::default_random_engine engine(seed);
+				std::default_random_engine engine(std::chrono::system_clock::now().time_since_epoch().count());
 				std::uniform_int_distribution<unsigned int> generator(1, set_a.size ());
 				swap_index = generator (engine) - 1;
 
-				std::cout << "Swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
+				// std::cout << "Swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
 			}
 			else {
 				for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
@@ -122,7 +121,7 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 					}
 					counter++;
 				}
-				std::cout << "Best swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
+				// std::cout << "Best swap is " << set_a.at (swap_index)->get_id () << " & " << set_b.at (swap_index)->get_id () << " is " << set_a.at (swap_index)->get_processing_time () - set_b.at (swap_index)->get_processing_time () << ".\n";
 			}
 			
 			// Do the swap and compute new finish times (Step 9: Exchange two jobs a and b)
@@ -130,13 +129,13 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			pb->assign_process_to_machine (set_a.at (swap_index));
 			pa->delete_process_from_machine (set_a.at (swap_index));
 			pb->delete_process_from_machine (set_b.at (swap_index));
-			std::cout << "New completion times are:\n\tPA = " << pa->get_completion_time () << "\n\tPB = " << pb->get_completion_time () << "\n";
+			// std::cout << "New completion times are:\n\tPA = " << pa->get_completion_time () << "\n\tPB = " << pb->get_completion_time () << "\n";
 			set_a.clear ();
 			set_b.clear ();
 		}
-		// The improvement process can be terminated, since no swaps do net generate new improvable solutions
+		// The improvement process can be terminated, since no swaps do generate new improvable solutions
 		else {
-			std::cout << "No advantageous swaps can be found anymore, terminating.\n";
+			// std::cout << "No advantageous swaps can be found anymore, terminating.\n";
 			stop = true;
 		}
 	}
