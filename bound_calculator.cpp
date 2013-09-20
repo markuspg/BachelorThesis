@@ -21,9 +21,9 @@ BoundCalc::BoundCalc (const Problem &problem):
 
 unsigned int BoundCalc::apply_LDM_algrithm () {
 	unsigned int existing_bound = apply_SIMPLE_LINEAR_TIME_algorithm ();
-	unsigned int test_capacity = existing_bound - (processes[0]->get_processing_time () / 2);
+	unsigned int test_capacity = static_cast<unsigned int> (fmax (static_cast<double>(existing_bound - (processes[0]->get_processing_time () / 2)), static_cast<double>(existing_bound / 2)));
 	// Iteratively test different bin capacities beginning with an already known lower bound
-	for ( ; test_capacity < existing_bound + 20; test_capacity++) {
+	for ( ; test_capacity < existing_bound + processes[0]->get_processing_time (); test_capacity++) {
 		unsigned short int test = get_LB_BPP_BP_lower_bound (test_capacity);
 		if ((test > 0) && (test  <= machines_quantity))
 			break;
@@ -33,17 +33,17 @@ unsigned int BoundCalc::apply_LDM_algrithm () {
 }
 
 unsigned int BoundCalc::apply_NAIVE_algorithm () {
-	std::cout << "\nApplying NAIVE algorihm\n";
+	// std::cout << "\nApplying NAIVE algorihm\n";
 
 	// Not using the processes_quantity like in the paper, because it doesn't make any sense
 	// The result can be truncated, because it should be rounded down anyway
-	unsigned int average_machine_runtime = ((static_cast<float>(cumulated_processing_times) / machines_quantity) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+	unsigned int average_machine_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machines_quantity)) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
 
 	return (average_machine_runtime > longest_processing_time) ? average_machine_runtime : longest_processing_time;
 }
 
 unsigned int BoundCalc::apply_SIMPLE_algorithm () {
-	std::cout << "\nApplying SIMPLE algorihm\n";
+	// std::cout << "\nApplying SIMPLE algorihm\n";
 
 	unsigned int average_machine_runtime = static_cast<unsigned int>(cumulated_processing_times / machines_quantity);
 	
@@ -51,14 +51,14 @@ unsigned int BoundCalc::apply_SIMPLE_algorithm () {
 }
 
 unsigned int BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
-	std::cout << "\nApplying SIMPLE_LINEAR_TIME algorithm\n";
+	// std::cout << "\nApplying SIMPLE_LINEAR_TIME algorithm\n";
 
 	// Calculate the three needed quantities
-	std::cout << "Longest processing time:\t" << longest_processing_time << "\n";
+	// std::cout << "Longest processing time:\t" << longest_processing_time << "\n";
 	unsigned int pmpm1 = processes[machines_quantity - 1]->get_processing_time () + processes[machines_quantity]->get_processing_time ();
-	std::cout << "pmpm1:\t\t\t\t" << pmpm1 << "\n";
-	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / machines_quantity) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
-	std::cout << "Average runtime:\t\t" << average_runtime << "\n";
+	// std::cout << "pmpm1:\t\t\t\t" << pmpm1 << "\n";
+	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machines_quantity)) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+	// std::cout << "Average runtime:\t\t" << average_runtime << "\n";
 
 	if ((longest_processing_time >= pmpm1) && (longest_processing_time >= average_runtime))
 		return longest_processing_time;
@@ -68,11 +68,7 @@ unsigned int BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
 		return average_runtime;
 }
 
-unsigned int BoundCalc::compute_lower_bound (unsigned int algo) {
-	return compute_upper_bound (algo, true);
-}
-
-unsigned int BoundCalc::compute_upper_bound (unsigned int algo, bool invert) {
+unsigned int BoundCalc::compute_upper_bound (unsigned int algo) {
 	switch (algo) {
 		case LDM:
 			return convert_PCmax_lower_bound_to_PCmin_upper_bound (apply_LDM_algrithm ());

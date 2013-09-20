@@ -7,18 +7,11 @@ class BoundCalc : public Problem {
 		 */
 		BoundCalc (const Problem &problem);
 
-		/** An alias for 'compute_upper_bounds' for lower bounds
-		 *
-		 * @param algo The algorithm to use
-		 */
-		unsigned int compute_lower_bound (unsigned int algo);
-
 		/** Computes lower and upper bounds
 		 *
 		 * @param algo The algorithm to use
-		 * @param invert True, if the lower bound shall be returned
 		 */
-		unsigned int compute_upper_bound (unsigned int algo, bool invert = false);
+		unsigned int compute_upper_bound (unsigned int algo);
 
 		/** Returns the quantity of the cumulated processing times of all processes
 		 *
