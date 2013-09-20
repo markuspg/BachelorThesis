@@ -106,16 +106,16 @@ bool Problem::check_validity () {
 }
 
 void Problem::flush () {
-	std::cout << "\nFlushing ...\n";
+	// std::cout << "\nFlushing ...\n";
 
 	// Flush the information stored in the Processes
-	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		processes[i]->set_assigned_machines_id(0);
+	for (unsigned short int j = 0; j < processes_quantity; j++) {
+		processes[j]->set_assigned_machines_id(0);
 	}
 	
 	// Flush the information stored in the Machines
-	for (unsigned short int j = 0; j < machines_quantity; j++) {
-		machines[j]->flush ();
+	for (unsigned short int i = 0; i < machines_quantity; i++) {
+		machines[i]->flush ();
 	}
 }
 
