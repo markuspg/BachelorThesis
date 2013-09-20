@@ -45,12 +45,6 @@ class Problem {
 		 */
 		unsigned short int get_machines_quantity () const {return machines_quantity;}
 
-		/** Returns the upper bound of the processing times interval
-		 *
-		 * @return The maximum processing time of the Problem
-		 */
-		unsigned int get_process_interval () const {return process_interval;}
-
 		/** Returns a pointer to the Processes
 		 *
 		 * @return A pointer to the Processes
