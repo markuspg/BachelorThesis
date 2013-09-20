@@ -31,10 +31,10 @@ Problem::Problem (std::string filename):
 	std::getline (input_file_stream, waste);
 	processes = new Process* [processes_quantity];
 	unsigned int duration = 0;
-	for (unsigned short int i = 0; i < processes_quantity - 1; i++) {
+	for (unsigned short int j = 0; j < processes_quantity - 1; j++) {
 		std::getline (input_file_stream, str, ';');
 		std::istringstream (str) >> duration;
-		processes[i] = new Process (i + 1, duration);
+		processes[j] = new Process (j + 1, duration);
 	}
 	std::getline (input_file_stream, str);
 	std::istringstream (str) >> duration;
@@ -46,24 +46,24 @@ Problem::Problem (std::string filename):
 
 Problem::Problem (const Problem &problem):
 	machines_quantity (problem.get_machines_quantity ()),
-	processes_quantity (problem.get_processes_quantity ()),
-	process_interval (problem.get_process_interval ())
+	processes_quantity (problem.get_processes_quantity ())
 {
-	// std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
+	// std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
+
 	// Create Machines
 	Machine **temp_machines = nullptr;
 	temp_machines = problem.get_machines_pointer ();
 	machines = new Machine* [machines_quantity];
-	for (unsigned short int j = 0; j < machines_quantity; j++) {
-		machines[j] = new Machine (*temp_machines[j]);
+	for (unsigned short int i = 0; i < machines_quantity; i++) {
+		machines[i] = new Machine (*temp_machines[i]);
 	}
 
 	// Create Processes
 	Process **temp_processes = nullptr;
 	temp_processes = problem.get_processes_pointer ();
 	processes = new Process* [processes_quantity];
-	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		processes[i] = new Process (*temp_processes[i]);
+	for (unsigned short int j = 0; j < processes_quantity; j++) {
+		processes[j] = new Process (*temp_processes[j]);
 	}
 }
 

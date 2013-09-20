@@ -19,6 +19,7 @@ Machine::Machine (const Machine &machine):
 	v_processes = *vecptr;
 	delete vecptr;
 	compute_completion_time ();
+	// std::cout << "\tCopied Machine " << id << " containing " << v_processes.size () << " Processes with a completion time of " << this->get_completion_time () << "\n";
 }
 
 void Machine::assign_process_to_machine (Process *process) {
