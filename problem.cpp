@@ -235,7 +235,7 @@ void Problem::store_current_solution () {
 	// Checks if the current solution is valid
 	if (check_validity ()) {
 		// Stores the current solution to temporary_storage
-		std::cout << "\nThe solution is valid and will be temporarily stored.\n";
+		// std::cout << "\nThe solution is valid and will be temporarily stored.\n";
 		temporary_storage = new TemporaryStorage (query_lowest_completion_time (), machines_quantity, machines);
 	}
 	else {
@@ -254,28 +254,29 @@ void Problem::save_instance (std::string *filename) {
 	
 	// Store the Problem's data in the file
 	std::ofstream output_file_stream (*filename);
-	output_file_stream << "# Machines\n" << machines_quantity << "\n# Processes\n" << processes_quantity << "\n# Processing times upper bound\n" << process_interval << "\n";
+	output_file_stream << "# Machines\n" << machines_quantity << "\n# Processes\n" << processes_quantity << "\n";
 
 	// Store the Process durations
 	output_file_stream << "# Process durations\n";
-	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		if (i > 0)
+	for (unsigned short int j = 0; j < processes_quantity; j++) {
+		if (j > 0)
 			output_file_stream << ";";
-		output_file_stream << processes[i]->get_processing_time ();
+		output_file_stream << processes[j]->get_processing_time ();
 	}
 
 	// Check if the current solution is valid and store Machine assignemts if so
 	if (check_validity ()) {
 		output_file_stream << "\n# Machine assignments\n";
-		for (unsigned short int j = 0; j < machines_quantity; j++) {
+		for (unsigned short int i = 0; i < machines_quantity; i++) {
 			std::vector <Process*> *vecptr = nullptr;
-			output_file_stream << "# Machine " << machines[j]->get_id () << "\n";
-			vecptr = machines[j]->get_processes_copy ();
-			for (std::vector<Process*>::iterator it = vecptr->begin (); it != vecptr->end (); ++it) {
-				if (it != vecptr->begin ())
+			output_file_stream << "# Machine " << machines[i]->get_id () << "\n";
+			vecptr = machines[i]->get_processes_copy ();
+			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
+				if (cit != vecptr->cbegin ())
 					output_file_stream << ";";
-				output_file_stream << (*it)->get_id ();
+				output_file_stream << (*cit)->get_id ();
 			}
+			delete vecptr;
 			output_file_stream << "\n";
 		}
 	}
