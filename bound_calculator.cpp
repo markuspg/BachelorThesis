@@ -15,12 +15,11 @@ BoundCalc::BoundCalc (const Problem &problem):
 		if (processing_time < shortest_processing_time)
 			shortest_processing_time = processing_time;
 	}
-	std::cout << "\nCreating a new BoundCalc instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\tCumulated processing times:\t" << cumulated_processing_times << "\n\tLongest processing time:\t" << longest_processing_time << "\n\n";
+	// std::cout << "\nCreating a new BoundCalc instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tCumulated processing times:\t" << cumulated_processing_times << "\n\tLongest processing time:\t" << longest_processing_time << "\n\n";
 
 }
 
 unsigned int BoundCalc::apply_LDM_algrithm () {
-	// unsigned int test_capacity = 220;
 	unsigned int existing_bound = apply_SIMPLE_LINEAR_TIME_algorithm ();
 	unsigned int test_capacity = existing_bound - (processes[0]->get_processing_time () / 2);
 	// Iteratively test different bin capacities beginning with an already known lower bound
