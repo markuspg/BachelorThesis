@@ -1,14 +1,6 @@
 /*! Represents a Problem to solve */
 class Problem {
 	public:
-		/** Problem's constructor for new problems
-		 *
-		 * @param m_machines The quantity of Machines the Problem's instance shall have
-		 * @param n_processes The quantity of Processes the Problem's instance shall have
-		 * @param workload_interval The interval the process durations shall be contained in
-		 */
-		Problem (unsigned short int m_machines, unsigned short int n_processes, unsigned int workload_interval);
-
 		/** Problem's constructor to load a specific problem
 		 *
 		 * @param filename The name of the file which contains the Problem to solve

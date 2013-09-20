@@ -1,44 +1,5 @@
 #include "problem.hpp"
 
-bool compare (unsigned int i, unsigned int j) {
-	return (i > j);
-}
-
-Problem::Problem (unsigned short int m_machines, unsigned short int n_processes, unsigned int workload_interval):
-	machines (nullptr),
-	machines_quantity (m_machines),
-	processes (nullptr),
-	processes_quantity (n_processes),
-	process_interval (workload_interval),
-	temporary_storage (nullptr)
-{
-	std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\tUpper interval bound:\t" << process_interval << "\n\n";
-
-	// Create Machines
-	machines = new Machine* [machines_quantity];
-	for (unsigned short int i= 0; i < machines_quantity; i++) {
-		machines[i] = new Machine (i + 1, processes_quantity);
-	}
-
-	// Create Processes
-	// Create a vector containing randomly generated process durations
-	std::vector<unsigned int> process_durations;
-	process_durations.reserve (processes_quantity);
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		process_durations.push_back (rand () % workload_interval + 1);
-		std::cout << "\tProcess duration: " << process_durations.at (j) << "\n";
-	}
-	// Sort the vector in descending order
-	std::sort (process_durations.begin (), process_durations.end (), compare);
-	// Add the vector's elements to a new Process array
-	processes = new Process* [processes_quantity];
-	unsigned short int i = 0;
-	for (std::vector<unsigned int>::iterator it = process_durations.begin (); it != process_durations.end (); ++it) {
-		processes[i] = new Process (i + 1, *it);
-		++i;
-	}
-}
-
 Problem::Problem (std::string filename):
 	machines (nullptr),
 	processes (nullptr)
