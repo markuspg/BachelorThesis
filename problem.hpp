@@ -17,12 +17,12 @@ class Problem {
 		 */
 		~Problem ();
 
-		/** Assigns a Process to a Machine
+		/** Assigns a Process to a Machine using their ids
 		 *
 		 * @param pid The id of the Process
 		 * @param mid The id of the Machine
 		 */
-		void assign_process_to_machine (unsigned short int pid, unsigned short int mid);
+		void assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid);
 
 		/** Checks if the current state is a feasible solution
 		 *
