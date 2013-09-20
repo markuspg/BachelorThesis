@@ -147,17 +147,17 @@ void Scheduler::apply_SI_algorithm () {
 
 void Scheduler::apply_sLPT_algorithm () {
 	// std::cout << "\nApplying simple LPT algorihm\n";
-	for (unsigned int i = 0, j = 0; i < processes_quantity; i++, j++) {
-		assign_process_to_machine_by_ids (processes[i]->get_id (), machines[j]->get_id ());
-		if (j == (machines_quantity - 1))
-			j = -1;
+	for (unsigned int i = 0, j = 0; j < processes_quantity; i++, j++) {
+		assign_process_to_machine_by_ids (processes[j]->get_id (), machines[i]->get_id ());
+		if (i == (machines_quantity - 1))
+			i = -1;
 	}
 }
 
 void Scheduler::apply_STUPID_algorithm () {
 	// std::cout << "\nApplying stupid algorithm\n";
-	for (unsigned short int i = 0; i < processes_quantity; i++) {
-		assign_process_to_machine_by_ids (processes[i]->get_id (), machines[0]->get_id ());
+	for (unsigned short int j = 0; j < processes_quantity; j++) {
+		assign_process_to_machine_by_ids (processes[j]->get_id (), machines[0]->get_id ());
 	}
 }
 
