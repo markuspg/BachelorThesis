@@ -23,9 +23,13 @@ enum START_SOLUTION {iLPT, rLPT, SI, sLPT, STUPID};
 #include "improver.cpp"
 
 int main (int argc, char *argv[]) {
-	std::cout << "<----- PC_min solver ----->\n";	
+	std::cout << "<----- PC_min solver ----->\n";
 
-	// Create a pointer to the problem to be solved
-	Problem *problem = nullptr;
-	problem = new Problem (argv[1]);
+	for (int t = 1; t < argc; t++) {
+		// Create a pointer to the problem to be solved
+		Problem *problem = nullptr;
+		problem = new Problem (argv[1]);
+
+		delete problem;
+	}
 }
