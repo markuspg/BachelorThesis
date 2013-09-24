@@ -25,7 +25,9 @@ enum START_SOLUTION {iLPT, rLPT, SI, sLPT, STUPID};
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
 	std::ofstream output_file_stream;
+	std::ofstream timings_stream;
 	output_file_stream.open ("bound_calculator-results.csv", std::ofstream::out | std::ofstream::trunc);
+	timings_stream.open ("bound_calculator-timings.csv", std::ofstream::out | std::ofstream::trunc);
 
 	for (int t = 1; t < argc; t++) {
 
@@ -38,31 +40,50 @@ int main (int argc, char *argv[]) {
 			short_filename = long_filename;
 
 		output_file_stream << short_filename << ",";
+		timings_stream << short_filename << ",";
 
 		// Create a pointer to the problem to be solved
 		Problem *problem = nullptr;
 		problem = new Problem (long_filename);
 
 		BoundCalc *bound_calculator = new BoundCalc (*problem);
+		std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 		output_file_stream << std::to_string (bound_calculator->compute_upper_bound (NAIVE)) << ",";
+		std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
+		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		timings_stream << time_span.count() << ",";
 		delete bound_calculator;
 
 		bound_calculator = new BoundCalc (*problem);
+		t1 = std::chrono::steady_clock::now();
 		output_file_stream << std::to_string (bound_calculator->compute_upper_bound (SIMPLE)) << ",";
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		timings_stream << time_span.count() << ",";
 		delete bound_calculator;
 
 		bound_calculator = new BoundCalc (*problem);
+		t1 = std::chrono::steady_clock::now();
 		output_file_stream << std::to_string (bound_calculator->compute_upper_bound (SIMPLE_LINEAR_TIME)) << ",";
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		timings_stream << time_span.count() << ",";
 		delete bound_calculator;
 
 		bound_calculator = new BoundCalc (*problem);
+		t1 = std::chrono::steady_clock::now();
 		output_file_stream << std::to_string (bound_calculator->compute_upper_bound (LDM));
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		timings_stream << time_span.count() << ",";
 		delete bound_calculator;
 
 		output_file_stream << "\n";
+		timings_stream << "\n";
 
 		delete problem;
 	}
 
 	output_file_stream.close ();
+	timings_stream.close ();
 }
