@@ -1,2 +1,2 @@
 solver: main.cpp
-	g++ main.cpp -o solver -g -std=c++11
+	g++ main.cpp -o start_solution_tester -g -std=c++11
