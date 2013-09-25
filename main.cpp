@@ -48,8 +48,9 @@ int main (int argc, char *argv[]) {
 
 		Scheduler *scheduler = new Scheduler (*problem);
 		scheduler->create_start_solution (sLPT);
+		output_file_stream << scheduler->query_lowest_completion_time () << ",";
 
-		Improver *improver = new Improver (*problem);
+		Improver *improver = new Improver (*scheduler);
 		std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 		improver->improve_start_solution (gPAIRWISE);
 		std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
@@ -58,7 +59,7 @@ int main (int argc, char *argv[]) {
 		timings_stream << time_span.count() << ",";
 		delete improver;
 
-		improver = new Improver (*problem);
+		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
 		improver->improve_start_solution (PAIRWISE);
 		t2 = std::chrono::steady_clock::now();
@@ -71,8 +72,9 @@ int main (int argc, char *argv[]) {
 
 		scheduler = new Scheduler (*problem);
 		scheduler->create_start_solution (iLPT);
+		output_file_stream << scheduler->query_lowest_completion_time () << ",";
 
-		improver = new Improver (*problem);
+		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
 		improver->improve_start_solution (gPAIRWISE);
 		t2 = std::chrono::steady_clock::now();
@@ -81,7 +83,7 @@ int main (int argc, char *argv[]) {
 		timings_stream << time_span.count() << ",";
 		delete improver;
 
-		improver = new Improver (*problem);
+		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
 		improver->improve_start_solution (PAIRWISE);
 		t2 = std::chrono::steady_clock::now();
