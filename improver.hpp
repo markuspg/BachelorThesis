@@ -9,10 +9,7 @@ class Improver : public Problem {
 		Improver (const Problem &problem);
 
 		/*! Applies the pairwise interchange algorithm of Fatemi and Ghazvini (1998) */
-		void apply_gPAIRWISE_algorithm ();
-
-		/*! Applies the pairwise interchange algorithm of Fatemi and Ghazvini (1998) */
-		void apply_PAIRWISE_algorithm (bool greedy = false);
+		void apply_PAIRWISE_algorithm (unsigned short int iterations, bool greedy = false);
 
 		/** Improve a start solution using the given algorithm (PAIRWISE)
 		 *
