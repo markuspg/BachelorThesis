@@ -25,7 +25,9 @@ enum START_SOLUTION {iLPT, rLPT, SI, sLPT, STUPID};
 int main (int argc, char *argv[]) {
 	std::cout << "<----- PC_min solver ----->\n";
 	std::ofstream output_file_stream;
-	output_file_stream.open ("bound_calculator-results.csv", std::ofstream::out | std::ofstream::trunc);
+	std::ofstream timings_stream;
+	output_file_stream.open ("improver-results.csv", std::ofstream::out | std::ofstream::trunc);
+	timings_stream.open ("improver-timings.csv", std::ofstream::out | std::ofstream::trunc);
 
 	for (int t = 1; t < argc; t++) {
 
@@ -38,10 +40,58 @@ int main (int argc, char *argv[]) {
 			short_filename = long_filename;
 
 		output_file_stream << short_filename << ",";
+		timings_stream << short_filename << ",";
 
 		// Create a pointer to the problem to be solved
 		Problem *problem = nullptr;
 		problem = new Problem (long_filename);
+
+		Scheduler *scheduler = new Scheduler (*problem);
+		scheduler->create_start_solution (sLPT);
+
+		Improver *improver = new Improver (*problem);
+		std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+		improver->improve_start_solution (gPAIRWISE);
+		std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
+		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		output_file_stream << improver->query_lowest_completion_time () << ",";
+		timings_stream << time_span.count() << ",";
+		delete improver;
+
+		improver = new Improver (*problem);
+		t1 = std::chrono::steady_clock::now();
+		improver->improve_start_solution (PAIRWISE);
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		output_file_stream << improver->query_lowest_completion_time () << ",";
+		timings_stream << time_span.count() << ",";
+		delete improver;
+
+		delete scheduler;
+
+		scheduler = new Scheduler (*problem);
+		scheduler->create_start_solution (iLPT);
+
+		improver = new Improver (*problem);
+		t1 = std::chrono::steady_clock::now();
+		improver->improve_start_solution (gPAIRWISE);
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		output_file_stream << improver->query_lowest_completion_time () << ",";
+		timings_stream << time_span.count() << ",";
+		delete improver;
+
+		improver = new Improver (*problem);
+		t1 = std::chrono::steady_clock::now();
+		improver->improve_start_solution (PAIRWISE);
+		t2 = std::chrono::steady_clock::now();
+		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		output_file_stream << improver->query_lowest_completion_time () << ",";
+		timings_stream << time_span.count() << ",";
+		delete improver;
+
+		output_file_stream << "\n";
+		timings_stream << "\n";
 
 		delete problem;
 	}
