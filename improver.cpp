@@ -6,7 +6,7 @@ Improver::Improver (const Problem &problem):
 	// std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
-void Improver::apply_PAIRWISE_algorithm (bool greedy) {
+void Improver::apply_PAIRWISE_algorithm (unsigned short int iterations, bool greedy) {
 	// std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
@@ -22,7 +22,8 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	Machine *pa = nullptr;
 	Machine *pb = nullptr;
 
-	// Create stop criterion for algorithm loop
+	// Create stop criterions for algorithm loop
+	unsigned int iter = 1;
 	bool stop = false;
 	while (!stop) {
 		for (unsigned short int k = 0; k < machines_quantity - 1; k++) {
@@ -98,6 +99,10 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 				set_a.clear ();
 				set_b.clear ();
 			}
+
+			iter++;
+			if (iter >= iterations)
+				stop = true;
 		}
 		
 		if (set_a.size () > 0) {
@@ -144,10 +149,10 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
 	switch (algo) {
 		case gPAIRWISE:
-			apply_PAIRWISE_algorithm (true);
+			apply_PAIRWISE_algorithm (iterations, true);
 			break;
 		case PAIRWISE:
-			apply_PAIRWISE_algorithm ();
+			apply_PAIRWISE_algorithm (iterations, false);
 			break;
 		default:
 			std::cerr << "\nERROR: Invalid improvement algorithm\n";
