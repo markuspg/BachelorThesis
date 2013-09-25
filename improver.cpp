@@ -6,7 +6,7 @@ Improver::Improver (const Problem &problem):
 	// std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
-void Improver::apply_PAIRWISE_algorithm (unsigned short int iterations, bool greedy) {
+unsigned int Improver::apply_PAIRWISE_algorithm (unsigned int iterations, bool greedy) {
 	// std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
@@ -42,13 +42,13 @@ void Improver::apply_PAIRWISE_algorithm (unsigned short int iterations, bool gre
 			// Stop, if the upper bound correlates to the current solution value (Step 5: If LB = M)
 			if (upper_bound == this->query_lowest_completion_time ()) {
 				// std::cout << "Current schedule correlates to upper bound => Terminating.\n";
-				return;
+				return iter;
 			}
 			
 			// Stop if all machines have the same load (Step 6: Terminate if F_PA = F_PB)
 			if (pa->get_completion_time () == pb->get_completion_time ()) {
 				// std::cout << "Current schedule has all Machines finishing the same time => Terminating.\n";
-				return;
+				return iter;
 			}
 			
 			// Evaluate all advantageous swaps (Step 7: Form sets A and B)
@@ -100,9 +100,6 @@ void Improver::apply_PAIRWISE_algorithm (unsigned short int iterations, bool gre
 				set_b.clear ();
 			}
 
-			iter++;
-			if (iter >= iterations)
-				stop = true;
 		}
 		
 		if (set_a.size () > 0) {
@@ -143,17 +140,22 @@ void Improver::apply_PAIRWISE_algorithm (unsigned short int iterations, bool gre
 			// std::cout << "No advantageous swaps can be found anymore, terminating.\n";
 			stop = true;
 		}
+		iter++;
+		if (!greedy) {
+			if (iter >= iterations)
+				stop = true;
+		}
 	}
+
+	return iter;
 }
 
-void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
+unsigned int Improver::improve_start_solution (unsigned int algo, unsigned int iterations) {
 	switch (algo) {
 		case gPAIRWISE:
-			apply_PAIRWISE_algorithm (iterations, true);
-			break;
+			return apply_PAIRWISE_algorithm (iterations, true);
 		case PAIRWISE:
-			apply_PAIRWISE_algorithm (iterations, false);
-			break;
+			return apply_PAIRWISE_algorithm (iterations, false);
 		default:
 			std::cerr << "\nERROR: Invalid improvement algorithm\n";
 	}

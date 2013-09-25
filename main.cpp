@@ -52,7 +52,7 @@ int main (int argc, char *argv[]) {
 
 		Improver *improver = new Improver (*scheduler);
 		std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-		improver->improve_start_solution (gPAIRWISE);
+		output_file_stream << improver->improve_start_solution (gPAIRWISE) << ",";
 		std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
 		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 		output_file_stream << improver->query_lowest_completion_time () << ",";
@@ -61,7 +61,7 @@ int main (int argc, char *argv[]) {
 
 		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
-		improver->improve_start_solution (PAIRWISE);
+		output_file_stream << improver->improve_start_solution (PAIRWISE, 5000) << ",";
 		t2 = std::chrono::steady_clock::now();
 		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 		output_file_stream << improver->query_lowest_completion_time () << ",";
@@ -76,7 +76,7 @@ int main (int argc, char *argv[]) {
 
 		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
-		improver->improve_start_solution (gPAIRWISE);
+		output_file_stream << improver->improve_start_solution (gPAIRWISE) << ",";
 		t2 = std::chrono::steady_clock::now();
 		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 		output_file_stream << improver->query_lowest_completion_time () << ",";
@@ -85,7 +85,7 @@ int main (int argc, char *argv[]) {
 
 		improver = new Improver (*scheduler);
 		t1 = std::chrono::steady_clock::now();
-		improver->improve_start_solution (PAIRWISE);
+		output_file_stream << improver->improve_start_solution (PAIRWISE, 5000) << ",";
 		t2 = std::chrono::steady_clock::now();
 		time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 		output_file_stream << improver->query_lowest_completion_time () << ",";
