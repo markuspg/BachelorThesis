@@ -1,3 +1,8 @@
+#ifndef PROCESS_H
+#define PROCESS_H
+
+#include "object.hpp"
+
 /*! Represents a Process */
 class Process: public Object {
 	public:
@@ -36,3 +41,5 @@ class Process: public Object {
 		unsigned short int assigned_machines_id; //!< Stores if the Process is assigned to a Machine (>0 if assigned to a Machine)
 		unsigned int processing_time; //!< The processing time needed to complete the Process
 };
+
+#endif // PROCESS_H

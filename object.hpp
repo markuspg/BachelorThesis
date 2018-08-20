@@ -1,3 +1,6 @@
+#ifndef OBJECT_H
+#define OBJECT_H
+
 /*! Base class used to derive the Machine and Process classes */
 class Object {
 	public:
@@ -16,3 +19,5 @@ class Object {
 	protected:
 		unsigned short int id; //!< The id of the Object
 };
+
+#endif // OBJECT_H

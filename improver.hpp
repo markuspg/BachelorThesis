@@ -1,3 +1,8 @@
+#ifndef IMPROVER_H
+#define IMPROVER_H
+
+#include "problem.hpp"
+
 /*! A class to improve given starting solutions */
 class Improver : public Problem {
 	public:
@@ -21,3 +26,5 @@ class Improver : public Problem {
 		 */
 		void improve_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };
+
+#endif // IMPROVER_H

@@ -1,4 +1,9 @@
 #include "bound_calculator.hpp"
+#include "enums.h"
+#include "process.hpp"
+
+#include <cmath>
+#include <iostream>
 
 BoundCalc::BoundCalc (const Problem &problem):
 	cumulated_processing_times (0),

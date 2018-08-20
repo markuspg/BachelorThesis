@@ -1,3 +1,8 @@
+#ifndef SCHEDULER_H
+#define SCHEDULER_H
+
+#include "problem.hpp"
+
 /*! A class to generate and represent starting solutions */
 class Scheduler : public Problem {
 	public:
@@ -30,3 +35,5 @@ class Scheduler : public Problem {
 		 */
 		void create_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };
+
+#endif // SCHEDULER_H

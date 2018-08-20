@@ -1,3 +1,12 @@
+#ifndef PROBlEM_H
+#define PROBlEM_H
+
+#include "machine.hpp"
+
+#include <string>
+
+class TemporaryStorage;
+
 /*! Represents a Problem to solve */
 class Problem {
 	public:
@@ -93,3 +102,5 @@ class Problem {
 		unsigned short int processes_quantity; //!< The quantity of Processes of the Problem
 		TemporaryStorage *temporary_storage; //!< An object to temporarily store assignments
 };
+
+#endif // PROBlEM_H

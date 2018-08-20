@@ -1,3 +1,11 @@
+#ifndef TEMPORARY_STORAGE_H
+#define TEMPORARY_STORAGE_H
+
+class Machine;
+class Process;
+
+#include <vector>
+
 /*! A temporary storage for Problem solutions */
 class TemporaryStorage {
 	public:
@@ -21,3 +29,6 @@ class TemporaryStorage {
 		unsigned int solution_value; //!< Stores the target value of the solution
 		std::vector<Process*> **v_processes; //!< Stores the pointers of the Processes assigned to the Machines
 };
+
+
+#endif // TEMPORARY_STORAGE_H

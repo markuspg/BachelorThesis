@@ -1,3 +1,12 @@
+#ifndef MACHINE_H
+#define MACHINE_H
+
+#include "object.hpp"
+
+class Process;
+
+#include <vector>
+
 /*! Represents a Machine */
 class Machine : public Object {
 	public:
@@ -55,3 +64,5 @@ class Machine : public Object {
 		unsigned int machine_completion_time; //!< The completion time of the machine
 		std::vector<Process*> v_processes; //!< A vector containing pointers to the assigned Processes
 };
+
+#endif // MACHINE_H
