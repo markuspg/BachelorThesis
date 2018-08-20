@@ -8,7 +8,7 @@ class Process;
 #include <vector>
 
 /*! Represents a Machine */
-class Machine : public Object {
+class Machine : public bct::Object {
 	public:
 		/** Machine's constructor
 		 *

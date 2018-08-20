@@ -9,7 +9,7 @@ Process::Process (unsigned short int pid, unsigned int time):
 }
 
 Process::Process (const Process &process):
-	Object (process.get_id ()),
+    Object{process.GetId()},
 	assigned_machines_id (process.get_assigned_machines_id ()),
 	processing_time (process.get_processing_time ())
 {

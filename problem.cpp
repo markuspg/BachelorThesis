@@ -184,7 +184,7 @@ unsigned short int Problem::query_lowest_workload_machines_id (unsigned short in
 		// std::cout << "best_workload_machine: " << best_workload_machine << "\n";
 		// All but one Machines have been assigned, assign the last one
 		// std::cout << "Machine " << pop_machines.at (best_workload_machine)->get_id () << "/" << pop_machines.at (best_workload_machine)->get_completion_time () << " added \n";
-		push_machine_ids.push_back (pop_machines.at (best_workload_machine)->get_id ());
+        push_machine_ids.push_back (pop_machines.at (best_workload_machine)->GetId());
 		pop_machines.erase (pop_machines.begin () + (best_workload_machine));
 	}
 
@@ -201,7 +201,7 @@ void Problem::query_state () {
 	std::cout << "\t" << processes_quantity << " Processes\n";
 	unsigned int overall_completion_time = 0;
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		std::cout << "\t  Process " << processes[j]->get_id () << ",\tduration: " << processes[j]->get_processing_time () << "\n";
+        std::cout << "\t  Process " << processes[j]->GetId() << ",\tduration: " << processes[j]->get_processing_time () << "\n";
 		overall_completion_time += processes[j]->get_processing_time ();
 	}
 	std::cout << "\t  =>With an over all completion time of " << overall_completion_time << "\n";
@@ -213,15 +213,15 @@ void Problem::query_state () {
 		for (unsigned int i = 0; i < machines_quantity; i++) {
 			std::vector <Process*> *vecptr = nullptr;
 			vecptr = machines[i]->get_processes_copy ();
-			std::cout << "\t    Processes assigned to Machine " << machines[i]->get_id () << "\n";
+            std::cout << "\t    Processes assigned to Machine " << machines[i]->GetId() << "\n";
 
 			// Iterate over all assigned Processes and output the ids and processing times
 			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
-				std::cout << "\t\t" << (*cit)->get_id () << "=>" << (*cit)->get_processing_time () << "\n";
+                std::cout << "\t\t" << (*cit)->GetId() << "=>" << (*cit)->get_processing_time () << "\n";
 			}
 
 			// Output the complete completion time of the Machine
-			std::cout << "\t\t=>Machine " << machines[i]->get_id () << " completion time: " << machines[i]->get_completion_time () << "\n";
+            std::cout << "\t\t=>Machine " << machines[i]->GetId() << " completion time: " << machines[i]->get_completion_time () << "\n";
 
 			delete vecptr;
 		}
@@ -269,12 +269,12 @@ void Problem::save_instance (std::string *filename) {
 		output_file_stream << "\n# Machine assignments\n";
 		for (unsigned short int i = 0; i < machines_quantity; i++) {
 			std::vector <Process*> *vecptr = nullptr;
-			output_file_stream << "# Machine " << machines[i]->get_id () << "\n";
+            output_file_stream << "# Machine " << machines[i]->GetId() << "\n";
 			vecptr = machines[i]->get_processes_copy ();
 			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
 				if (cit != vecptr->cbegin ())
 					output_file_stream << ";";
-				output_file_stream << (*cit)->get_id ();
+                output_file_stream << (*cit)->GetId();
 			}
 			delete vecptr;
 			output_file_stream << "\n";

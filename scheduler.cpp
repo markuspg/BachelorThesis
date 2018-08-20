@@ -13,7 +13,7 @@ void Scheduler::apply_iLPT_algorithm () {
 		// Query the Machine with the lowest workload and assign the Process to it
 		unsigned short int lowest_workload_machine = query_lowest_workload_machines_id ();
 		// std::cout << "\tMachine with lowest workload: " << lowest_workload_machine << ".\n";
-		assign_process_to_machine_by_ids (processes[j]->get_id (), lowest_workload_machine);
+        assign_process_to_machine_by_ids (processes[j]->GetId(), lowest_workload_machine);
 	}
 }
 
@@ -44,11 +44,11 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 			std::default_random_engine engine (std::chrono::system_clock::now().time_since_epoch().count());
 			std::uniform_int_distribution<unsigned short int> generator(1, 2);
 			unsigned short int index = generator (engine) - 1;
-			assign_process_to_machine_by_ids (v_processes_cpy.at(index)->get_id (), query_lowest_workload_machines_id ());
+            assign_process_to_machine_by_ids (v_processes_cpy.at(index)->GetId(), query_lowest_workload_machines_id ());
 			// After adding the Process delete it from the copied vector
 			v_processes_cpy.erase (v_processes_cpy.begin () + index);
 		}
-		assign_process_to_machine_by_ids (v_processes_cpy.at(0)->get_id (), query_lowest_workload_machines_id ());
+        assign_process_to_machine_by_ids (v_processes_cpy.at(0)->GetId(), query_lowest_workload_machines_id ());
 		v_processes_cpy.erase (v_processes_cpy.begin ());
 
 		// Check if the solution of the iteration is better than the hitherto solution and store it if it is
@@ -97,7 +97,7 @@ void Scheduler::apply_SI_algorithm () {
 					if (l_processes.size () < 1) {
 						break;
 					}
-					assign_process_to_machine_by_ids (l_processes.front ()->get_id (), machines[i]->get_id ());
+                    assign_process_to_machine_by_ids (l_processes.front ()->GetId(), machines[i]->GetId());
 					// std::cout << "\t\t  Machine's duration: " << machines[i]->get_completion_time () << "\n";
 					l_processes.pop_front ();
 				}
@@ -112,7 +112,7 @@ void Scheduler::apply_SI_algorithm () {
 					if (l_processes.size () < 1) {
 						break;
 					}
-					assign_process_to_machine_by_ids (l_processes.back ()->get_id (), machines[i]->get_id ());
+                    assign_process_to_machine_by_ids (l_processes.back ()->GetId(), machines[i]->GetId());
 					// std::cout << "\t\t  Machine's duration: " << machines[i]->get_completion_time () << "\n";
 					l_processes.pop_back ();
 				}
@@ -129,7 +129,7 @@ void Scheduler::apply_SI_algorithm () {
 			if (l_processes.size () > 0) {
 				// std::cout << "All Machines got filled, but not all Processes assigned. Assigning them using the LPT algorithm, then leaving.\n";
 				for (unsigned short int j = 0; j < l_processes.size (); j++) {
-					assign_process_to_machine_by_ids (l_processes.front ()->get_id (), machines[query_lowest_workload_machines_id ()]->get_id ());
+                    assign_process_to_machine_by_ids (l_processes.front ()->GetId(), machines[query_lowest_workload_machines_id ()]->GetId());
 					l_processes.pop_front ();
 				}
 			}
@@ -148,7 +148,7 @@ void Scheduler::apply_SI_algorithm () {
 void Scheduler::apply_sLPT_algorithm () {
 	// std::cout << "\nApplying simple LPT algorihm\n";
 	for (unsigned int i = 0, j = 0; j < processes_quantity; i++, j++) {
-		assign_process_to_machine_by_ids (processes[j]->get_id (), machines[i]->get_id ());
+        assign_process_to_machine_by_ids (processes[j]->GetId(), machines[i]->GetId());
 		if (i == (machines_quantity - 1))
 			i = -1;
 	}
@@ -157,7 +157,7 @@ void Scheduler::apply_sLPT_algorithm () {
 void Scheduler::apply_STUPID_algorithm () {
 	// std::cout << "\nApplying stupid algorithm\n";
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		assign_process_to_machine_by_ids (processes[j]->get_id (), machines[0]->get_id ());
+        assign_process_to_machine_by_ids (processes[j]->GetId(), machines[0]->GetId());
 	}
 }
 

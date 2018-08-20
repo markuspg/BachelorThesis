@@ -1,23 +1,22 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-/*! Base class used to derive the Machine and Process classes */
+namespace bct {
+
 class Object {
 	public:
-		/** Object's constructor
-		 *
-		 * @param object_id The Object's id
-		 */
-		Object (unsigned short int object_id);
+        Object (const unsigned short int argObjectId);
 
-		/** Returns the Object's id
-		 *
-		 * @return The Object's id
-		 */
-		unsigned short int get_id () const {return id;}
+        unsigned short int GetId() const noexcept;
 
 	protected:
-		unsigned short int id; //!< The id of the Object
+        const unsigned short int id;
 };
+
+} // namespace bct
+
+inline unsigned short int bct::Object::GetId() const noexcept {
+    return id;
+}
 
 #endif // OBJECT_H

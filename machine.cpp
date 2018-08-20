@@ -11,7 +11,7 @@ Machine::Machine (unsigned short int mid, unsigned short int processes):
 
 Machine::Machine (const Machine &machine):
 	changed (true),
-	Object (machine.get_id ()),
+    Object{machine.GetId()},
 	machine_completion_time (0)
 {
 	std::vector<Process*> *vecptr = nullptr;

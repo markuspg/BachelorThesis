@@ -4,7 +4,7 @@
 #include "object.hpp"
 
 /*! Represents a Process */
-class Process: public Object {
+class Process: public bct::Object {
 	public:
 		/** Process' constructor
 		 *
