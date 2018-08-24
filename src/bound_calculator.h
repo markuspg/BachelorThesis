@@ -1,7 +1,7 @@
 #ifndef BOUND_CALC_H
 #define BOUND_CALC_H
 
-#include "problem.hpp"
+#include "problem.h"
 
 /*! An object used to calculate bounds */
 class BoundCalc : public Problem {

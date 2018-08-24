@@ -1,7 +1,7 @@
 #ifndef IMPROVER_H
 #define IMPROVER_H
 
-#include "problem.hpp"
+#include "problem.h"
 
 /*! A class to improve given starting solutions */
 class Improver : public Problem {

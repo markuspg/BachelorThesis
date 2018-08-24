@@ -1,4 +1,4 @@
-#include "problem.hpp"
+#include "problem.h"
 
 Problem::Problem (std::string filename):
 	machines (nullptr),

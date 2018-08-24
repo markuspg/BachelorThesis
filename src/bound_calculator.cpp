@@ -1,6 +1,6 @@
-#include "bound_calculator.hpp"
+#include "bound_calculator.h"
 #include "enums.h"
-#include "process.hpp"
+#include "process.h"
 
 #include <cmath>
 #include <iostream>

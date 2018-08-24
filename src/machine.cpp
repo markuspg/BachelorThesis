@@ -1,4 +1,4 @@
-#include "machine.hpp"
+#include "machine.h"
 
 Machine::Machine (unsigned short int mid, unsigned short int processes):
 	changed (false),

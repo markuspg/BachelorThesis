@@ -5,23 +5,23 @@ TARGET = project
 TEMPLATE = app
 
 HEADERS += \
-    bound_calculator.hpp \
-    improver.hpp \
-    machine.hpp \
-    object.hpp \
-    problem.hpp \
-    process.hpp \
-    scheduler.hpp \
-    tempstorage.hpp \
-    enums.h
+    src/bound_calculator.h \
+    src/enums.h \
+    src/improver.h \
+    src/machine.h \
+    src/object.h \
+    src/problem.h \
+    src/process.h \
+    src/scheduler.h \
+    src/tempstorage.h \
 
 SOURCES += \
-    bound_calculator.cpp \
-    improver.cpp \
-    machine.cpp \
-    main.cpp \
-    object.cpp \
-    problem.cpp \
-    process.cpp \
-    scheduler.cpp \
-    tempstorage.cpp \
+    src/bound_calculator.cpp \
+    src/improver.cpp \
+    src/machine.cpp \
+    src/main.cpp \
+    src/object.cpp \
+    src/problem.cpp \
+    src/process.cpp \
+    src/scheduler.cpp \
+    src/tempstorage.cpp \

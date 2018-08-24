@@ -1,4 +1,4 @@
-#include "improver.hpp"
+#include "improver.h"
 
 Improver::Improver (const Problem &problem):
 	Problem (problem)

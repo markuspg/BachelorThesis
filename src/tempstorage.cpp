@@ -1,4 +1,4 @@
-#include "tempstorage.hpp"
+#include "tempstorage.h"
 
 TemporaryStorage::TemporaryStorage (unsigned int current_solution, unsigned short int m_machines, Machine **p_machines):
 	machines_quantity (m_machines),

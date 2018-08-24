@@ -1,4 +1,4 @@
-#include "process.hpp"
+#include "process.h"
 
 Process::Process (unsigned short int pid, unsigned int time):
 	Object (pid),

@@ -1,7 +1,7 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
-#include "problem.hpp"
+#include "problem.h"
 
 /*! A class to generate and represent starting solutions */
 class Scheduler : public Problem {

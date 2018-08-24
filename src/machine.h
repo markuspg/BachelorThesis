@@ -1,7 +1,7 @@
 #ifndef MACHINE_H
 #define MACHINE_H
 
-#include "object.hpp"
+#include "object.h"
 
 class Process;
 

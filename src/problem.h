@@ -1,7 +1,7 @@
 #ifndef PROBlEM_H
 #define PROBlEM_H
 
-#include "machine.hpp"
+#include "machine.h"
 
 #include <string>
 

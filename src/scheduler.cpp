@@ -1,4 +1,4 @@
-#include "scheduler.hpp"
+#include "scheduler.h"
 
 Scheduler::Scheduler (const Problem &problem):
 	Problem (problem)

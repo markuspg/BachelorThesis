@@ -1,7 +1,7 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#include "object.hpp"
+#include "object.h"
 
 /*! Represents a Process */
 class Process: public bct::Object {
