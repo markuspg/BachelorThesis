@@ -20,10 +20,9 @@
 #ifndef PROBlEM_H
 #define PROBlEM_H
 
-#include "machine.h"
-
 #include <string>
 
+class Machine;
 class TemporaryStorage;
 
 /*! Represents a Problem to solve */
