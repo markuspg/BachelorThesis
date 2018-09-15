@@ -17,15 +17,25 @@
  *  along with bct.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "bound_calculator.h"
+#include "enums.h"
+#include "machine.h"
+#include "process.h"
 #include "scheduler.h"
 
-Scheduler::Scheduler (const Problem &problem):
+#include <chrono>
+#include <iostream>
+#include <list>
+#include <random>
+#include <vector>
+
+bct::Scheduler::Scheduler (const Problem &problem):
 	Problem (problem)
 {
 	// std::cout << "\nCreating a new Scheduler instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
-void Scheduler::apply_iLPT_algorithm () {
+void bct::Scheduler::apply_iLPT_algorithm () {
 	// std::cout << "\nApplying intelligent LPT algorihm\n";
 	// Iterate over all Processes
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
@@ -36,7 +46,7 @@ void Scheduler::apply_iLPT_algorithm () {
 	}
 }
 
-void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
+void bct::Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 	// std::cout << "\nApplying randomized LPT algorihm\n";
 	// Copy the processes array into a std::vector<Process*>
 	std::vector<Process*> *v_processes = nullptr;
@@ -89,7 +99,7 @@ void Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 	delete v_processes;
 }
 
-void Scheduler::apply_SI_algorithm () {
+void bct::Scheduler::apply_SI_algorithm () {
 	// std::cout << "\nApplying SI algorihm\n";
 	// Get the upper bound as start value for the bin capacity
 	BoundCalc bound_calculator (*this);
@@ -164,7 +174,7 @@ void Scheduler::apply_SI_algorithm () {
 	}
 }
 
-void Scheduler::apply_sLPT_algorithm () {
+void bct::Scheduler::apply_sLPT_algorithm () {
 	// std::cout << "\nApplying simple LPT algorihm\n";
 	for (unsigned int i = 0, j = 0; j < processes_quantity; i++, j++) {
         assign_process_to_machine_by_ids (processes[j]->GetId(), machines[i]->GetId());
@@ -173,14 +183,14 @@ void Scheduler::apply_sLPT_algorithm () {
 	}
 }
 
-void Scheduler::apply_STUPID_algorithm () {
+void bct::Scheduler::apply_STUPID_algorithm () {
 	// std::cout << "\nApplying stupid algorithm\n";
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
         assign_process_to_machine_by_ids (processes[j]->GetId(), machines[0]->GetId());
 	}
 }
 
-void Scheduler::create_start_solution (unsigned int choice, unsigned short int iterations) {
+void bct::Scheduler::create_start_solution (unsigned int choice, unsigned short int iterations) {
 	switch (choice) {
 		case STUPID:
 			apply_STUPID_algorithm ();

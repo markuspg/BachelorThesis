@@ -22,8 +22,10 @@
 
 #include "object.h"
 
+namespace bct {
+
 /*! Represents a Process */
-class Process: public bct::Object {
+class Process: public Object {
 	public:
 		/** Process' constructor
 		 *
@@ -60,5 +62,7 @@ class Process: public bct::Object {
 		unsigned short int assigned_machines_id; //!< Stores if the Process is assigned to a Machine (>0 if assigned to a Machine)
 		unsigned int processing_time; //!< The processing time needed to complete the Process
 };
+
+} // namespace bct
 
 #endif // PROCESS_H

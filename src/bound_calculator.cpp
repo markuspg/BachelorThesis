@@ -23,8 +23,9 @@
 
 #include <cmath>
 #include <iostream>
+#include <vector>
 
-BoundCalc::BoundCalc (const Problem &problem):
+ bct::BoundCalc::BoundCalc (const Problem &problem):
 	cumulated_processing_times (0),
 	longest_processing_time (0),
 	Problem (problem),
@@ -43,7 +44,7 @@ BoundCalc::BoundCalc (const Problem &problem):
 
 }
 
-unsigned int BoundCalc::apply_LDM_algrithm () {
+unsigned int bct::BoundCalc::apply_LDM_algrithm () {
 	unsigned int existing_bound = apply_SIMPLE_LINEAR_TIME_algorithm ();
 	unsigned int test_capacity = static_cast<unsigned int> (fmax (static_cast<double>(existing_bound - (processes[0]->get_processing_time () / 2)), static_cast<double>(existing_bound / 2)));
 	// Iteratively test different bin capacities beginning with an already known lower bound
@@ -56,7 +57,7 @@ unsigned int BoundCalc::apply_LDM_algrithm () {
 	return test_capacity;
 }
 
-unsigned int BoundCalc::apply_NAIVE_algorithm () {
+unsigned int bct::BoundCalc::apply_NAIVE_algorithm () {
 	// std::cout << "\nApplying NAIVE algorihm\n";
 
 	// Not using the processes_quantity like in the paper, because it doesn't make any sense
@@ -66,7 +67,7 @@ unsigned int BoundCalc::apply_NAIVE_algorithm () {
 	return (average_machine_runtime > longest_processing_time) ? average_machine_runtime : longest_processing_time;
 }
 
-unsigned int BoundCalc::apply_SIMPLE_algorithm () {
+unsigned int bct::BoundCalc::apply_SIMPLE_algorithm () {
 	// std::cout << "\nApplying SIMPLE algorihm\n";
 
 	unsigned int average_machine_runtime = static_cast<unsigned int>(cumulated_processing_times / machines_quantity);
@@ -74,7 +75,7 @@ unsigned int BoundCalc::apply_SIMPLE_algorithm () {
 	return average_machine_runtime;
 }
 
-unsigned int BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
+unsigned int bct::BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
 	// std::cout << "\nApplying SIMPLE_LINEAR_TIME algorithm\n";
 
 	// Calculate the three needed quantities
@@ -92,7 +93,7 @@ unsigned int BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
 		return average_runtime;
 }
 
-unsigned int BoundCalc::compute_upper_bound (unsigned int algo) {
+unsigned int bct::BoundCalc::compute_upper_bound (unsigned int algo) {
 	switch (algo) {
 		case LDM:
 			return convert_PCmax_lower_bound_to_PCmin_upper_bound (apply_LDM_algrithm ());
@@ -107,11 +108,11 @@ unsigned int BoundCalc::compute_upper_bound (unsigned int algo) {
 	}
 }
 
-unsigned int BoundCalc::convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound) {
+unsigned int bct::BoundCalc::convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound) {
 	return static_cast<unsigned int>((cumulated_processing_times - PCmax_lower_bound) / (machines_quantity - 1));
 }
 
-unsigned short int BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capacity) {
+unsigned short int bct::BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capacity) {
 	// std::cout << "\nComputing valid BPP lower bound for a capacity of " << capacity << "\n";
 	// Add all valid processing times to a vector
 	std::vector<unsigned int> p;

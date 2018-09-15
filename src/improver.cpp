@@ -17,15 +17,23 @@
  *  along with bct.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "bound_calculator.h"
+#include "enums.h"
 #include "improver.h"
+#include "machine.h"
+#include "process.h"
 
-Improver::Improver (const Problem &problem):
+#include <chrono>
+#include <iostream>
+#include <random>
+
+bct::Improver::Improver (const Problem &problem):
 	Problem (problem)
 {
 	// std::cout << "\nCreating a new Improver instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
 }
 
-void Improver::apply_PAIRWISE_algorithm (bool greedy) {
+void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	// std::cout << "\nApplying pairwise interchange algorihm\n";
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
@@ -160,7 +168,8 @@ void Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	}
 }
 
-void Improver::improve_start_solution (unsigned int algo, unsigned short int iterations) {
+void bct::Improver::improve_start_solution (unsigned int algo,
+                                            unsigned short int iterations) {
 	switch (algo) {
 		case gPAIRWISE:
 			apply_PAIRWISE_algorithm (true);

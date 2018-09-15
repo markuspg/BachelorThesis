@@ -22,6 +22,8 @@
 
 #include "problem.h"
 
+namespace bct {
+
 /*! A class to generate and represent starting solutions */
 class Scheduler : public Problem {
 	public:
@@ -54,5 +56,7 @@ class Scheduler : public Problem {
 		 */
 		void create_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };
+
+} // namespace bct
 
 #endif // SCHEDULER_H

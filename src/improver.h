@@ -22,6 +22,8 @@
 
 #include "problem.h"
 
+namespace bct {
+
 /*! A class to improve given starting solutions */
 class Improver : public Problem {
 	public:
@@ -45,5 +47,7 @@ class Improver : public Problem {
 		 */
 		void improve_start_solution (unsigned int algo, unsigned short int iterations = 50);
 };
+
+} // namespace bct
 
 #endif // IMPROVER_H

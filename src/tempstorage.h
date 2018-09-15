@@ -20,10 +20,12 @@
 #ifndef TEMPORARY_STORAGE_H
 #define TEMPORARY_STORAGE_H
 
+#include <vector>
+
+namespace bct {
+
 class Machine;
 class Process;
-
-#include <vector>
 
 /*! A temporary storage for Problem solutions */
 class TemporaryStorage {
@@ -49,5 +51,6 @@ class TemporaryStorage {
 		std::vector<Process*> **v_processes; //!< Stores the pointers of the Processes assigned to the Machines
 };
 
+} // namespace bct
 
 #endif // TEMPORARY_STORAGE_H

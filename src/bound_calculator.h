@@ -22,6 +22,8 @@
 
 #include "problem.h"
 
+namespace bct {
+
 /*! An object used to calculate bounds */
 class BoundCalc : public Problem {
 	public:
@@ -85,5 +87,7 @@ class BoundCalc : public Problem {
 		unsigned int longest_processing_time; //!< The processing time of the longest Process of the Problem
 		unsigned int shortest_processing_time; //!< The processing time of the shortest Process of the Problem
 };
+
+} // namespace bct
 
 #endif // BOUND_CALC_H

@@ -22,12 +22,14 @@
 
 #include "object.h"
 
-class Process;
-
 #include <vector>
 
+namespace bct {
+
+class Process;
+
 /*! Represents a Machine */
-class Machine : public bct::Object {
+class Machine : public Object {
 	public:
 		/** Machine's constructor
 		 *
@@ -83,5 +85,7 @@ class Machine : public bct::Object {
 		unsigned int machine_completion_time; //!< The completion time of the machine
 		std::vector<Process*> v_processes; //!< A vector containing pointers to the assigned Processes
 };
+
+} // namespace bct
 
 #endif // MACHINE_H

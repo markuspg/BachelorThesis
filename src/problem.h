@@ -22,7 +22,10 @@
 
 #include <string>
 
+namespace bct {
+
 class Machine;
+class Process;
 class TemporaryStorage;
 
 /*! Represents a Problem to solve */
@@ -120,5 +123,7 @@ class Problem {
 		unsigned short int processes_quantity; //!< The quantity of Processes of the Problem
 		TemporaryStorage *temporary_storage; //!< An object to temporarily store assignments
 };
+
+} // namespace bct
 
 #endif // PROBlEM_H

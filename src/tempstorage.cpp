@@ -17,9 +17,13 @@
  *  along with bct.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "machine.h"
+#include "process.h"
 #include "tempstorage.h"
 
-TemporaryStorage::TemporaryStorage (unsigned int current_solution, unsigned short int m_machines, Machine **p_machines):
+bct::TemporaryStorage::TemporaryStorage (unsigned int current_solution,
+                                         unsigned short int m_machines,
+                                         Machine **p_machines):
 	machines_quantity (m_machines),
 	solution_value (current_solution),
 	v_processes (nullptr)
@@ -32,7 +36,7 @@ TemporaryStorage::TemporaryStorage (unsigned int current_solution, unsigned shor
 	}
 }
 
-TemporaryStorage::~TemporaryStorage () {
+bct::TemporaryStorage::~TemporaryStorage () {
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		delete v_processes[i];
 	}
@@ -40,7 +44,8 @@ TemporaryStorage::~TemporaryStorage () {
 	delete v_processes;
 }
 
-void TemporaryStorage::load_temporarily_stored_solution (Machine **p_machines, Process **p_processes) {
+void bct::TemporaryStorage::load_temporarily_stored_solution (Machine **p_machines,
+                                                              Process **p_processes) {
 	// std::cout << "\nLoading the temporarily stored solution.\n";
 
 	// Restore information on the Machines

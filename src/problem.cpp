@@ -17,9 +17,16 @@
  *  along with bct.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "machine.h"
 #include "problem.h"
+#include "process.h"
+#include "tempstorage.h"
 
-Problem::Problem (std::string filename):
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+bct::Problem::Problem (std::string filename):
 	machines (nullptr),
 	processes (nullptr)
 {
@@ -63,7 +70,7 @@ Problem::Problem (std::string filename):
 	input_file_stream.close();
 }
 
-Problem::Problem (const Problem &problem):
+bct::Problem::Problem (const Problem &problem):
 	machines_quantity (problem.get_machines_quantity ()),
 	processes_quantity (problem.get_processes_quantity ())
 {
@@ -87,7 +94,7 @@ Problem::Problem (const Problem &problem):
 }
 
 
-Problem::~Problem () {
+bct::Problem::~Problem () {
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		delete machines[i];
 	}
@@ -99,14 +106,14 @@ Problem::~Problem () {
 	delete [] processes;
 }
 
-void Problem::assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid) {
+void bct::Problem::assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid) {
 	// std::cout << "\t  Assigning process " << processes[pid - 1]->get_id () << " with a duration of " << processes[pid - 1]->get_processing_time () << " to machine " << machines[mid - 1]->get_id () << "\n";
 	machines[mid - 1]->assign_process_to_machine (processes[pid - 1]);
 	processes[pid - 1]->set_assigned_machines_id (mid);
 }
 
 
-bool Problem::check_validity () {
+bool bct::Problem::check_validity () {
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
 		// Check if every Process is assigned to a Machine
 		if (processes[j]->get_assigned_machines_id () == 0) {
@@ -124,7 +131,7 @@ bool Problem::check_validity () {
 	return true;
 }
 
-void Problem::flush () {
+void bct::Problem::flush () {
 	// std::cout << "\nFlushing ...\n";
 
 	// Flush the information stored in the Processes
@@ -138,7 +145,7 @@ void Problem::flush () {
 	}
 }
 
-void Problem::load_stored_solution () {
+void bct::Problem::load_stored_solution () {
 	// Load the data stored in temporary_storage and delete it afterwards
 	// Load the assignments of the Machines
 	temporary_storage->load_temporarily_stored_solution (machines, processes);
@@ -146,7 +153,7 @@ void Problem::load_stored_solution () {
 	temporary_storage = nullptr;
 }
 
-unsigned int Problem::query_lowest_completion_time () {
+unsigned int bct::Problem::query_lowest_completion_time () {
 	unsigned int lowest_completion_time = machines[0]->get_completion_time ();
 
 	// Iterate over all Machines, query their completion times and return the lowest
@@ -158,7 +165,7 @@ unsigned int Problem::query_lowest_completion_time () {
 	return lowest_completion_time;
 }
 
-unsigned short int Problem::query_lowest_workload_machines_id (unsigned short int placement, bool invert) {
+unsigned short int bct::Problem::query_lowest_workload_machines_id (unsigned short int placement, bool invert) {
 	// Create a vector with all Machines which will be popped subsquently later
 	std::vector<Machine*> pop_machines;
 	pop_machines.reserve (machines_quantity);
@@ -213,7 +220,7 @@ unsigned short int Problem::query_lowest_workload_machines_id (unsigned short in
 	return (push_machine_ids.at (placement));
 }
 
-void Problem::query_state () {
+void bct::Problem::query_state () {
 	std::cout << "\nThe problem's state:\n";
 
 	// Output information about Processes
@@ -250,7 +257,7 @@ void Problem::query_state () {
 
 }
 
-void Problem::store_current_solution () {
+void bct::Problem::store_current_solution () {
 	// Checks if the current solution is valid
 	if (check_validity ()) {
 		// Stores the current solution to temporary_storage
@@ -262,7 +269,7 @@ void Problem::store_current_solution () {
 	}
 }
 
-void Problem::save_instance (std::string *filename) {
+void bct::Problem::save_instance (std::string *filename) {
 	if (filename == nullptr) {
 		// Get the name of the file to write to
 		filename = new std::string ("problem.pbl");

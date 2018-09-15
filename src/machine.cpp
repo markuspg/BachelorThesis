@@ -18,8 +18,9 @@
  */
 
 #include "machine.h"
+#include "process.h"
 
-Machine::Machine (unsigned short int mid, unsigned short int processes):
+bct::Machine::Machine (unsigned short int mid, unsigned short int processes):
 	changed (false),
 	Object (mid),
 	machine_completion_time (0)
@@ -28,7 +29,7 @@ Machine::Machine (unsigned short int mid, unsigned short int processes):
 	// std::cout << "\tCreating Machine " << mid << " able to contain " << processes << " Processes\n";
 }
 
-Machine::Machine (const Machine &machine):
+bct::Machine::Machine (const Machine &machine):
 	changed (true),
     Object{machine.GetId()},
 	machine_completion_time (0)
@@ -41,13 +42,13 @@ Machine::Machine (const Machine &machine):
 	// std::cout << "\tCopied Machine " << id << " containing " << v_processes.size () << " Processes with a completion time of " << this->get_completion_time () << "\n";
 }
 
-void Machine::assign_process_to_machine (Process *process) {
+void bct::Machine::assign_process_to_machine (Process *process) {
 	// std::cout << "Assigning Process " << process->get_id () << " to Machine " << this->get_id () << ".\n";
 	v_processes.push_back (process);
 	changed = true;
 }
 
-void Machine::compute_completion_time () {
+void bct::Machine::compute_completion_time () {
 	// Reset machine completion time
 	machine_completion_time = 0;
 
@@ -59,7 +60,7 @@ void Machine::compute_completion_time () {
 	changed = false;
 }
 
-void Machine::delete_process_from_machine (Process *process) {
+void bct::Machine::delete_process_from_machine (Process *process) {
 	for (std::vector<Process*>::iterator it = v_processes.begin (); it != v_processes.end (); ++it) {
 		if (*it == process) {
 			// std::cout << "Deleting Process " << (*it)->get_id () << "/" << process->get_id () << " from Machine " << this->get_id () << ".\n";
@@ -70,13 +71,13 @@ void Machine::delete_process_from_machine (Process *process) {
 	changed = true;
 }
 
-void Machine::flush () {
+void bct::Machine::flush () {
 	v_processes.clear ();
 	machine_completion_time = 0;
 	changed = false;
 }
 
-unsigned int Machine::get_completion_time () {
+unsigned int bct::Machine::get_completion_time () {
 	if (changed == false) {
 		return machine_completion_time;
 	}
@@ -86,13 +87,13 @@ unsigned int Machine::get_completion_time () {
 	}
 }
 
-std::vector<Process*> *Machine::get_processes_copy () const {
+std::vector<bct::Process*> *bct::Machine::get_processes_copy () const {
 	std::vector<Process*> *vecptr = new std::vector<Process*> (v_processes);
 
 	return vecptr;
 }
 
-void Machine::set_assigned_processes_vector (std::vector<Process*> processes_vector) {
+void bct::Machine::set_assigned_processes_vector (std::vector<Process*> processes_vector) {
 	// Copies all elements from 'processes_vector' to 'v_processes'
 	v_processes = processes_vector;
 
