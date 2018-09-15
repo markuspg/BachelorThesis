@@ -19,22 +19,21 @@
 
 #include "process.h"
 
-bct::Process::Process (unsigned short int pid, unsigned int time):
-	Object (pid),
-	assigned_machines_id (0),
-	processing_time (time)
+#include <iostream>
+
+bct::Process::Process(const unsigned short argPid, const unsigned argTime):
+    Object{argPid},
+    processingTime{argTime}
 {
-	// std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
+    // std::cout << "\tCreated Process " << id
+    //           << " with a duration of " << processingTime << "\n";
 }
 
-bct::Process::Process (const Process &process):
-    Object{process.GetId()},
-	assigned_machines_id (process.get_assigned_machines_id ()),
-	processing_time (process.get_processing_time ())
+bct::Process::Process (const Process &argProcess):
+    Object{argProcess.id},
+    assignedMachinesId{argProcess.assignedMachinesId},
+    processingTime{argProcess.processingTime}
 {
-	// std::cout << "\tCreated Process " << id << " with a duration of " << processing_time << "\n";
-}
-
-void bct::Process::set_assigned_machines_id (unsigned int mid) {
-	assigned_machines_id = mid;
+    // std::cout << "\tCreated Process " << id <<
+    //              " with a duration of " << processingTime << "\n";
 }

@@ -109,19 +109,19 @@ bct::Problem::~Problem () {
 void bct::Problem::assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid) {
 	// std::cout << "\t  Assigning process " << processes[pid - 1]->get_id () << " with a duration of " << processes[pid - 1]->get_processing_time () << " to machine " << machines[mid - 1]->get_id () << "\n";
 	machines[mid - 1]->assign_process_to_machine (processes[pid - 1]);
-	processes[pid - 1]->set_assigned_machines_id (mid);
+	processes[pid - 1]->SetAssignedMachinesId (mid);
 }
 
 
 bool bct::Problem::check_validity () {
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
 		// Check if every Process is assigned to a Machine
-		if (processes[j]->get_assigned_machines_id () == 0) {
+		if (processes[j]->GetAssignedMachinesId () == 0) {
 			// std::cout << "\t  Process " << processes[j]->get_id () << " is not yet assigned => no feasible solution.\n";
 			return false;
 		}
 		// Check if all Processes are assigned to valid Machines
-		if (processes[j]->get_assigned_machines_id () > machines_quantity) {
+		if (processes[j]->GetAssignedMachinesId () > machines_quantity) {
 			// std::cout << "\t  Process " << processes[j]->get_id () << " is not assigned to a valid machine => no feasible solution.\n";
 			return false;
 		}
@@ -136,7 +136,7 @@ void bct::Problem::flush () {
 
 	// Flush the information stored in the Processes
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		processes[j]->set_assigned_machines_id(0);
+		processes[j]->SetAssignedMachinesId(0);
 	}
 	
 	// Flush the information stored in the Machines
@@ -227,8 +227,8 @@ void bct::Problem::query_state () {
 	std::cout << "\t" << processes_quantity << " Processes\n";
 	unsigned int overall_completion_time = 0;
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-        std::cout << "\t  Process " << processes[j]->GetId() << ",\tduration: " << processes[j]->get_processing_time () << "\n";
-		overall_completion_time += processes[j]->get_processing_time ();
+        std::cout << "\t  Process " << processes[j]->GetId() << ",\tduration: " << processes[j]->GetProcessingTime () << "\n";
+		overall_completion_time += processes[j]->GetProcessingTime ();
 	}
 	std::cout << "\t  =>With an over all completion time of " << overall_completion_time << "\n";
 
@@ -243,7 +243,7 @@ void bct::Problem::query_state () {
 
 			// Iterate over all assigned Processes and output the ids and processing times
 			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
-                std::cout << "\t\t" << (*cit)->GetId() << "=>" << (*cit)->get_processing_time () << "\n";
+                std::cout << "\t\t" << (*cit)->GetId() << "=>" << (*cit)->GetProcessingTime()<< "\n";
 			}
 
 			// Output the complete completion time of the Machine
@@ -287,7 +287,7 @@ void bct::Problem::save_instance (std::string *filename) {
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
 		if (j > 0)
 			output_file_stream << ";";
-		output_file_stream << processes[j]->get_processing_time ();
+		output_file_stream << processes[j]->GetProcessingTime ();
 	}
 
 	// Check if the current solution is valid and store Machine assignemts if so

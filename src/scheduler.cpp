@@ -121,7 +121,7 @@ void bct::Scheduler::apply_SI_algorithm () {
 		for (unsigned int i = 0; i < machines_quantity; i++) {
 			// Assign the first n processes whose cumulated size is smaller than the bin capacity
 			while (true) {
-				if ((machines[i]->get_completion_time () + l_processes.front ()->get_processing_time ()) < C) {
+                if ((machines[i]->get_completion_time () + l_processes.front ()->GetProcessingTime()) < C) {
 					// Check if there are still Processes to assign in the list
 					if (l_processes.size () < 1) {
 						break;

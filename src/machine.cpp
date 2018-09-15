@@ -54,7 +54,7 @@ void bct::Machine::compute_completion_time () {
 
 	// Recompute it
 	for (std::vector<Process*>::const_iterator it = v_processes.cbegin (); it != v_processes.cend (); ++it) {
-		machine_completion_time += (*it)->get_processing_time ();
+        machine_completion_time += (*it)->GetProcessingTime();
 	}
 
 	changed = false;

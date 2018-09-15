@@ -59,7 +59,7 @@ void bct::TemporaryStorage::load_temporarily_stored_solution (Machine **p_machin
 	// Restores information on the Processes
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
 		for (std::vector<Process*>::const_iterator cit = v_processes[i]->cbegin (); cit != v_processes[i]->cend (); ++cit) {
-            p_processes[(*cit)->GetId() - 1]->set_assigned_machines_id (i + 1);
+            p_processes[(*cit)->GetId() - 1]->SetAssignedMachinesId (i + 1);
 		}
 
 		p_machines[i]->compute_completion_time ();

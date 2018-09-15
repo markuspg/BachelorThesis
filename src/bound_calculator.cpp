@@ -33,7 +33,7 @@
 {
 	unsigned int processing_time = 0;
 	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		processing_time = processes[j]->get_processing_time ();
+		processing_time = processes[j]->GetProcessingTime ();
 		cumulated_processing_times += processing_time;
 		if (processing_time > longest_processing_time)
 			longest_processing_time = processing_time;
@@ -46,9 +46,9 @@
 
 unsigned int bct::BoundCalc::apply_LDM_algrithm () {
 	unsigned int existing_bound = apply_SIMPLE_LINEAR_TIME_algorithm ();
-	unsigned int test_capacity = static_cast<unsigned int> (fmax (static_cast<double>(existing_bound - (processes[0]->get_processing_time () / 2)), static_cast<double>(existing_bound / 2)));
+	unsigned int test_capacity = static_cast<unsigned int> (fmax (static_cast<double>(existing_bound - (processes[0]->GetProcessingTime () / 2)), static_cast<double>(existing_bound / 2)));
 	// Iteratively test different bin capacities beginning with an already known lower bound
-	for ( ; test_capacity < existing_bound + processes[0]->get_processing_time (); test_capacity++) {
+	for ( ; test_capacity < existing_bound + processes[0]->GetProcessingTime (); test_capacity++) {
 		unsigned short int test = get_LB_BPP_BP_lower_bound (test_capacity);
 		if ((test > 0) && (test  <= machines_quantity))
 			break;
@@ -80,7 +80,7 @@ unsigned int bct::BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
 
 	// Calculate the three needed quantities
 	// std::cout << "Longest processing time:\t" << longest_processing_time << "\n";
-	unsigned int pmpm1 = processes[machines_quantity - 1]->get_processing_time () + processes[machines_quantity]->get_processing_time ();
+	unsigned int pmpm1 = processes[machines_quantity - 1]->GetProcessingTime () + processes[machines_quantity]->GetProcessingTime ();
 	// std::cout << "pmpm1:\t\t\t\t" << pmpm1 << "\n";
 	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machines_quantity)) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
 	// std::cout << "Average runtime:\t\t" << average_runtime << "\n";
@@ -117,9 +117,9 @@ unsigned short int bct::BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capac
 	// Add all valid processing times to a vector
 	std::vector<unsigned int> p;
 	for (unsigned int j = machines_quantity + 1; j < processes_quantity; j++) {
-		if (processes[j]->get_processing_time () > static_cast<unsigned int>(capacity / 2))
+		if (processes[j]->GetProcessingTime () > static_cast<unsigned int>(capacity / 2))
 			continue;
-		p.push_back (processes[j]->get_processing_time ());
+		p.push_back (processes[j]->GetProcessingTime ());
 		// std::cout << "Added Process " << processes[j]->get_id () << " with a duration of " << processes[j]->get_processing_time () << "\n";
 	}
 
@@ -133,12 +133,12 @@ unsigned short int bct::BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capac
 		// Create the three sets of Processes
 		std::vector<unsigned int> J_1, J_2, J_3;
 		for (unsigned int k = 0; k < processes_quantity; k++) {
-			if (processes[k]->get_processing_time () > capacity - *it)
-				J_1.push_back (processes[k]->get_processing_time ());
-			if ((static_cast<unsigned int>(capacity / 2) < processes[k]->get_processing_time ()) && (processes[k]->get_processing_time () <= capacity - *it))
-				J_2.push_back (processes[k]->get_processing_time ());
-			if ((*it <= processes[k]->get_processing_time ()) && (processes[k]->get_processing_time () <= static_cast<unsigned int>(capacity / 2)))
-				J_3.push_back (processes[k]->get_processing_time ());
+			if (processes[k]->GetProcessingTime () > capacity - *it)
+				J_1.push_back (processes[k]->GetProcessingTime ());
+			if ((static_cast<unsigned int>(capacity / 2) < processes[k]->GetProcessingTime ()) && (processes[k]->GetProcessingTime () <= capacity - *it))
+				J_2.push_back (processes[k]->GetProcessingTime ());
+			if ((*it <= processes[k]->GetProcessingTime ()) && (processes[k]->GetProcessingTime () <= static_cast<unsigned int>(capacity / 2)))
+				J_3.push_back (processes[k]->GetProcessingTime ());
 		}
 
 		/* // Output of the three vectors

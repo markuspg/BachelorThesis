@@ -89,8 +89,8 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 				for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
 					if (!greedy) {
 						// Allowing <= yielding in no advantageous swaps for greater exploration of the solution space
-						if ((*ita)->get_processing_time () >= (*itb)->get_processing_time ()) {
-							if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) <= maximum_difference) {
+                        if ((*ita)->GetProcessingTime() >= (*itb)->GetProcessingTime()) {
+                            if (((*ita)->GetProcessingTime() - (*itb)->GetProcessingTime()) <= maximum_difference) {
 								set_a.push_back (*ita);
 								set_b.push_back (*itb);
 							}
@@ -98,8 +98,8 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 					}
 					else {
 						// Not using <= in both cases, because it does not lead to an advantageous swap
-						if ((*ita)->get_processing_time () > (*itb)->get_processing_time ()) {
-							if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) < maximum_difference) {
+                        if ((*ita)->GetProcessingTime() > (*itb)->GetProcessingTime()) {
+                            if (((*ita)->GetProcessingTime() - (*itb)->GetProcessingTime()) < maximum_difference) {
 								set_a.push_back (*ita);
 								set_b.push_back (*itb);
 							}
@@ -142,8 +142,8 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			}
 			else {
 				for (auto ita = set_a.cbegin (), itb = set_b.cbegin (); ita != set_a.cend (); ++ita, ++itb) {
-					if (((*ita)->get_processing_time () - (*itb)->get_processing_time ()) > best_swap) {
-						best_swap = (*ita)->get_processing_time () - (*itb)->get_processing_time ();
+                    if (((*ita)->GetProcessingTime() - (*itb)->GetProcessingTime()) > best_swap) {
+                        best_swap = (*ita)->GetProcessingTime() - (*itb)->GetProcessingTime();
 						swap_index = counter;
 					}
 					counter++;
