@@ -72,21 +72,20 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			}
 			
 			// Stop if all machines have the same load (Step 6: Terminate if F_PA = F_PB)
-			if (pa->get_completion_time () == pb->get_completion_time ()) {
+			if (pa->GetCompletionTime () == pb->GetCompletionTime ()) {
 				// std::cout << "Current schedule has all Machines finishing the same time => Terminating.\n";
 				return;
 			}
 			
 			// Evaluate all advantageous swaps (Step 7: Form sets A and B)
-			unsigned int maximum_difference = pa->get_completion_time () - pb->get_completion_time ();
+			unsigned int maximum_difference = pa->GetCompletionTime () - pb->GetCompletionTime ();
 			// std::cout << "The maximum valid difference is " << maximum_difference << ".\n";
-			std::vector<Process*> *a_processes = nullptr, *b_processes = nullptr;
-			// Fetch assigned Processes of both Machines
-			a_processes = pa->get_processes_copy ();
-			b_processes = pb->get_processes_copy ();
+            // Fetch assigned Processes of both Machines
+            auto a_processes = pa->GetProcessesCopy();
+            auto b_processes = pb->GetProcessesCopy();
 			// If a swap is advantageous, store it
-			for (auto ita = a_processes->cbegin (); ita != a_processes->cend (); ++ita) {
-				for (auto itb = b_processes->cbegin (); itb != b_processes->cend (); ++itb) {
+            for (auto ita = a_processes.cbegin(); ita != a_processes.cend(); ++ita) {
+                for (auto itb = b_processes.cbegin(); itb != b_processes.cend(); ++itb) {
 					if (!greedy) {
 						// Allowing <= yielding in no advantageous swaps for greater exploration of the solution space
                         if ((*ita)->GetProcessingTime() >= (*itb)->GetProcessingTime()) {
@@ -111,12 +110,7 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 				// std::cout << "Difference between PID " << (*ita)->get_id () << " & " << (*itb)->get_id () << " is " << (*ita)->get_processing_time () - (*itb)->get_processing_time () << ".\n";
 			}
 			
-			delete a_processes;
-			delete b_processes;
-			a_processes = nullptr;
-			b_processes = nullptr;
-			
-			if (set_a.size () > 0) {
+            if (set_a.size () > 0) {
 				// std::cout << "A set of advantageous swaps could be formed.\n";
 				break;
 			}
@@ -152,10 +146,10 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 			}
 			
 			// Do the swap and compute new finish times (Step 9: Exchange two jobs a and b)
-			pa->assign_process_to_machine (set_b.at (swap_index));
-			pb->assign_process_to_machine (set_a.at (swap_index));
-			pa->delete_process_from_machine (set_a.at (swap_index));
-			pb->delete_process_from_machine (set_b.at (swap_index));
+			pa->AssignProcessToMachine (set_b.at (swap_index));
+			pb->AssignProcessToMachine (set_a.at (swap_index));
+			pa->DeleteProcessFromMachine (set_a.at (swap_index));
+			pb->DeleteProcessFromMachine (set_b.at (swap_index));
 			// std::cout << "New completion times are:\n\tPA = " << pa->get_completion_time () << "\n\tPB = " << pb->get_completion_time () << "\n";
 			set_a.clear ();
 			set_b.clear ();

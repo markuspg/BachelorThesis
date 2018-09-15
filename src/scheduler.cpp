@@ -121,7 +121,7 @@ void bct::Scheduler::apply_SI_algorithm () {
 		for (unsigned int i = 0; i < machines_quantity; i++) {
 			// Assign the first n processes whose cumulated size is smaller than the bin capacity
 			while (true) {
-                if ((machines[i]->get_completion_time () + l_processes.front ()->GetProcessingTime()) < C) {
+                if ((machines[i]->GetCompletionTime () + l_processes.front ()->GetProcessingTime()) < C) {
 					// Check if there are still Processes to assign in the list
 					if (l_processes.size () < 1) {
 						break;
@@ -137,7 +137,7 @@ void bct::Scheduler::apply_SI_algorithm () {
 			}
 			// Assign the last n Processes to fill the bin
 			while (true) {
-				if (machines[i]->get_completion_time () < C) {
+				if (machines[i]->GetCompletionTime () < C) {
 					if (l_processes.size () < 1) {
 						break;
 					}
@@ -153,7 +153,7 @@ void bct::Scheduler::apply_SI_algorithm () {
 		}
 
 		// Check if current solution is valid
-		if (machines[machines_quantity - 1]->get_completion_time () >= C) {
+		if (machines[machines_quantity - 1]->GetCompletionTime () >= C) {
 			// Assign any left over Processes using the LPT algorithm
 			if (l_processes.size () > 0) {
 				// std::cout << "All Machines got filled, but not all Processes assigned. Assigning them using the LPT algorithm, then leaving.\n";

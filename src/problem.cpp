@@ -108,7 +108,7 @@ bct::Problem::~Problem () {
 
 void bct::Problem::assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid) {
 	// std::cout << "\t  Assigning process " << processes[pid - 1]->get_id () << " with a duration of " << processes[pid - 1]->get_processing_time () << " to machine " << machines[mid - 1]->get_id () << "\n";
-	machines[mid - 1]->assign_process_to_machine (processes[pid - 1]);
+	machines[mid - 1]->AssignProcessToMachine (processes[pid - 1]);
 	processes[pid - 1]->SetAssignedMachinesId (mid);
 }
 
@@ -141,7 +141,7 @@ void bct::Problem::flush () {
 	
 	// Flush the information stored in the Machines
 	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		machines[i]->flush ();
+		machines[i]->Flush ();
 	}
 }
 
@@ -154,12 +154,12 @@ void bct::Problem::load_stored_solution () {
 }
 
 unsigned int bct::Problem::query_lowest_completion_time () {
-	unsigned int lowest_completion_time = machines[0]->get_completion_time ();
+	unsigned int lowest_completion_time = machines[0]->GetCompletionTime ();
 
 	// Iterate over all Machines, query their completion times and return the lowest
 	for (unsigned short int i = 1; i < machines_quantity; i++) {
-		if (machines[i]->get_completion_time () < lowest_completion_time)
-			lowest_completion_time = machines[i]->get_completion_time ();
+		if (machines[i]->GetCompletionTime () < lowest_completion_time)
+			lowest_completion_time = machines[i]->GetCompletionTime ();
 	}
 
 	return lowest_completion_time;
@@ -180,7 +180,7 @@ unsigned short int bct::Problem::query_lowest_workload_machines_id (unsigned sho
 	// Pop the Machine with the lowest or highest workload until 'pop_machines' is empty
 	while (!pop_machines.empty ()) {
 		// Take the first Machine in 'pop_machines' as start value
-		unsigned int best_workload = pop_machines.at (0)->get_completion_time ();
+        unsigned int best_workload = pop_machines.at(0)->GetCompletionTime();
 		// std::cout << "best_workload " << best_workload << "\n";
 		unsigned short int best_workload_machine = 0;
 		// std::cout << "pop_machines.size () = " << pop_machines.size () << "\n";
@@ -190,9 +190,9 @@ unsigned short int bct::Problem::query_lowest_workload_machines_id (unsigned sho
 			if (!invert) {
 				// std::cout << "Checking for lowest workload Machine.\n";
 				// Check if current Machine has a lower workload than the known one
-				if (pop_machines.at (i)->get_completion_time () < best_workload) {
+                if (pop_machines.at(i)->GetCompletionTime() < best_workload) {
 					// std::cout << "Superior!\n";
-					best_workload = pop_machines.at (i)->get_completion_time ();
+                    best_workload = pop_machines.at(i)->GetCompletionTime();
 					best_workload_machine = i;
 				}
 			}
@@ -200,9 +200,9 @@ unsigned short int bct::Problem::query_lowest_workload_machines_id (unsigned sho
 			else {
 				// std::cout << "Checking for highest workload Machine.\n";
 				// Check if current Machine has a higher workload than the known one
-				if (pop_machines.at (i)->get_completion_time () > best_workload) {
+                if (pop_machines.at(i)->GetCompletionTime() > best_workload) {
 					// std::cout << "Superior!\n";
-					best_workload = pop_machines.at (i)->get_completion_time ();
+                    best_workload = pop_machines.at(i)->GetCompletionTime();
 					best_workload_machine = i;
 				}
 			}
@@ -237,19 +237,16 @@ void bct::Problem::query_state () {
 	// Query the Machine's Processes after having checked, if the current solution is feasible
 	if (check_validity ()) {
 		for (unsigned int i = 0; i < machines_quantity; i++) {
-			std::vector <Process*> *vecptr = nullptr;
-			vecptr = machines[i]->get_processes_copy ();
+            auto procVec = machines[i]->GetProcessesCopy();
             std::cout << "\t    Processes assigned to Machine " << machines[i]->GetId() << "\n";
 
 			// Iterate over all assigned Processes and output the ids and processing times
-			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
+            for (auto cit = procVec.cbegin(); cit != procVec.cend(); ++cit) {
                 std::cout << "\t\t" << (*cit)->GetId() << "=>" << (*cit)->GetProcessingTime()<< "\n";
 			}
 
 			// Output the complete completion time of the Machine
-            std::cout << "\t\t=>Machine " << machines[i]->GetId() << " completion time: " << machines[i]->get_completion_time () << "\n";
-
-			delete vecptr;
+            std::cout << "\t\t=>Machine " << machines[i]->GetId() << " completion time: " << machines[i]->GetCompletionTime () << "\n";
 		}
 
 		std::cout << "\tThe current target solution value is " << query_lowest_completion_time () << "\n";
@@ -294,15 +291,13 @@ void bct::Problem::save_instance (std::string *filename) {
 	if (check_validity ()) {
 		output_file_stream << "\n# Machine assignments\n";
 		for (unsigned short int i = 0; i < machines_quantity; i++) {
-			std::vector <Process*> *vecptr = nullptr;
             output_file_stream << "# Machine " << machines[i]->GetId() << "\n";
-			vecptr = machines[i]->get_processes_copy ();
-			for (std::vector<Process*>::const_iterator cit = vecptr->cbegin (); cit != vecptr->cend (); ++cit) {
-				if (cit != vecptr->cbegin ())
+            auto procVec = machines[i]->GetProcessesCopy ();
+            for (auto cit = procVec.cbegin(); cit != procVec.cend(); ++cit) {
+                if (cit != procVec.cbegin())
 					output_file_stream << ";";
                 output_file_stream << (*cit)->GetId();
-			}
-			delete vecptr;
+            }
 			output_file_stream << "\n";
 		}
 	}
