@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-bct::Process::Process(const unsigned short argPid, const unsigned argTime):
+bct::Process::Process(const unsigned short argPid, const unsigned int argTime):
     Object{argPid},
     processingTime{argTime}
 {
