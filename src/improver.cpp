@@ -196,13 +196,13 @@ void bct::Improver::Apply_PAIRWISE_algorithm(bool argGreedy) {
  * \param argAlgo The algorithm to use
  * \param argIterations The count of iterations the algorithm shall be applied (only affects non-deterministic algorithms)
  */
-void bct::Improver::ImproveStartSolution(const unsigned int argAlgo,
+void bct::Improver::ImproveStartSolution(const EImprovementAlgos argAlgo,
                                          const unsigned short argIterations) {
     switch (argAlgo) {
-    case gPAIRWISE:
+    case EImprovementAlgos::gPAIRWISE:
         Apply_PAIRWISE_algorithm(true);
         break;
-    case PAIRWISE:
+    case EImprovementAlgos::PAIRWISE:
         Apply_PAIRWISE_algorithm();
         break;
     default:

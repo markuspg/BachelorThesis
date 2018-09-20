@@ -27,9 +27,14 @@ namespace bct {
 /*! A class to improve given starting solutions */
 class Improver : public Problem {
 public:
+    enum class EImprovementAlgos{
+        gPAIRWISE,
+        PAIRWISE,
+    };
+
     Improver(const Problem &argroblem);
     void Apply_PAIRWISE_algorithm(const bool argGreedy = false);
-    void ImproveStartSolution(const unsigned int argAlgo,
+    void ImproveStartSolution(const EImprovementAlgos argAlgo,
                               const unsigned short argIterations = 50);
 };
 
