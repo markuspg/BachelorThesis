@@ -33,25 +33,17 @@ bct::TemporaryStorage::TemporaryStorage(const unsigned int argCurrentSolution,
                                         const unsigned short argMachinesQty,
                                         Machine **argMachines):
     machinesQuantity{argMachinesQty},
+    processes(argMachinesQty),
     solutionValue{argCurrentSolution}
 {
     // std::cout << "\tCreating a temporary storage containing "
     //           << machinesQuantity << " Machine's assignments.\n";
-    processes = new std::vector<Process*>*[argMachinesQty];
     for (unsigned short i = 0; i < argMachinesQty; ++i) {
-        processes[i] = new std::vector<Process*>{argMachines[i]->GetProcessesCopy()};
-        // std::cout << "\t  Added a vector containing " << processes[i]->size()
+        processes[i] = argMachines[i]->GetProcessesCopy();
+        // std::cout << "\t  Added a vector containing " << processes[i].size()
         //           << " elements representing Machine "
         //           << argMachines[i]->GetId() << ".\n";
-	}
-}
-
-bct::TemporaryStorage::~TemporaryStorage () {
-    for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        delete processes[i];
-	}
-
-    delete processes;
+    }
 }
 
 /*!
@@ -61,23 +53,22 @@ bct::TemporaryStorage::~TemporaryStorage () {
  */
 void bct::TemporaryStorage::LoadTemporarilyStoredSolution(
         Machine **argMachines, Process **argProcesses) {
-	// std::cout << "\nLoading the temporarily stored solution.\n";
+    // std::cout << "\nLoading the temporarily stored solution.\n";
 
-	// Restore information on the Machines
+    // Restore information on the Machines
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
         // std::cout << "\tFlushing Machine " << argMachines[i]->GetId() << ".\n";
         argMachines[i]->Flush();
-		// std::cout << "\tAssigning old solution vector.\n";
-        argMachines[i]->SetAssignedProcessesVector(*processes[i]);
-	}
+        // std::cout << "\tAssigning old solution vector.\n";
+        argMachines[i]->SetAssignedProcessesVector(processes[i]);
+    }
 
-	// Restores information on the Processes
+    // Restores information on the Processes
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        for (std::vector<Process*>::const_iterator cit = processes[i]->cbegin ();
-             cit != processes[i]->cend (); ++cit) {
-            argProcesses[(*cit)->GetId() - 1]->SetAssignedMachinesId(i + 1);
-		}
+        for (const auto process : processes[i]) {
+            argProcesses[process->GetId() - 1]->SetAssignedMachinesId(i + 1);
+        }
 
         argMachines[i]->ComputeCompletionTime();
-	}
+    }
 }

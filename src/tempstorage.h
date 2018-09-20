@@ -33,17 +33,16 @@ public:
     TemporaryStorage (const unsigned int argCurrentSolution,
                       const unsigned short argMachinesQty,
                       Machine **argMachines);
-    ~TemporaryStorage();
     void LoadTemporarilyStoredSolution(Machine **argMachines,
                                        Process **argProcesses);
 
 private:
     //! Stores the quantity of Machines of the Problem
     const unsigned short int machinesQuantity;
+    //! Stores the pointers of the Processes assigned to the Machines
+    std::vector<std::vector<Process*>> processes;
     //! Stores the target value of the solution
     const unsigned int solutionValue;
-    //! Stores the pointers of the Processes assigned to the Machines
-    std::vector<Process*> **processes;
 };
 
 } // namespace bct
