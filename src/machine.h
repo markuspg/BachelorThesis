@@ -43,7 +43,7 @@ public:
 
     void AssignProcessToMachine(Process *const argProcess);
     void ComputeCompletionTime() noexcept;
-    void DeleteProcessFromMachine(Process *const argProcess);
+    bool DeleteProcessFromMachine(Process *const argProcess);
     void Flush() noexcept;
     unsigned GetCompletionTime() noexcept;
     ProcVec GetProcessesCopy() const;

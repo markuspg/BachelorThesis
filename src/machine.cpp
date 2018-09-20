@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 
 bct::Machine::Machine (const unsigned short argMachineId,
                        const unsigned short argTotalProcessQty):
@@ -48,32 +49,36 @@ void bct::Machine::AssignProcessToMachine(Process *const argProcess) {
     // std::cout << "Assigning Process " << argProcess->GetId()
     //           << " to Machine " << this->GetId() << ".\n";
     assignedProccessesVec.emplace_back(argProcess);
-	changed = true;
+    changed = true;
 }
 
 void bct::Machine::ComputeCompletionTime() noexcept {
-	// Reset machine completion time
+    // Reset machine completion time
     machineCompletionTime = 0;
 
-	// Recompute it
-    for (const auto &process : assignedProccessesVec) {
-        machineCompletionTime += process->GetProcessingTime();
-	}
+    // Recompute it
+    std::accumulate(assignedProccessesVec.cbegin(), assignedProccessesVec.cend(),
+                    machineCompletionTime,
+                    [](const unsigned int a, const Process *const b){
+                        return a + b->GetProcessingTime();
+    });
 
-	changed = false;
+    changed = false;
 }
 
-void bct::Machine::DeleteProcessFromMachine(Process *const argProcess) {
+bool bct::Machine::DeleteProcessFromMachine(Process *const argProcess) {
     const auto it = std::find(assignedProccessesVec.begin(),
                               assignedProccessesVec.end(),
                               argProcess);
     if (it != std::end(assignedProccessesVec)) {
-            // std::cout << "Deleting Process " << (*it)->GetId()
-            //           << "/" << argProcess->GetId()
-            //           << " from Machine " << this->GetId() << ".\n";
-            assignedProccessesVec.erase(it);
-	}
-	changed = true;
+        // std::cout << "Deleting Process " << (*it)->GetId()
+        //           << "/" << argProcess->GetId()
+        //           << " from Machine " << this->GetId() << ".\n";
+        assignedProccessesVec.erase(it);
+        changed = true;
+        return true;
+    }
+    return false;
 }
 
 /*!
@@ -86,12 +91,12 @@ void bct::Machine::Flush() noexcept {
 }
 
 unsigned bct::Machine::GetCompletionTime() noexcept {
-	if (changed == false) {
+    if (changed == false) {
         return machineCompletionTime;
     } else {
         ComputeCompletionTime();
         return machineCompletionTime;
-	}
+    }
 }
 
 /*!
@@ -104,5 +109,5 @@ std::vector<bct::Process*> bct::Machine::GetProcessesCopy() const {
 
 void bct::Machine::SetAssignedProcessesVector(const ProcVec &argProcessesVec) {
     assignedProccessesVec = argProcessesVec;
-	changed = true;
+    changed = true;
 }
