@@ -52,21 +52,21 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 	// Create stop criterion for algorithm loop
 	bool stop = false;
 	while (!stop) {
-		for (unsigned short int k = 0; k < machines_quantity - 1; k++) {
+		for (unsigned short int k = 0; k < machinesQuantity - 1; k++) {
 			// Query the maximum workload machine (Step 3: Distinguish PA)
 			// std::cout << "Querying maximum workload Machine.\n";
-			pa = machines[query_lowest_workload_machines_id (k, true) - 1];
+            pa = machines[QueryLowestWorkloadMachinesId(k, true) - 1];
 			if (k == 0)
 				; // std::cout << "Maximum workload Machine PA is machine " << pa->get_id () << ".\n";
 			else
 				; // std::cout << "The " << k + 1 << ". most loaded Machine is " << pa->get_id () << ".\n";
 			
 			// Query  the lowest workload machine (Step 4: Distinguish PB)
-			pb = machines[query_lowest_workload_machines_id (0, false) - 1];
+            pb = machines[QueryLowestWorkloadMachinesId(0, false) - 1];
 			// std::cout << "Lowest workload machine PB is Machine " << pb->get_id () << ".\n";
 			
 			// Stop, if the upper bound correlates to the current solution value (Step 5: If LB = M)
-			if (upper_bound == this->query_lowest_completion_time ()) {
+            if (upper_bound == this->QueryLowestCompletionTime()) {
 				// std::cout << "Current schedule correlates to upper bound => Terminating.\n";
 				return;
 			}

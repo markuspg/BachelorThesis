@@ -26,282 +26,331 @@
 #include <iostream>
 #include <sstream>
 
-bct::Problem::Problem (std::string filename):
-	machines (nullptr),
-	processes (nullptr)
+/*!
+ * \brief Construct a new Problem by the passed-in file
+ * \param[in] argFilename The path of the file containing the Problem instance
+ */
+bct::Problem::Problem(const std::string &argFilename)
 {
-	std::cout << "\nThe problem saved in " << filename << " will be loaded.\n";
+    std::cout << "\nThe problem saved in " << argFilename << " will be loaded.\n";
 
-	// Open a saved problem as input
-	std::ifstream input_file_stream (filename);
+    // Open a saved problem as input
+    std::ifstream input_file_stream{argFilename};
 
-	// Read the lines, store them as str and convert it into the variables (waste is used to omit commentaries)
-	std::string str, waste;
-	std::getline (input_file_stream, waste);
-	std::getline (input_file_stream, str);
-	std::istringstream (str) >> machines_quantity;
-	std::getline (input_file_stream, waste);
-	std::getline (input_file_stream, str);
-	std::istringstream (str) >> processes_quantity;
+    // Read the lines, store them as str and convert it into the variables (waste is used to omit commentaries)
+    std::string str, waste;
+    std::getline(input_file_stream, waste);
+    std::getline(input_file_stream, str);
+    std::istringstream{str} >> machinesQuantity;
+    std::getline(input_file_stream, waste);
+    std::getline(input_file_stream, str);
+    std::istringstream{str} >> processesQuantity;
 
-	std::cout << "\nCreating a new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
+    std::cout << "\nCreating a new Problem instance with the following"
+                 " specifications:\n\tMachines:\t\t" << machinesQuantity
+              << "\n\tProcesses:\t\t" << processesQuantity << "\n\n";
 
-	// Create Machines
-	machines = new Machine* [machines_quantity];
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		machines[i] = new Machine (i + 1, processes_quantity);
-	}
+    // Create Machines
+    machines = new Machine*[machinesQuantity];
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        machines[i] = new Machine{i + 1, processesQuantity};
+    }
 
-	// Create Processes
-	// Add the vector's elements to a new Process array
-	std::getline (input_file_stream, waste);
-	processes = new Process* [processes_quantity];
-	unsigned int duration = 0;
-	for (unsigned short int j = 0; j < processes_quantity - 1; j++) {
-		std::getline (input_file_stream, str, ';');
-		std::istringstream (str) >> duration;
-		processes[j] = new Process (j + 1, duration);
-	}
-	std::getline (input_file_stream, str);
-	std::istringstream (str) >> duration;
-	processes[processes_quantity - 1] = new Process (processes_quantity, duration);
-	
-	// Close the file
-	input_file_stream.close();
+    // Create Processes
+    // Add the vector's elements to a new Process array
+    std::getline(input_file_stream, waste);
+    processes = new Process*[processesQuantity];
+    unsigned int duration = 0;
+    for (unsigned short j = 0; j < processesQuantity - 1; ++j) {
+        std::getline(input_file_stream, str, ';');
+        std::istringstream{str} >> duration;
+        processes[j] = new Process{j + 1, duration};
+    }
+    std::getline(input_file_stream, str);
+    std::istringstream{str} >> duration;
+    processes[processesQuantity - 1] = new Process{processesQuantity, duration};
+
+    // Close the file
+    input_file_stream.close();
 }
 
-bct::Problem::Problem (const Problem &problem):
-	machines_quantity (problem.get_machines_quantity ()),
-	processes_quantity (problem.get_processes_quantity ())
+bct::Problem::Problem(const Problem &argProblem):
+    machinesQuantity{argProblem.machinesQuantity},
+    processesQuantity{argProblem.processesQuantity}
 {
-	// std::cout << "\nCreating new Problem instance with the following specifications:\n\tMachines:\t\t" << machines_quantity << "\n\tProcesses:\t\t" << processes_quantity << "\n\n";
+    // std::cout << "\nCreating new Problem instance with the following"
+    //              " specifications:\n\tMachines:\t\t" << machinesQuantity
+    //           << "\n\tProcesses:\t\t" << processesQuantity << "\n\n";
 
-	// Create Machines
-	Machine **temp_machines = nullptr;
-	temp_machines = problem.get_machines_pointer ();
-	machines = new Machine* [machines_quantity];
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		machines[i] = new Machine (*temp_machines[i]);
-	}
+    // Create Machines
+    Machine **tempMachines = nullptr;
+    tempMachines = argProblem.GetMachinesPointer();
+    machines = new Machine*[machinesQuantity];
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        machines[i] = new Machine{*tempMachines[i]};
+    }
 
-	// Create Processes
-	Process **temp_processes = nullptr;
-	temp_processes = problem.get_processes_pointer ();
-	processes = new Process* [processes_quantity];
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		processes[j] = new Process (*temp_processes[j]);
-	}
+    // Create Processes
+    Process **tempProcesses = nullptr;
+    tempProcesses = argProblem.GetProcessesPointer();
+    processes = new Process*[processesQuantity];
+    for (unsigned short j = 0; j < processesQuantity; ++j) {
+        processes[j] = new Process{*tempProcesses[j]};
+    }
 }
 
 
 bct::Problem::~Problem () {
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		delete machines[i];
-	}
-	delete [] machines;
-	
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		delete processes[j];
-	}
-	delete [] processes;
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        delete machines[i];
+    }
+    delete [] machines;
+
+    for (unsigned short int j = 0; j < processesQuantity; ++j) {
+        delete processes[j];
+    }
+    delete [] processes;
 }
 
-void bct::Problem::assign_process_to_machine_by_ids (unsigned short int pid, unsigned short int mid) {
-	// std::cout << "\t  Assigning process " << processes[pid - 1]->get_id () << " with a duration of " << processes[pid - 1]->get_processing_time () << " to machine " << machines[mid - 1]->get_id () << "\n";
-	machines[mid - 1]->AssignProcessToMachine (processes[pid - 1]);
-	processes[pid - 1]->SetAssignedMachinesId (mid);
+void bct::Problem::AssignProcessToMachineByIds(const unsigned short argPid,
+                                               const unsigned short argMid) {
+    // std::cout << "\t  Assigning process " << processes[argPid - 1]->GetId()
+    //           << " with a duration of "
+    //           << processes[argPid - 1]->GetProcessingTime() << " to machine "
+    //           << machines[argMid - 1]->GetId() << "\n";
+    machines[argMid - 1]->AssignProcessToMachine(processes[argPid - 1]);
+    processes[argPid - 1]->SetAssignedMachinesId(argMid);
 }
 
+/*!
+ * \brief Check if the current state is a feasible solution
+ * \return _True_, if the solution is feasible
+ */
+bool bct::Problem::CheckValidity() {
+    for (unsigned short j = 0; j < processesQuantity; ++j) {
+        // Check if every Process is assigned to a Machine
+        if (processes[j]->GetAssignedMachinesId() == 0) {
+            // std::cout << "\t  Process " << processes[j]->GetId()
+            //           << " is not yet assigned => no feasible solution.\n";
+            return false;
+        }
+        // Check if all Processes are assigned to valid Machines
+        if (processes[j]->GetAssignedMachinesId() > machinesQuantity) {
+            // std::cout << "\t  Process " << processes[j]->GetId()
+            //           << " is not assigned to a valid machine => no feasible solution.\n";
+            return false;
+        }
+    }
 
-bool bct::Problem::check_validity () {
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		// Check if every Process is assigned to a Machine
-		if (processes[j]->GetAssignedMachinesId () == 0) {
-			// std::cout << "\t  Process " << processes[j]->get_id () << " is not yet assigned => no feasible solution.\n";
-			return false;
-		}
-		// Check if all Processes are assigned to valid Machines
-		if (processes[j]->GetAssignedMachinesId () > machines_quantity) {
-			// std::cout << "\t  Process " << processes[j]->get_id () << " is not assigned to a valid machine => no feasible solution.\n";
-			return false;
-		}
-	}
-
-	// std::cout << "\t  All Processes are assigned => feasible solution.\n";
-	return true;
+    // std::cout << "\t  All Processes are assigned => feasible solution.\n";
+    return true;
 }
 
-void bct::Problem::flush () {
-	// std::cout << "\nFlushing ...\n";
+/*!
+ * \brief Flush (~clear) the assignments
+ */
+void bct::Problem::Flush () {
+    // std::cout << "\nFlushing ...\n";
 
-	// Flush the information stored in the Processes
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		processes[j]->SetAssignedMachinesId(0);
-	}
-	
-	// Flush the information stored in the Machines
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		machines[i]->Flush ();
-	}
+    // Flush the information stored in the Processes
+    for (unsigned short j = 0; j < processesQuantity; ++j) {
+        processes[j]->SetAssignedMachinesId(0);
+    }
+
+    // Flush the information stored in the Machines
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        machines[i]->Flush();
+    }
 }
 
-void bct::Problem::load_stored_solution () {
-	// Load the data stored in temporary_storage and delete it afterwards
-	// Load the assignments of the Machines
-	temporary_storage->load_temporarily_stored_solution (machines, processes);
-	delete temporary_storage;
-	temporary_storage = nullptr;
+void bct::Problem::LoadStoredSolution () {
+    // Load the data stored in temporary_storage and delete it afterwards
+    // Load the assignments of the Machines
+    temporaryStorage->load_temporarily_stored_solution(machines, processes);
+    delete temporaryStorage;
+    temporaryStorage = nullptr;
 }
 
-unsigned int bct::Problem::query_lowest_completion_time () {
-	unsigned int lowest_completion_time = machines[0]->GetCompletionTime ();
+/*!
+ * \brief Queries the completion time of the first completing Machine
+ * \return The lowest completion time (which shall be maximized)
+ */
+unsigned int bct::Problem::QueryLowestCompletionTime () {
+    unsigned int lowestCompletionTime = machines[0]->GetCompletionTime();
 
-	// Iterate over all Machines, query their completion times and return the lowest
-	for (unsigned short int i = 1; i < machines_quantity; i++) {
-		if (machines[i]->GetCompletionTime () < lowest_completion_time)
-			lowest_completion_time = machines[i]->GetCompletionTime ();
-	}
+    // Iterate over all Machines, query their completion times and return the lowest
+    for (unsigned short i = 1; i < machinesQuantity; ++i) {
+        if (machines[i]->GetCompletionTime() < lowestCompletionTime)
+            lowestCompletionTime = machines[i]->GetCompletionTime();
+    }
 
-	return lowest_completion_time;
+    return lowestCompletionTime;
 }
 
-unsigned short int bct::Problem::query_lowest_workload_machines_id (unsigned short int placement, bool invert) {
-	// Create a vector with all Machines which will be popped subsquently later
-	std::vector<Machine*> pop_machines;
-	pop_machines.reserve (machines_quantity);
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		pop_machines.push_back (machines[i]);
-		// std::cout << "pop_machines.push_back (Machine " << pop_machines.at (i)->get_id () << ")\n";
-	}
-	// Create the vector, where the popped Machines' ids will be stored
-	std::vector<unsigned short int> push_machine_ids;
-	push_machine_ids.reserve (machines_quantity);
+/*!
+ * \brief Query the id of the Machine with the shortest or longest completion time
+ * \param[in] argPlacement The first (=0), second (=1) or x-th Machine fullfilling the requirement
+ * \param[in] argInvert True, if the Machine with the longest completion time shall be returned
+ * \return The id of the Machine with the shortest (longest) completion time
+ */
+unsigned short bct::Problem::QueryLowestWorkloadMachinesId(
+        const unsigned short argPlacement, const bool argInvert) {
+    // Create a vector with all Machines which will be popped subsquently later
+    std::vector<Machine*> popMachines;
+    popMachines.reserve(machinesQuantity);
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        popMachines.emplace_back(machines[i]);
+        // std::cout << "popMachines.push_back(Machine "
+        //           << popMachines.at(i)->GetId() << ")\n";
+    }
+    // Create the vector, where the popped Machines' ids will be stored
+    std::vector<unsigned short> pushMachineIds;
+    pushMachineIds.reserve(machinesQuantity);
 
-	// Pop the Machine with the lowest or highest workload until 'pop_machines' is empty
-	while (!pop_machines.empty ()) {
-		// Take the first Machine in 'pop_machines' as start value
-        unsigned int best_workload = pop_machines.at(0)->GetCompletionTime();
-		// std::cout << "best_workload " << best_workload << "\n";
-		unsigned short int best_workload_machine = 0;
-		// std::cout << "pop_machines.size () = " << pop_machines.size () << "\n";
-		// Search over the complete array starting by index 1, since 0 will never become true
-		for (unsigned short int i = 0; i < pop_machines.size (); i++) {
-			// Search for lowest workload Machine (default: invert == false)
-			if (!invert) {
-				// std::cout << "Checking for lowest workload Machine.\n";
-				// Check if current Machine has a lower workload than the known one
-                if (pop_machines.at(i)->GetCompletionTime() < best_workload) {
-					// std::cout << "Superior!\n";
-                    best_workload = pop_machines.at(i)->GetCompletionTime();
-					best_workload_machine = i;
-				}
-			}
-			// Search for highest workload Machine
-			else {
-				// std::cout << "Checking for highest workload Machine.\n";
-				// Check if current Machine has a higher workload than the known one
-                if (pop_machines.at(i)->GetCompletionTime() > best_workload) {
-					// std::cout << "Superior!\n";
-                    best_workload = pop_machines.at(i)->GetCompletionTime();
-					best_workload_machine = i;
-				}
-			}
-		}
-		// std::cout << "best_workload_machine: " << best_workload_machine << "\n";
-		// All but one Machines have been assigned, assign the last one
-		// std::cout << "Machine " << pop_machines.at (best_workload_machine)->get_id () << "/" << pop_machines.at (best_workload_machine)->get_completion_time () << " added \n";
-        push_machine_ids.push_back (pop_machines.at (best_workload_machine)->GetId());
-		pop_machines.erase (pop_machines.begin () + (best_workload_machine));
-	}
-
-	/* for (auto it = push_machine_ids.cbegin (); it != push_machine_ids.cend (); ++it) {
-		std::cout << "Machine " << *it << " with workload " << machines[*it - 1]->get_completion_time () << "\n";
-	} */
-	return (push_machine_ids.at (placement));
-}
-
-void bct::Problem::query_state () {
-	std::cout << "\nThe problem's state:\n";
-
-	// Output information about Processes
-	std::cout << "\t" << processes_quantity << " Processes\n";
-	unsigned int overall_completion_time = 0;
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-        std::cout << "\t  Process " << processes[j]->GetId() << ",\tduration: " << processes[j]->GetProcessingTime () << "\n";
-		overall_completion_time += processes[j]->GetProcessingTime ();
-	}
-	std::cout << "\t  =>With an over all completion time of " << overall_completion_time << "\n";
-
-	// Output information about Machines
-	std::cout << "\t" << machines_quantity << " Machines\n";
-	// Query the Machine's Processes after having checked, if the current solution is feasible
-	if (check_validity ()) {
-		for (unsigned int i = 0; i < machines_quantity; i++) {
-            auto procVec = machines[i]->GetProcessesCopy();
-            std::cout << "\t    Processes assigned to Machine " << machines[i]->GetId() << "\n";
-
-			// Iterate over all assigned Processes and output the ids and processing times
-            for (auto cit = procVec.cbegin(); cit != procVec.cend(); ++cit) {
-                std::cout << "\t\t" << (*cit)->GetId() << "=>" << (*cit)->GetProcessingTime()<< "\n";
-			}
-
-			// Output the complete completion time of the Machine
-            std::cout << "\t\t=>Machine " << machines[i]->GetId() << " completion time: " << machines[i]->GetCompletionTime () << "\n";
-		}
-
-		std::cout << "\tThe current target solution value is " << query_lowest_completion_time () << "\n";
-	}
-
-}
-
-void bct::Problem::store_current_solution () {
-	// Checks if the current solution is valid
-	if (check_validity ()) {
-		// Stores the current solution to temporary_storage
-		// std::cout << "\nThe solution is valid and will be temporarily stored.\n";
-		temporary_storage = new TemporaryStorage (query_lowest_completion_time (), machines_quantity, machines);
-	}
-	else {
-		std::cout << "\nERROR: The solution was not valid and will therefore not be stored.\n";
-	}
-}
-
-void bct::Problem::save_instance (std::string *filename) {
-	if (filename == nullptr) {
-		// Get the name of the file to write to
-		filename = new std::string ("problem.pbl");
-		std::cout << "\nPlease enter the file name where the problem's instance shall be saved (default: 'problem.pbl'): ";
-		std::cin >> *filename;
-		std::cout << "The problem will be saved in " << *filename << "\n";
-	}
-	
-	// Store the Problem's data in the file
-	std::ofstream output_file_stream (*filename);
-	output_file_stream << "# Machines\n" << machines_quantity << "\n# Processes\n" << processes_quantity << "\n";
-
-	// Store the Process durations
-	output_file_stream << "# Process durations\n";
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
-		if (j > 0)
-			output_file_stream << ";";
-		output_file_stream << processes[j]->GetProcessingTime ();
-	}
-
-	// Check if the current solution is valid and store Machine assignemts if so
-	if (check_validity ()) {
-		output_file_stream << "\n# Machine assignments\n";
-		for (unsigned short int i = 0; i < machines_quantity; i++) {
-            output_file_stream << "# Machine " << machines[i]->GetId() << "\n";
-            auto procVec = machines[i]->GetProcessesCopy ();
-            for (auto cit = procVec.cbegin(); cit != procVec.cend(); ++cit) {
-                if (cit != procVec.cbegin())
-					output_file_stream << ";";
-                output_file_stream << (*cit)->GetId();
+    // Pop the Machine with the lowest or highest workload until 'pop_machines' is empty
+    while (popMachines.empty() == false) {
+        // Take the first Machine in 'pop_machines' as start value
+        unsigned int bestWorkload = popMachines.at(0)->GetCompletionTime();
+        // std::cout << "bestWorkload " << bestWorkload << "\n";
+        unsigned short bestWorkloadMachine = 0;
+        // std::cout << "popMachines.size () = " << popMachines.size () << "\n";
+        // Search over the complete array starting by index 1, since 0 will never become true
+        for (unsigned short i = 0; i < popMachines.size (); ++i) {
+            // Search for lowest workload Machine (default: invert == false)
+            if (argInvert == false) {
+                // std::cout << "Checking for lowest workload Machine.\n";
+                // Check if current Machine has a lower workload than the known one
+                if (popMachines.at(i)->GetCompletionTime() < bestWorkload) {
+                    // std::cout << "Superior!\n";
+                    bestWorkload = popMachines.at(i)->GetCompletionTime();
+                    bestWorkloadMachine = i;
+                }
             }
-			output_file_stream << "\n";
-		}
-	}
-	else
-		output_file_stream << "\n";
-	output_file_stream.close ();
+            // Search for highest workload Machine
+            else {
+                // std::cout << "Checking for highest workload Machine.\n";
+                // Check if current Machine has a higher workload than the known one
+                if (popMachines.at(i)->GetCompletionTime() > bestWorkload) {
+                    // std::cout << "Superior!\n";
+                    bestWorkload = popMachines.at(i)->GetCompletionTime();
+                    bestWorkloadMachine = i;
+                }
+            }
+        }
+        // std::cout << "bestWorkloadMachine: " << bestWorkloadMachine << "\n";
+        // All but one Machines have been assigned, assign the last one
+        // std::cout << "Machine " << popMachines.at(bestWorkloadMachine)->GetId()
+        //           << "/" << popMachines.at(bestWorkloadMachine)->GetCompletionTime()
+        //           << " added \n";
+        pushMachineIds.emplace_back(popMachines.at(bestWorkloadMachine)->GetId());
+        popMachines.erase(popMachines.begin() + (bestWorkloadMachine));
+    }
+
+    /* for (auto it = push_machine_ids.cbegin (); it != push_machine_ids.cend (); ++it) {
+        std::cout << "Machine " << *it << " with workload " << machines[*it - 1]->get_completion_time () << "\n";
+    } */
+    return (pushMachineIds.at (argPlacement));
+}
+
+/*!
+ * \brief Write the Problem's state to stdout
+ */
+void bct::Problem::QueryState() {
+    std::cout << "\nThe problem's state:\n";
+
+    // Output information about Processes
+    std::cout << "\t" << processesQuantity << " Processes\n";
+    unsigned int overallCompletionTime = 0;
+    for (unsigned short j = 0; j < processesQuantity; ++j) {
+        std::cout << "\t  Process " << processes[j]->GetId() <<
+                     ",\tduration: " << processes[j]->GetProcessingTime() << "\n";
+        overallCompletionTime += processes[j]->GetProcessingTime();
+    }
+    std::cout << "\t  =>With an over all completion time of "
+              << overallCompletionTime << "\n";
+
+    // Output information about Machines
+    std::cout << "\t" << machinesQuantity << " Machines\n";
+    // Query the Machine's Processes after having checked, if the current solution is feasible
+    if (CheckValidity() == true) {
+        for (unsigned int i = 0; i < machinesQuantity; ++i) {
+            auto procVec = machines[i]->GetProcessesCopy();
+            std::cout << "\t    Processes assigned to Machine "
+                      << machines[i]->GetId() << "\n";
+
+            // Iterate over all assigned Processes and output the ids and processing times
+            for (const auto process : procVec) {
+                std::cout << "\t\t" << process->GetId() << "=>"
+                          << process->GetProcessingTime()<< "\n";
+            }
+
+            // Output the complete completion time of the Machine
+            std::cout << "\t\t=>Machine " << machines[i]->GetId()
+                      << " completion time: " << machines[i]->GetCompletionTime () << "\n";
+        }
+
+        std::cout << "\tThe current target solution value is "
+                  << QueryLowestCompletionTime() << "\n";
+    }
+
+}
+
+/*!
+ * \brief Save the current solution in the TemporaryStorage especially designed therefore
+ */
+void bct::Problem::StoreCurrentSolution() {
+    // Checks if the current solution is valid
+    if (CheckValidity() == true) {
+        // Stores the current solution to temporary_storage
+        // std::cout << "\nThe solution is valid and will be temporarily stored.\n";
+        temporaryStorage = new TemporaryStorage{QueryLowestCompletionTime(),
+                machinesQuantity, machines};
+    } else {
+        std::cout << "\nERROR: The solution was not valid and will therefore not be stored.\n";
+    }
+}
+
+void bct::Problem::SaveInstance(const std::string &argFilename) {
+    std::string filename;
+    if (argFilename.empty() == true) {
+        // Get the name of the file to write to
+        filename = "problem.pbl";
+        std::cout << "\nPlease enter the file name where the problem's instance"
+                     " shall be saved (default: 'problem.pbl'): ";
+        std::cin >> filename;
+        std::cout << "The problem will be saved in " << filename << "\n";
+    }
+
+    // Store the Problem's data in the file
+    std::ofstream outputFileStream{filename};
+    outputFileStream << "# Machines\n" << machinesQuantity
+                     << "\n# Processes\n" << processesQuantity << "\n";
+
+    // Store the Process durations
+    outputFileStream << "# Process durations\n";
+    for (unsigned short j = 0; j < processesQuantity; ++j) {
+        if (j > 0) {
+            outputFileStream << ";";
+        }
+        outputFileStream << processes[j]->GetProcessingTime();
+    }
+
+    // Check if the current solution is valid and store Machine assignemts if so
+    if (CheckValidity() == true) {
+        outputFileStream << "\n# Machine assignments\n";
+        for (unsigned short i = 0; i < machinesQuantity; ++i) {
+            outputFileStream << "# Machine " << machines[i]->GetId() << "\n";
+            auto procVec = machines[i]->GetProcessesCopy();
+            for (auto cit = procVec.cbegin(); cit != procVec.cend(); ++cit) {
+                if (cit != procVec.cbegin()) {
+                    outputFileStream << ";";
+                }
+                outputFileStream << (*cit)->GetId();
+            }
+            outputFileStream << "\n";
+        }
+    } else {
+        outputFileStream << "\n";
+    }
+    outputFileStream.close ();
 }

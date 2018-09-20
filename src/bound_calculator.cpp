@@ -32,7 +32,7 @@
 	shortest_processing_time (0)
 {
 	unsigned int processing_time = 0;
-	for (unsigned short int j = 0; j < processes_quantity; j++) {
+	for (unsigned short int j = 0; j < processesQuantity; j++) {
 		processing_time = processes[j]->GetProcessingTime ();
 		cumulated_processing_times += processing_time;
 		if (processing_time > longest_processing_time)
@@ -50,7 +50,7 @@ unsigned int bct::BoundCalc::apply_LDM_algrithm () {
 	// Iteratively test different bin capacities beginning with an already known lower bound
 	for ( ; test_capacity < existing_bound + processes[0]->GetProcessingTime (); test_capacity++) {
 		unsigned short int test = get_LB_BPP_BP_lower_bound (test_capacity);
-		if ((test > 0) && (test  <= machines_quantity))
+		if ((test > 0) && (test  <= machinesQuantity))
 			break;
 	}
 	
@@ -62,7 +62,7 @@ unsigned int bct::BoundCalc::apply_NAIVE_algorithm () {
 
 	// Not using the processes_quantity like in the paper, because it doesn't make any sense
 	// The result can be truncated, because it should be rounded down anyway
-	unsigned int average_machine_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machines_quantity)) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+	unsigned int average_machine_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machinesQuantity)) > static_cast<unsigned int>(cumulated_processing_times / machinesQuantity)) ? static_cast<unsigned int>((cumulated_processing_times / machinesQuantity) + 1) : (cumulated_processing_times / machinesQuantity);
 
 	return (average_machine_runtime > longest_processing_time) ? average_machine_runtime : longest_processing_time;
 }
@@ -70,7 +70,7 @@ unsigned int bct::BoundCalc::apply_NAIVE_algorithm () {
 unsigned int bct::BoundCalc::apply_SIMPLE_algorithm () {
 	// std::cout << "\nApplying SIMPLE algorihm\n";
 
-	unsigned int average_machine_runtime = static_cast<unsigned int>(cumulated_processing_times / machines_quantity);
+	unsigned int average_machine_runtime = static_cast<unsigned int>(cumulated_processing_times / machinesQuantity);
 	
 	return average_machine_runtime;
 }
@@ -80,9 +80,9 @@ unsigned int bct::BoundCalc::apply_SIMPLE_LINEAR_TIME_algorithm () {
 
 	// Calculate the three needed quantities
 	// std::cout << "Longest processing time:\t" << longest_processing_time << "\n";
-	unsigned int pmpm1 = processes[machines_quantity - 1]->GetProcessingTime () + processes[machines_quantity]->GetProcessingTime ();
+	unsigned int pmpm1 = processes[machinesQuantity - 1]->GetProcessingTime () + processes[machinesQuantity]->GetProcessingTime ();
 	// std::cout << "pmpm1:\t\t\t\t" << pmpm1 << "\n";
-	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machines_quantity)) > static_cast<unsigned int>(cumulated_processing_times / machines_quantity)) ? static_cast<unsigned int>((cumulated_processing_times / machines_quantity) + 1) : (cumulated_processing_times / machines_quantity);
+	unsigned int average_runtime = ((static_cast<float>(cumulated_processing_times) / static_cast<float>(machinesQuantity)) > static_cast<unsigned int>(cumulated_processing_times / machinesQuantity)) ? static_cast<unsigned int>((cumulated_processing_times / machinesQuantity) + 1) : (cumulated_processing_times / machinesQuantity);
 	// std::cout << "Average runtime:\t\t" << average_runtime << "\n";
 
 	if ((longest_processing_time >= pmpm1) && (longest_processing_time >= average_runtime))
@@ -109,14 +109,14 @@ unsigned int bct::BoundCalc::compute_upper_bound (unsigned int algo) {
 }
 
 unsigned int bct::BoundCalc::convert_PCmax_lower_bound_to_PCmin_upper_bound (unsigned int PCmax_lower_bound) {
-	return static_cast<unsigned int>((cumulated_processing_times - PCmax_lower_bound) / (machines_quantity - 1));
+	return static_cast<unsigned int>((cumulated_processing_times - PCmax_lower_bound) / (machinesQuantity - 1));
 }
 
 unsigned short int bct::BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capacity) {
 	// std::cout << "\nComputing valid BPP lower bound for a capacity of " << capacity << "\n";
 	// Add all valid processing times to a vector
 	std::vector<unsigned int> p;
-	for (unsigned int j = machines_quantity + 1; j < processes_quantity; j++) {
+	for (unsigned int j = machinesQuantity + 1; j < processesQuantity; j++) {
 		if (processes[j]->GetProcessingTime () > static_cast<unsigned int>(capacity / 2))
 			continue;
 		p.push_back (processes[j]->GetProcessingTime ());
@@ -132,7 +132,7 @@ unsigned short int bct::BoundCalc::get_LB_BPP_BP_lower_bound (unsigned int capac
 
 		// Create the three sets of Processes
 		std::vector<unsigned int> J_1, J_2, J_3;
-		for (unsigned int k = 0; k < processes_quantity; k++) {
+		for (unsigned int k = 0; k < processesQuantity; k++) {
 			if (processes[k]->GetProcessingTime () > capacity - *it)
 				J_1.push_back (processes[k]->GetProcessingTime ());
 			if ((static_cast<unsigned int>(capacity / 2) < processes[k]->GetProcessingTime ()) && (processes[k]->GetProcessingTime () <= capacity - *it))
