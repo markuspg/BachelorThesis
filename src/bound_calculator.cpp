@@ -18,7 +18,6 @@
  */
 
 #include "bound_calculator.h"
-#include "enums.h"
 #include "process.h"
 
 #include <cmath>
@@ -138,16 +137,16 @@ unsigned int bct::BoundCalc::ApplySIMPLE_LINEAR_TIMEAlgorithm() {
  * \param[in] algo
  * \return
  */
-unsigned int bct::BoundCalc::ComputeUpperBound(const UPPER_BOUND_ALGOS argAlgo) {
+unsigned int bct::BoundCalc::ComputeUpperBound(const EUpperBoundAlgos argAlgo) {
     switch (argAlgo) {
-    case LDM:
-        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplyLDMAlgorithm ());
-    case NAIVE:
-        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplyNAIVEAlgorithm ());
-    case SIMPLE:
-        return ApplySIMPLEAlgorithm ();
-    case SIMPLE_LINEAR_TIME:
-        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplySIMPLE_LINEAR_TIMEAlgorithm ());
+    case EUpperBoundAlgos::LDM:
+        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplyLDMAlgorithm());
+    case EUpperBoundAlgos::NAIVE:
+        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplyNAIVEAlgorithm());
+    case EUpperBoundAlgos::SIMPLE:
+        return ApplySIMPLEAlgorithm();
+    case EUpperBoundAlgos::SIMPLE_LINEAR_TIME:
+        return ConvertPCmaxLowerBoundToPCminUpperBound (ApplySIMPLE_LINEAR_TIMEAlgorithm());
     default:
         std::cerr << "\nERROR: Invalid bound calculation algorithm\n";
     }

@@ -18,7 +18,6 @@
  */
 
 #include "bound_calculator.h"
-#include "enums.h"
 #include "improver.h"
 #include "machine.h"
 #include "process.h"
@@ -44,7 +43,8 @@ void bct::Improver::Apply_PAIRWISE_algorithm(bool argGreedy) {
 
     // Compute the naive upper bound (Step 2: Compute lower bound)
     BoundCalc boundCalculator{*this};
-    unsigned int upperBound = boundCalculator.ComputeUpperBound(NAIVE);
+    unsigned int upperBound
+            = boundCalculator.ComputeUpperBound(BoundCalc::EUpperBoundAlgos::NAIVE);
     // std::cout << "The upper bound is " << upperBound << ".\n";
 
     // Create std::vector<Process*> to store advantageous swaps of Step 7

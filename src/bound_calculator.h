@@ -20,7 +20,6 @@
 #ifndef BOUND_CALC_H
 #define BOUND_CALC_H
 
-#include "enums.h"
 #include "problem.h"
 
 namespace bct {
@@ -28,8 +27,15 @@ namespace bct {
 /*! An object used to calculate bounds */
 class BoundCalc : public Problem {
 public:
+    enum class EUpperBoundAlgos {
+        LDM,
+        NAIVE,
+        SIMPLE,
+        SIMPLE_LINEAR_TIME,
+    };
+
     BoundCalc(const Problem &argProblem);
-    unsigned int ComputeUpperBound(const UPPER_BOUND_ALGOS argAlgo);
+    unsigned int ComputeUpperBound(const EUpperBoundAlgos argAlgo);
     unsigned int GetCumulatedProcessingTimes() const noexcept;
 
 private:

@@ -20,7 +20,6 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
-#include "enums.h"
 #include "problem.h"
 
 namespace bct {

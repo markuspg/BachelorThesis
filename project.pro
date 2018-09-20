@@ -6,7 +6,6 @@ TEMPLATE = app
 
 HEADERS += \
     src/bound_calculator.h \
-    src/enums.h \
     src/improver.h \
     src/machine.h \
     src/object.h \

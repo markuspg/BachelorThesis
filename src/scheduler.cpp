@@ -18,7 +18,6 @@
  */
 
 #include "bound_calculator.h"
-#include "enums.h"
 #include "machine.h"
 #include "process.h"
 #include "scheduler.h"
@@ -76,7 +75,9 @@ void bct::Scheduler::Apply_rLPT_Algorithm(const unsigned short argIterations) {
 
     // Compute a bound to cancel if reached
     BoundCalc boundCalculator{*this};
-    auto upperBound = boundCalculator.ComputeUpperBound(SIMPLE_LINEAR_TIME);
+    auto upperBound
+            = boundCalculator.ComputeUpperBound(
+                BoundCalc::EUpperBoundAlgos::SIMPLE_LINEAR_TIME);
 
     // Initialize our storage of the best solution with the highest possible value
     auto bestSolution = 0u;
@@ -126,7 +127,9 @@ void bct::Scheduler::Apply_SI_Algorithm() {
     // std::cout << "\nApplying SI algorihm\n";
     // Get the upper bound as start value for the bin capacity
     BoundCalc bound_calculator{*this};
-    auto upperBound = bound_calculator.ComputeUpperBound(SIMPLE_LINEAR_TIME);
+    auto upperBound
+            = bound_calculator.ComputeUpperBound(
+                BoundCalc::EUpperBoundAlgos::SIMPLE_LINEAR_TIME);
     // std::cout << "The upper bound is " << upperBound << "\n";
 
     for (unsigned int k = 0; k < upperBound; ++k) {
