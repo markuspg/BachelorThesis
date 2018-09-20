@@ -23,12 +23,10 @@
 #include <memory>
 
 int main (int argc, char *argv[]) {
-	std::cout << "<----- PC_min solver ----->\n";
+    std::cout << "<----- PC_min solver ----->\n";
 
-	for (int t = 1; t < argc; t++) {
+    for (auto t = 1; t < argc; ++t) {
         // Create a pointer to the problem to be solved
-        const auto problem = new bct::Problem{argv[1]};
-
-    delete problem;
-	}
+        bct::Problem problem{argv[1]};
+    }
 }
