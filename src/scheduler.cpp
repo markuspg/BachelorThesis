@@ -236,22 +236,22 @@ void bct::Scheduler::Apply_STUPID_Algorithm() {
  * \param[in] argChoice The algorithm to use
  * \param[in] argIterations The count of iterations the algorithm shall be applied (only affects non-deterministic algorithms)
  */
-void bct::Scheduler::CreateStartSolution(const unsigned int argChoice,
+void bct::Scheduler::CreateStartSolution(const EStartSolution argChoice,
                                          const unsigned short argIterations) {
     switch (argChoice) {
-    case STUPID:
+    case EStartSolution::STUPID:
         Apply_STUPID_Algorithm();
         break;
-    case iLPT:
+    case EStartSolution::iLPT:
         Apply_iLPT_Algorithm();
         break;
-    case rLPT:
+    case EStartSolution::rLPT:
         Apply_rLPT_Algorithm(argIterations);
         break;
-    case SI:
+    case EStartSolution::SI:
         Apply_SI_Algorithm();
         break;
-    case sLPT:
+    case EStartSolution::sLPT:
         Apply_sLPT_Algorithm();
         break;
     default:
