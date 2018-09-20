@@ -21,46 +21,63 @@
 #include "process.h"
 #include "tempstorage.h"
 
-bct::TemporaryStorage::TemporaryStorage (unsigned int current_solution,
-                                         unsigned short int m_machines,
-                                         Machine **p_machines):
-	machines_quantity (m_machines),
-    solution_value (current_solution)
+#include <iostream>
+
+/*!
+ * \brief TemporaryStorage's constructor
+ * \param argCurrentSolution The current solution in form of the lowest completion time
+ * \param argMachinesQty The quantity of Machines of the Problem
+ * \param argMachines A pointer to the array of pointer to Machines to query their Process
+ */
+bct::TemporaryStorage::TemporaryStorage(const unsigned int argCurrentSolution,
+                                        const unsigned short argMachinesQty,
+                                        Machine **argMachines):
+    machinesQuantity{argMachinesQty},
+    solutionValue{argCurrentSolution}
 {
-	// std::cout << "\tCreating a temporary storage containing " << machines_quantity << " Machine's assignments.\n";
-	v_processes = new std::vector<Process*> *[m_machines];
-	for (unsigned short int i = 0; i < m_machines; i++) {
-        v_processes[i] = new std::vector<Process*>{p_machines[i]->GetProcessesCopy()};
-		// std::cout << "\t  Added a vector containing " << v_processes[i]->size () << " elements representing Machine " << p_machines[i]->get_id () << ".\n";
+    // std::cout << "\tCreating a temporary storage containing "
+    //           << machinesQuantity << " Machine's assignments.\n";
+    processes = new std::vector<Process*>*[argMachinesQty];
+    for (unsigned short i = 0; i < argMachinesQty; ++i) {
+        processes[i] = new std::vector<Process*>{argMachines[i]->GetProcessesCopy()};
+        // std::cout << "\t  Added a vector containing " << processes[i]->size()
+        //           << " elements representing Machine "
+        //           << argMachines[i]->GetId() << ".\n";
 	}
 }
 
 bct::TemporaryStorage::~TemporaryStorage () {
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		delete v_processes[i];
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        delete processes[i];
 	}
 
-	delete v_processes;
+    delete processes;
 }
 
-void bct::TemporaryStorage::load_temporarily_stored_solution (Machine **p_machines,
-                                                              Process **p_processes) {
+/*!
+ * \brief Allows to load the assignments stored in the TemporaryStorage
+ * \param argMachines Pointer to the Machines to be set up
+ * \param argProcesses Pointer to the Processes to be set up
+ */
+void bct::TemporaryStorage::LoadTemporarilyStoredSolution(
+        Machine **argMachines, Process **argProcesses) {
 	// std::cout << "\nLoading the temporarily stored solution.\n";
 
 	// Restore information on the Machines
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		// std::cout << "\tFlushing Machine " << p_machines[i]->get_id () << ".\n";
-		p_machines[i]->Flush ();
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        // std::cout << "\tFlushing Machine " << argMachines[i]->GetId() << ".\n";
+        argMachines[i]->Flush();
 		// std::cout << "\tAssigning old solution vector.\n";
-		p_machines[i]->SetAssignedProcessesVector (*v_processes[i]);
+        argMachines[i]->SetAssignedProcessesVector(*processes[i]);
 	}
 
 	// Restores information on the Processes
-	for (unsigned short int i = 0; i < machines_quantity; i++) {
-		for (std::vector<Process*>::const_iterator cit = v_processes[i]->cbegin (); cit != v_processes[i]->cend (); ++cit) {
-            p_processes[(*cit)->GetId() - 1]->SetAssignedMachinesId (i + 1);
+    for (unsigned short i = 0; i < machinesQuantity; ++i) {
+        for (std::vector<Process*>::const_iterator cit = processes[i]->cbegin ();
+             cit != processes[i]->cend (); ++cit) {
+            argProcesses[(*cit)->GetId() - 1]->SetAssignedMachinesId(i + 1);
 		}
 
-		p_machines[i]->ComputeCompletionTime ();
+        argMachines[i]->ComputeCompletionTime();
 	}
 }

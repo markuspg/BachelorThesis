@@ -166,7 +166,7 @@ void bct::Problem::Flush () {
 void bct::Problem::LoadStoredSolution () {
     // Load the data stored in temporary_storage and delete it afterwards
     // Load the assignments of the Machines
-    temporaryStorage->load_temporarily_stored_solution(machines, processes);
+    temporaryStorage->LoadTemporarilyStoredSolution(machines, processes);
     delete temporaryStorage;
     temporaryStorage = nullptr;
 }
