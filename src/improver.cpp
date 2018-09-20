@@ -38,7 +38,7 @@ void bct::Improver::apply_PAIRWISE_algorithm (bool greedy) {
 
 	// Compute the naive upper bound (Step 2: Compute lower bound)
 	BoundCalc bound_calculator (*this);
-	unsigned int upper_bound = bound_calculator.compute_upper_bound (NAIVE);
+	unsigned int upper_bound = bound_calculator.ComputeUpperBound (NAIVE);
 	// std::cout << "The upper bound is " << upper_bound << ".\n";
 
 	// Create std::vector<Process*> to store advantageous swaps of Step 7

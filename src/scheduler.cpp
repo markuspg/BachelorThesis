@@ -58,7 +58,7 @@ void bct::Scheduler::apply_rLPT_algorithm (unsigned short int iterations) {
 
 	// Compute a bound to cancel if reached
 	BoundCalc *bound_calculator = new BoundCalc (*this);
-	unsigned int upper_bound = bound_calculator->compute_upper_bound (SIMPLE_LINEAR_TIME);
+	unsigned int upper_bound = bound_calculator->ComputeUpperBound (SIMPLE_LINEAR_TIME);
 
 	// Initialize our storage of the best solution with the highest possible value
 	unsigned int best_solution = 0;
@@ -105,7 +105,7 @@ void bct::Scheduler::apply_SI_algorithm () {
 	// std::cout << "\nApplying SI algorihm\n";
 	// Get the upper bound as start value for the bin capacity
 	BoundCalc bound_calculator (*this);
-	unsigned int upper_bound = bound_calculator.compute_upper_bound (SIMPLE_LINEAR_TIME);
+	unsigned int upper_bound = bound_calculator.ComputeUpperBound (SIMPLE_LINEAR_TIME);
 	// std::cout << "The upper bound is " << upper_bound << "\n";
 
 	for (unsigned int k = 0; k < upper_bound; k++) {
