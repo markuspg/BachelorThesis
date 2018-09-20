@@ -19,6 +19,6 @@
 
 #include "object.h"
 
-bct::Object::Object (const unsigned short int argObjectId):
+bct::Object::Object(const unsigned short argObjectId):
     id{argObjectId}
 {}
