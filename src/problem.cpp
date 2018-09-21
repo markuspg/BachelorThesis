@@ -22,6 +22,7 @@
 #include "process.h"
 #include "tempstorage.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -53,7 +54,8 @@ bct::Problem::Problem(const std::string &argFilename)
     // Create Machines
     machines.resize(machinesQuantity, nullptr);
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        machines[i] = new Machine{i + 1, processesQuantity};
+        machines[i] = new Machine{static_cast<unsigned short>(i + 1),
+                                  processesQuantity};
     }
 
     // Create Processes
@@ -64,7 +66,7 @@ bct::Problem::Problem(const std::string &argFilename)
     for (unsigned short j = 0; j < processesQuantity - 1; ++j) {
         std::getline(input_file_stream, str, ';');
         std::istringstream{str} >> duration;
-        processes[j] = new Process{j + 1, duration};
+        processes[j] = new Process{static_cast<unsigned short>(j + 1), duration};
     }
     std::getline(input_file_stream, str);
     std::istringstream{str} >> duration;
@@ -75,7 +77,9 @@ bct::Problem::Problem(const std::string &argFilename)
 }
 
 bct::Problem::Problem(const Problem &argProblem):
+    machines(argProblem.machinesQuantity, nullptr),
     machinesQuantity{argProblem.machinesQuantity},
+    processes(argProblem.processesQuantity, nullptr),
     processesQuantity{argProblem.processesQuantity}
 {
     // std::cout << "\nCreating new Problem instance with the following"
@@ -84,14 +88,12 @@ bct::Problem::Problem(const Problem &argProblem):
 
     // Create Machines
     const auto &tempMachines = argProblem.GetMachines();
-    machines.resize(machinesQuantity, nullptr);
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
         machines[i] = new Machine{*tempMachines[i]};
     }
 
     // Create Processes
     const auto &tempProcesses = argProblem.GetProcesses();
-    processes.resize(processesQuantity, nullptr);
     for (unsigned short j = 0; j < processesQuantity; ++j) {
         processes[j] = new Process{*tempProcesses[j]};
     }
@@ -163,8 +165,7 @@ void bct::Problem::LoadStoredSolution () {
     // Load the data stored in temporary_storage and delete it afterwards
     // Load the assignments of the Machines
     temporaryStorage->LoadTemporarilyStoredSolution(machines, processes);
-    delete temporaryStorage;
-    temporaryStorage = nullptr;
+    temporaryStorage.reset();
 }
 
 /*!
@@ -172,15 +173,13 @@ void bct::Problem::LoadStoredSolution () {
  * \return The lowest completion time (which shall be maximized)
  */
 unsigned int bct::Problem::QueryLowestCompletionTime () {
-    unsigned int lowestCompletionTime = machines[0]->GetCompletionTime();
+    auto lowestCompletionTimeIt
+            = std::min_element(machines.cbegin(), machines.cend(),
+                     [](const auto argA, const auto argB){
+        return argA->GetCompletionTime() < argB->GetCompletionTime();
+    });
 
-    // Iterate over all Machines, query their completion times and return the lowest
-    for (unsigned short i = 1; i < machinesQuantity; ++i) {
-        if (machines[i]->GetCompletionTime() < lowestCompletionTime)
-            lowestCompletionTime = machines[i]->GetCompletionTime();
-    }
-
-    return lowestCompletionTime;
+    return (*lowestCompletionTimeIt)->GetCompletionTime();
 }
 
 /*!
@@ -194,9 +193,9 @@ unsigned short bct::Problem::QueryLowestWorkloadMachinesId(
     // Create a vector with all Machines which will be popped subsquently later
     std::vector<Machine*> popMachines;
     popMachines.reserve(machinesQuantity);
-    for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        popMachines.emplace_back(machines[i]);
-        // std::cout << "popMachines.push_back(Machine "
+    for (const auto machine : machines) {
+        popMachines.emplace_back(machine);
+        // std::cout << "popMachines.emplace_back(Machine "
         //           << popMachines.at(i)->GetId() << ")\n";
     }
     // Create the vector, where the popped Machines' ids will be stored
@@ -211,7 +210,7 @@ unsigned short bct::Problem::QueryLowestWorkloadMachinesId(
         unsigned short bestWorkloadMachine = 0;
         // std::cout << "popMachines.size () = " << popMachines.size () << "\n";
         // Search over the complete array starting by index 1, since 0 will never become true
-        for (unsigned short i = 0; i < popMachines.size (); ++i) {
+        for (unsigned short i = 0; i < popMachines.size(); ++i) {
             // Search for lowest workload Machine (default: invert == false)
             if (argInvert == false) {
                 // std::cout << "Checking for lowest workload Machine.\n";
@@ -245,7 +244,7 @@ unsigned short bct::Problem::QueryLowestWorkloadMachinesId(
     /* for (auto it = push_machine_ids.cbegin (); it != push_machine_ids.cend (); ++it) {
         std::cout << "Machine " << *it << " with workload " << machines[*it - 1]->get_completion_time () << "\n";
     } */
-    return (pushMachineIds.at (argPlacement));
+    return (pushMachineIds.at(argPlacement));
 }
 
 /*!
@@ -299,8 +298,9 @@ void bct::Problem::StoreCurrentSolution() {
     if (CheckValidity() == true) {
         // Stores the current solution to temporary_storage
         // std::cout << "\nThe solution is valid and will be temporarily stored.\n";
-        temporaryStorage = new TemporaryStorage{QueryLowestCompletionTime(),
-                machinesQuantity, machines};
+        temporaryStorage
+                = std::make_unique<TemporaryStorage>(QueryLowestCompletionTime(),
+                                                     machinesQuantity, machines);
     } else {
         std::cout << "\nERROR: The solution was not valid and will therefore not be stored.\n";
     }

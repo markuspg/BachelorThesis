@@ -20,6 +20,7 @@
 #ifndef PROBlEM_H
 #define PROBlEM_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -61,7 +62,7 @@ protected:
     //! The quantity of Processes of the Problem
     unsigned short processesQuantity;
     //! An object to temporarily store assignments
-    TemporaryStorage *temporaryStorage;
+    std::unique_ptr<TemporaryStorage> temporaryStorage;
 };
 
 inline const std::vector<Machine*> &Problem::GetMachines() const noexcept {
