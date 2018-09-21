@@ -52,7 +52,7 @@ bct::TemporaryStorage::TemporaryStorage(const unsigned int argCurrentSolution,
  * \param argProcesses Pointer to the Processes to be set up
  */
 void bct::TemporaryStorage::LoadTemporarilyStoredSolution(
-        Machine **argMachines, Process **argProcesses) {
+        Machine **argMachines, const std::vector<Process*> &argProcesses) {
     // std::cout << "\nLoading the temporarily stored solution.\n";
 
     // Restore information on the Machines

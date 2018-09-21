@@ -59,7 +59,7 @@ bct::Problem::Problem(const std::string &argFilename)
     // Create Processes
     // Add the vector's elements to a new Process array
     std::getline(input_file_stream, waste);
-    processes = new Process*[processesQuantity];
+    processes.resize(processesQuantity, nullptr);
     unsigned int duration = 0;
     for (unsigned short j = 0; j < processesQuantity - 1; ++j) {
         std::getline(input_file_stream, str, ';');
@@ -91,9 +91,8 @@ bct::Problem::Problem(const Problem &argProblem):
     }
 
     // Create Processes
-    Process **tempProcesses = nullptr;
-    tempProcesses = argProblem.GetProcessesPointer();
-    processes = new Process*[processesQuantity];
+    const auto &tempProcesses = argProblem.GetProcesses();
+    processes.resize(processesQuantity, nullptr);
     for (unsigned short j = 0; j < processesQuantity; ++j) {
         processes[j] = new Process{*tempProcesses[j]};
     }
@@ -106,10 +105,9 @@ bct::Problem::~Problem () {
     }
     delete [] machines;
 
-    for (unsigned short int j = 0; j < processesQuantity; ++j) {
-        delete processes[j];
+    for (const auto process : processes) {
+        delete process;
     }
-    delete [] processes;
 }
 
 void bct::Problem::AssignProcessToMachineByIds(const unsigned short argPid,

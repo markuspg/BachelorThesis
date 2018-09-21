@@ -21,6 +21,7 @@
 #define PROBlEM_H
 
 #include <string>
+#include <vector>
 
 namespace bct {
 
@@ -40,7 +41,7 @@ public:
     void Flush();
     Machine **GetMachinesPointer() const noexcept;
     unsigned short GetMachinesQuantity() const noexcept;
-    Process **GetProcessesPointer() const noexcept;
+    const std::vector<Process*> &GetProcesses() const noexcept;
     unsigned short GetProcessesQuantity() const noexcept;
     void LoadStoredSolution();
     unsigned int QueryLowestCompletionTime ();
@@ -55,8 +56,8 @@ protected:
     Machine **machines = nullptr;
     //! The quantity of Machines in the Problem
     unsigned short machinesQuantity;
-    //! A pointer to the Processes forming the Problem
-    Process **processes = nullptr;
+    //! A vector of the Processes forming the Problem
+    std::vector<Process*> processes;
     //! The quantity of Processes of the Problem
     unsigned short processesQuantity;
     //! An object to temporarily store assignments
@@ -71,7 +72,7 @@ inline unsigned short Problem::GetMachinesQuantity() const noexcept {
     return machinesQuantity;
 }
 
-inline Process **Problem::GetProcessesPointer() const noexcept {
+inline const std::vector<Process*> &Problem::GetProcesses() const noexcept {
     return processes;
 }
 

@@ -34,7 +34,7 @@ public:
                       const unsigned short argMachinesQty,
                       Machine **argMachines);
     void LoadTemporarilyStoredSolution(Machine **argMachines,
-                                       Process **argProcesses);
+                                       const std::vector<Process*> &argProcesses);
 
 private:
     //! Stores the quantity of Machines of the Problem
