@@ -51,7 +51,7 @@ bct::Problem::Problem(const std::string &argFilename)
               << "\n\tProcesses:\t\t" << processesQuantity << "\n\n";
 
     // Create Machines
-    machines = new Machine*[machinesQuantity];
+    machines.resize(machinesQuantity, nullptr);
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
         machines[i] = new Machine{i + 1, processesQuantity};
     }
@@ -83,9 +83,8 @@ bct::Problem::Problem(const Problem &argProblem):
     //           << "\n\tProcesses:\t\t" << processesQuantity << "\n\n";
 
     // Create Machines
-    Machine **tempMachines = nullptr;
-    tempMachines = argProblem.GetMachinesPointer();
-    machines = new Machine*[machinesQuantity];
+    const auto &tempMachines = argProblem.GetMachines();
+    machines.resize(machinesQuantity, nullptr);
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
         machines[i] = new Machine{*tempMachines[i]};
     }
@@ -100,10 +99,9 @@ bct::Problem::Problem(const Problem &argProblem):
 
 
 bct::Problem::~Problem () {
-    for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        delete machines[i];
+    for (const auto machine : machines) {
+        delete machine;
     }
-    delete [] machines;
 
     for (const auto process : processes) {
         delete process;

@@ -32,8 +32,8 @@ class TemporaryStorage {
 public:
     TemporaryStorage (const unsigned int argCurrentSolution,
                       const unsigned short argMachinesQty,
-                      Machine **argMachines);
-    void LoadTemporarilyStoredSolution(Machine **argMachines,
+                      const std::vector<Machine*> &argMachines);
+    void LoadTemporarilyStoredSolution(const std::vector<Machine*> &argMachines,
                                        const std::vector<Process*> &argProcesses);
 
 private:

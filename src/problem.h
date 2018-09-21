@@ -39,7 +39,7 @@ public:
                                      const unsigned short argMid);
     bool CheckValidity();
     void Flush();
-    Machine **GetMachinesPointer() const noexcept;
+    const std::vector<Machine*> &GetMachines() const noexcept;
     unsigned short GetMachinesQuantity() const noexcept;
     const std::vector<Process*> &GetProcesses() const noexcept;
     unsigned short GetProcessesQuantity() const noexcept;
@@ -53,7 +53,7 @@ public:
 
 protected:
     //! A pointer to the Machines of the Problem
-    Machine **machines = nullptr;
+    std::vector<Machine*> machines;
     //! The quantity of Machines in the Problem
     unsigned short machinesQuantity;
     //! A vector of the Processes forming the Problem
@@ -64,7 +64,7 @@ protected:
     TemporaryStorage *temporaryStorage;
 };
 
-inline Machine **Problem::GetMachinesPointer() const noexcept {
+inline const std::vector<Machine*> &Problem::GetMachines() const noexcept {
     return machines;
 }
 
