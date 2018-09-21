@@ -61,7 +61,7 @@ void bct::TemporaryStorage::LoadTemporarilyStoredSolution(
         // std::cout << "\tFlushing Machine " << argMachines[i]->GetId() << ".\n";
         argMachines[i]->Flush();
         // std::cout << "\tAssigning old solution vector.\n";
-        argMachines[i]->SetAssignedProcessesVector(processes[i]);
+        argMachines[i]->SetAssignedProcesses(processes[i]);
     }
 
     // Restores information on the Processes

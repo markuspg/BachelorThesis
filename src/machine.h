@@ -22,7 +22,7 @@
 
 #include "object.h"
 
-#include <vector>
+#include <set>
 
 namespace bct {
 
@@ -31,26 +31,21 @@ class Process;
 /*! Represents a Machine */
 class Machine : public Object {
 public:
-    using ProcVec = std::vector<Process*>;
-    /*!
-     * \brief Machine's constructor
-     * \param[in] argMachineId The id of the to-be-represented machine
-     * \param[in] argTotalProcessQty The problem instances total quantity of processes
-     */
-    Machine(const unsigned short argMachineId,
-            const unsigned short argTotalProcessQty);
+    using ProcSet = std::set<Process*>;
+
+    Machine(const unsigned short argMachineId);
     Machine(const Machine &argMachine);
 
     void AssignProcessToMachine(Process *const argProcess);
     void ComputeCompletionTime() noexcept;
     bool DeleteProcessFromMachine(Process *const argProcess);
     void Flush() noexcept;
-    unsigned GetCompletionTime() noexcept;
-    ProcVec GetProcessesCopy() const;
-    void SetAssignedProcessesVector(const ProcVec &argProcessesVec);
+    unsigned int GetCompletionTime() noexcept;
+    ProcSet GetProcessesCopy() const;
+    void SetAssignedProcesses(const ProcSet &argProcessesSet);
 
 private:
-    ProcVec assignedProccessesVec;
+    ProcSet assignedProccesses;
     //! Saves if the completion time of the Machine changed (_true_, if so)
     bool changed = false;
     unsigned int machineCompletionTime = 0;

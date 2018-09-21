@@ -20,6 +20,7 @@
 #ifndef TEMPORARY_STORAGE_H
 #define TEMPORARY_STORAGE_H
 
+#include <set>
 #include <vector>
 
 namespace bct {
@@ -38,9 +39,9 @@ public:
 
 private:
     //! Stores the quantity of Machines of the Problem
-    const unsigned short int machinesQuantity;
+    const unsigned short machinesQuantity;
     //! Stores the pointers of the Processes assigned to the Machines
-    std::vector<std::vector<Process*>> processes;
+    std::vector<std::set<Process*>> processes;
     //! Stores the target value of the solution
     const unsigned int solutionValue;
 };

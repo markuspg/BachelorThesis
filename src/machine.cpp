@@ -24,20 +24,17 @@
 #include <iostream>
 #include <numeric>
 
-bct::Machine::Machine (const unsigned short argMachineId,
-                       const unsigned short argTotalProcessQty):
+bct::Machine::Machine(const unsigned short argMachineId):
     Object{argMachineId}
 {
-    assignedProccessesVec.reserve(argTotalProcessQty);
-    // std::cout << "\tCreating Machine " << argMachineId
-    //           << " able to contain " << argTotalProcessQty << " Processes\n";
+    // std::cout << "\tCreating Machine " << argMachineId << "\n";
 }
 
 bct::Machine::Machine(const Machine &argMachine):
     Object{argMachine.GetId()},
     changed{true}
 {
-    assignedProccessesVec = argMachine.GetProcessesCopy();
+    assignedProccesses = argMachine.assignedProccesses;
     ComputeCompletionTime();
     // std::cout << "\tCopied Machine " << id
     //           << " containing " << assignedProccessesVec.size ()
@@ -48,7 +45,7 @@ bct::Machine::Machine(const Machine &argMachine):
 void bct::Machine::AssignProcessToMachine(Process *const argProcess) {
     // std::cout << "Assigning Process " << argProcess->GetId()
     //           << " to Machine " << this->GetId() << ".\n";
-    assignedProccessesVec.emplace_back(argProcess);
+    assignedProccesses.emplace(argProcess);
     changed = true;
 }
 
@@ -57,7 +54,7 @@ void bct::Machine::ComputeCompletionTime() noexcept {
     machineCompletionTime = 0;
 
     // Recompute it
-    std::accumulate(assignedProccessesVec.cbegin(), assignedProccessesVec.cend(),
+    std::accumulate(assignedProccesses.cbegin(), assignedProccesses.cend(),
                     machineCompletionTime,
                     [](const unsigned int a, const Process *const b){
                         return a + b->GetProcessingTime();
@@ -67,25 +64,14 @@ void bct::Machine::ComputeCompletionTime() noexcept {
 }
 
 bool bct::Machine::DeleteProcessFromMachine(Process *const argProcess) {
-    const auto it = std::find(assignedProccessesVec.begin(),
-                              assignedProccessesVec.end(),
-                              argProcess);
-    if (it != std::end(assignedProccessesVec)) {
-        // std::cout << "Deleting Process " << (*it)->GetId()
-        //           << "/" << argProcess->GetId()
-        //           << " from Machine " << this->GetId() << ".\n";
-        assignedProccessesVec.erase(it);
-        changed = true;
-        return true;
-    }
-    return false;
+    return assignedProccesses.erase(argProcess) > 0;
 }
 
 /*!
  * \brief Resets the Machine to zero, delete all Process assignments
  */
 void bct::Machine::Flush() noexcept {
-    assignedProccessesVec.clear();
+    assignedProccesses.clear();
     changed = false;
     machineCompletionTime = 0;
 }
@@ -103,11 +89,11 @@ unsigned bct::Machine::GetCompletionTime() noexcept {
  * \brief Gets all Processes assigned to the machine
  * \return A vector containing all the Processes of the Machine
  */
-std::vector<bct::Process*> bct::Machine::GetProcessesCopy() const {
-    return assignedProccessesVec;
+bct::Machine::ProcSet bct::Machine::GetProcessesCopy() const {
+    return assignedProccesses;
 }
 
-void bct::Machine::SetAssignedProcessesVector(const ProcVec &argProcessesVec) {
-    assignedProccessesVec = argProcessesVec;
+void bct::Machine::SetAssignedProcesses(const ProcSet &argProcessesSet) {
+    assignedProccesses = argProcessesSet;
     changed = true;
 }

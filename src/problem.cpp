@@ -54,8 +54,7 @@ bct::Problem::Problem(const std::string &argFilename)
     // Create Machines
     machines.resize(machinesQuantity, nullptr);
     for (unsigned short i = 0; i < machinesQuantity; ++i) {
-        machines[i] = new Machine{static_cast<unsigned short>(i + 1),
-                                  processesQuantity};
+        machines[i] = new Machine{static_cast<unsigned short>(i + 1)};
     }
 
     // Create Processes
