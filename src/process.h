@@ -27,33 +27,34 @@ namespace bct {
 /*! Represents a Process */
 class Process : public Object {
 public:
-    Process(const unsigned short argPid, const unsigned int argTime);
-    Process(const Process &argProcess);
+  Process(const unsigned short argPid, const unsigned int argTime);
+  Process(const Process &argProcess);
 
-    unsigned short GetAssignedMachinesId() const noexcept;
-    unsigned int GetProcessingTime() const noexcept;
-    void SetAssignedMachinesId(const unsigned short argMachineId) noexcept;
+  unsigned short GetAssignedMachinesId() const noexcept;
+  unsigned int GetProcessingTime() const noexcept;
+  void SetAssignedMachinesId(const unsigned short argMachineId) noexcept;
 
 private:
-    //! Stores if the Process is assigned to a Machine (>0 if assigned to a Machine)
-    unsigned short assignedMachinesId = 0;
-    //! The processing time needed to complete the Process
-    const unsigned int processingTime;
+  //! Stores if the Process is assigned to a Machine (>0 if assigned to a
+  //! Machine)
+  unsigned short assignedMachinesId = 0;
+  //! The processing time needed to complete the Process
+  const unsigned int processingTime;
 };
 
 } // namespace bct
 
 inline unsigned short bct::Process::GetAssignedMachinesId() const noexcept {
-    return assignedMachinesId;
+  return assignedMachinesId;
 }
 
 inline unsigned bct::Process::GetProcessingTime() const noexcept {
-    return processingTime;
+  return processingTime;
 }
 
 inline void bct::Process::SetAssignedMachinesId(
-        const unsigned short argMachineId) noexcept {
-    assignedMachinesId = argMachineId;
+    const unsigned short argMachineId) noexcept {
+  assignedMachinesId = argMachineId;
 }
 
 #endif // PROCESS_H

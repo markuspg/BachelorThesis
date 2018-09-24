@@ -21,19 +21,15 @@
 
 #include <iostream>
 
-bct::Process::Process(const unsigned short argPid, const unsigned int argTime):
-    Object{argPid},
-    processingTime{argTime}
-{
-    // std::cout << "\tCreated Process " << id
-    //           << " with a duration of " << processingTime << "\n";
+bct::Process::Process(const unsigned short argPid, const unsigned int argTime)
+    : Object{argPid}, processingTime{argTime} {
+  // std::cout << "\tCreated Process " << id
+  //           << " with a duration of " << processingTime << "\n";
 }
 
-bct::Process::Process (const Process &argProcess):
-    Object{argProcess.id},
-    assignedMachinesId{argProcess.assignedMachinesId},
-    processingTime{argProcess.processingTime}
-{
-    // std::cout << "\tCreated Process " << id <<
-    //              " with a duration of " << processingTime << "\n";
+bct::Process::Process(const Process &argProcess)
+    : Object{argProcess.id}, assignedMachinesId{argProcess.assignedMachinesId},
+      processingTime{argProcess.processingTime} {
+  // std::cout << "\tCreated Process " << id <<
+  //              " with a duration of " << processingTime << "\n";
 }
