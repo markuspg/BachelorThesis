@@ -24,18 +24,16 @@ namespace bct {
 
 class Object {
 public:
-    Object(const unsigned short argObjectId);
+  Object(const unsigned short argObjectId);
 
-    unsigned short GetId() const noexcept;
+  unsigned short GetId() const noexcept;
 
 protected:
-    const unsigned short id;
+  const unsigned short id = 0;
 };
 
 } // namespace bct
 
-inline unsigned short bct::Object::GetId() const noexcept {
-    return id;
-}
+inline unsigned short bct::Object::GetId() const noexcept { return id; }
 
 #endif // OBJECT_H
