@@ -24,65 +24,66 @@
 #include <iostream>
 #include <numeric>
 
-bct::Machine::Machine(const unsigned short argMachineId):
-    Object{argMachineId}
-{
-    // std::cout << "\tCreating Machine " << argMachineId << "\n";
+bct::Machine::Machine(const unsigned short argMachineId)
+    : Object{argMachineId} {
+  // std::cout << "\tCreating Machine " << argMachineId << "\n";
 }
 
-bct::Machine::Machine(const Machine &argMachine):
-    Object{argMachine.GetId()},
-    changed{true}
-{
-    assignedProccesses = argMachine.assignedProccesses;
-    ComputeCompletionTime();
-    // std::cout << "\tCopied Machine " << id
-    //           << " containing " << assignedProccessesVec.size ()
-    //           << " Processes with a completion time of "
-    //           << this->GetCompletionTime() << "\n";
+bct::Machine::Machine(const Machine &argMachine)
+    : Object{argMachine.GetId()}, changed{true} {
+  assignedProccesses = argMachine.assignedProccesses;
+  ComputeCompletionTime();
+  // std::cout << "\tCopied Machine " << id
+  //           << " containing " << assignedProccessesVec.size ()
+  //           << " Processes with a completion time of "
+  //           << this->GetCompletionTime() << "\n";
 }
 
 void bct::Machine::AssignProcessToMachine(Process *const argProcess) {
-    // std::cout << "Assigning Process " << argProcess->GetId()
-    //           << " to Machine " << this->GetId() << ".\n";
-    assignedProccesses.emplace(argProcess);
-    changed = true;
+  // std::cout << "Assigning Process " << argProcess->GetId()
+  //           << " to Machine " << this->GetId() << ".\n";
+  assignedProccesses.emplace(argProcess);
+  changed = true;
 }
 
 void bct::Machine::ComputeCompletionTime() noexcept {
-    // Reset machine completion time
-    machineCompletionTime = 0;
+  // Reset machine completion time
+  machineCompletionTime = 0;
 
-    // Recompute it
-    std::accumulate(assignedProccesses.cbegin(), assignedProccesses.cend(),
-                    machineCompletionTime,
-                    [](const unsigned int a, const Process *const b){
-                        return a + b->GetProcessingTime();
-    });
+  // Recompute it
+  std::accumulate(assignedProccesses.cbegin(), assignedProccesses.cend(),
+                  machineCompletionTime,
+                  [](const unsigned int a, const Process *const b) {
+                    return a + b->GetProcessingTime();
+                  });
 
-    changed = false;
+  changed = false;
 }
 
 bool bct::Machine::DeleteProcessFromMachine(Process *const argProcess) {
-    return assignedProccesses.erase(argProcess) > 0;
+  if (assignedProccesses.erase(argProcess) > 0) {
+    changed = true;
+    return true;
+  }
+  return false;
 }
 
 /*!
  * \brief Resets the Machine to zero, delete all Process assignments
  */
 void bct::Machine::Flush() noexcept {
-    assignedProccesses.clear();
-    changed = false;
-    machineCompletionTime = 0;
+  assignedProccesses.clear();
+  changed = false;
+  machineCompletionTime = 0;
 }
 
 unsigned bct::Machine::GetCompletionTime() noexcept {
-    if (changed == false) {
-        return machineCompletionTime;
-    } else {
-        ComputeCompletionTime();
-        return machineCompletionTime;
-    }
+  if (changed == false) {
+    return machineCompletionTime;
+  } else {
+    ComputeCompletionTime();
+    return machineCompletionTime;
+  }
 }
 
 /*!
@@ -90,10 +91,10 @@ unsigned bct::Machine::GetCompletionTime() noexcept {
  * \return A vector containing all the Processes of the Machine
  */
 bct::Machine::ProcSet bct::Machine::GetProcessesCopy() const {
-    return assignedProccesses;
+  return assignedProccesses;
 }
 
 void bct::Machine::SetAssignedProcesses(const ProcSet &argProcessesSet) {
-    assignedProccesses = argProcessesSet;
-    changed = true;
+  assignedProccesses = argProcessesSet;
+  changed = true;
 }
