@@ -33,52 +33,53 @@ class TemporaryStorage;
 /*! Represents a Problem to solve */
 class Problem {
 public:
-    Problem(const std::string &argFilename);
-    Problem (const Problem &argProblem);
-    ~Problem();
-    void AssignProcessToMachineByIds(const unsigned short argPid,
-                                     const unsigned short argMid);
-    bool CheckValidity();
-    void Flush();
-    const std::vector<Machine*> &GetMachines() const noexcept;
-    unsigned short GetMachinesQuantity() const noexcept;
-    const std::vector<Process*> &GetProcesses() const noexcept;
-    unsigned short GetProcessesQuantity() const noexcept;
-    void LoadStoredSolution();
-    unsigned int QueryLowestCompletionTime ();
-    unsigned short QueryLowestWorkloadMachinesId(
-            const unsigned short argPlacement = 0, const bool argInvert = false);
-    void QueryState();
-    void StoreCurrentSolution();
-    void SaveInstance(const std::string &argFilename = "");
+  Problem(const std::string &argFilename);
+  Problem(const Problem &argProblem);
+  ~Problem();
+  void AssignProcessToMachineByIds(const unsigned short argPid,
+                                   const unsigned short argMid);
+  bool CheckValidity();
+  void Flush();
+  const std::vector<Machine *> &GetMachines() const noexcept;
+  unsigned short GetMachinesQuantity() const noexcept;
+  const std::vector<Process *> &GetProcesses() const noexcept;
+  unsigned short GetProcessesQuantity() const noexcept;
+  void LoadStoredSolution();
+  unsigned int QueryLowestCompletionTime();
+  unsigned short
+  QueryLowestWorkloadMachinesId(const unsigned short argPlacement = 0,
+                                const bool argInvert = false);
+  void QueryState();
+  void StoreCurrentSolution();
+  void SaveInstance(const std::string &argFilename = "");
 
 protected:
-    //! A pointer to the Machines of the Problem
-    std::vector<Machine*> machines;
-    //! The quantity of Machines in the Problem
-    unsigned short machinesQuantity;
-    //! A vector of the Processes forming the Problem
-    std::vector<Process*> processes;
-    //! The quantity of Processes of the Problem
-    unsigned short processesQuantity;
-    //! An object to temporarily store assignments
-    std::unique_ptr<TemporaryStorage> temporaryStorage;
+  //! A pointer to the Machines of the Problem
+  std::vector<Machine *> machines;
+  //! The quantity of Machines in the Problem
+  unsigned short machinesQuantity;
+  //! A vector of the Processes forming the Problem
+  std::vector<Process *> processes;
+  //! The quantity of Processes of the Problem
+  unsigned short processesQuantity;
+  //! An object to temporarily store assignments
+  std::unique_ptr<TemporaryStorage> temporaryStorage;
 };
 
-inline const std::vector<Machine*> &Problem::GetMachines() const noexcept {
-    return machines;
+inline const std::vector<Machine *> &Problem::GetMachines() const noexcept {
+  return machines;
 }
 
 inline unsigned short Problem::GetMachinesQuantity() const noexcept {
-    return machinesQuantity;
+  return machinesQuantity;
 }
 
-inline const std::vector<Process*> &Problem::GetProcesses() const noexcept {
-    return processes;
+inline const std::vector<Process *> &Problem::GetProcesses() const noexcept {
+  return processes;
 }
 
 inline unsigned short Problem::GetProcessesQuantity() const noexcept {
-    return processesQuantity;
+  return processesQuantity;
 }
 
 } // namespace bct
