@@ -20,9 +20,10 @@
 #ifndef PROBlEM_H
 #define PROBlEM_H
 
-#include <memory>
+#include "tempstorage.h"
+
+#include <optional>
 #include <string>
-#include <vector>
 
 namespace bct {
 
@@ -44,7 +45,7 @@ public:
   unsigned short GetMachinesQuantity() const noexcept;
   const std::vector<Process *> &GetProcesses() const noexcept;
   unsigned short GetProcessesQuantity() const noexcept;
-  void LoadStoredSolution();
+  bool LoadStoredSolution();
   unsigned int QueryLowestCompletionTime();
   unsigned short
   QueryLowestWorkloadMachinesId(const unsigned short argPlacement = 0,
@@ -63,7 +64,7 @@ protected:
   //! The quantity of Processes of the Problem
   unsigned short processesQuantity;
   //! An object to temporarily store assignments
-  std::unique_ptr<TemporaryStorage> temporaryStorage;
+  std::optional<TemporaryStorage> temporaryStorage;
 };
 
 inline const std::vector<Machine *> &Problem::GetMachines() const noexcept {

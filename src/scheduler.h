@@ -27,22 +27,22 @@ namespace bct {
 /*! A class to generate and represent starting solutions */
 class Scheduler : public Problem {
 public:
-    enum class EStartSolution{
-        iLPT,
-        rLPT,
-        SI,
-        sLPT,
-        STUPID,
-    };
+  enum class EStartSolution {
+    iLPT,
+    rLPT,
+    SI,
+    sLPT,
+    STUPID,
+  };
 
-    Scheduler(const Problem &argProblem);
-    void Apply_iLPT_Algorithm();
-    void Apply_rLPT_Algorithm(const unsigned short argIterations);
-    void Apply_SI_Algorithm();
-    void Apply_sLPT_Algorithm();
-    void Apply_STUPID_Algorithm();
-    void CreateStartSolution(const EStartSolution argChoice,
-                             const unsigned short argIterations = 50);
+  Scheduler(const Problem &argProblem);
+  void Apply_iLPT_Algorithm();
+  bool Apply_rLPT_Algorithm(const unsigned short argIterations);
+  void Apply_SI_Algorithm();
+  void Apply_sLPT_Algorithm();
+  void Apply_STUPID_Algorithm();
+  void CreateStartSolution(const EStartSolution argChoice,
+                           const unsigned short argIterations = 50);
 };
 
 } // namespace bct

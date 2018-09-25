@@ -160,11 +160,15 @@ void bct::Problem::Flush() {
   }
 }
 
-void bct::Problem::LoadStoredSolution() {
+bool bct::Problem::LoadStoredSolution() {
   // Load the data stored in temporary_storage and delete it afterwards
   // Load the assignments of the Machines
-  temporaryStorage->LoadTemporarilyStoredSolution(machines, processes);
-  temporaryStorage.reset();
+  if (temporaryStorage.has_value() == true) {
+    temporaryStorage->LoadTemporarilyStoredSolution(machines, processes);
+    temporaryStorage.reset();
+    return true;
+  }
+  return false;
 }
 
 /*!
@@ -305,8 +309,8 @@ void bct::Problem::StoreCurrentSolution() {
   if (CheckValidity() == true) {
     // Stores the current solution to temporary_storage
     // std::cout << "\nThe solution is valid and will be temporarily stored.\n";
-    temporaryStorage = std::make_unique<TemporaryStorage>(
-        QueryLowestCompletionTime(), machinesQuantity, machines);
+    temporaryStorage.emplace(QueryLowestCompletionTime(), machinesQuantity,
+                             machines);
   } else {
     std::cout << "\nERROR: The solution was not valid and will therefore not "
                  "be stored.\n";

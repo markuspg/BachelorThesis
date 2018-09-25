@@ -4,6 +4,8 @@ TARGET = project
 
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++17
+
 HEADERS += \
     src/bound_calculator.h \
     src/improver.h \
