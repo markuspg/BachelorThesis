@@ -1,5 +1,9 @@
 /.qmake.stash
+/CMakeCache.txt
+/CMakeFiles/
+/CMakeLists.txt.user
 /Makefile
+/cmake_install.cmake
 /main.o
 /project
 /project.pro.user
