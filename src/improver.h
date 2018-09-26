@@ -27,15 +27,16 @@ namespace bct {
 /*! A class to improve given starting solutions */
 class Improver : public Problem {
 public:
-    enum class EImprovementAlgos{
-        gPAIRWISE,
-        PAIRWISE,
-    };
+  enum class EImprovementAlgos {
+    gPAIRWISE,
+    PAIRWISE,
+  };
 
-    Improver(const Problem &argroblem);
-    void Apply_PAIRWISE_algorithm(const bool argGreedy = false);
-    void ImproveStartSolution(const EImprovementAlgos argAlgo,
-                              const unsigned short argIterations = 50);
+  Improver(const Problem &argroblem);
+  unsigned int Apply_PAIRWISE_algorithm(const unsigned short argIterations,
+                                        const bool argGreedy = false);
+  unsigned int ImproveStartSolution(const EImprovementAlgos argAlgo,
+                                    const unsigned short argIterations = 50);
 };
 
 } // namespace bct

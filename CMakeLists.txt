@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
 project(bachelorThesis)
 set (CMAKE_CXX_STANDARD 17)
-add_executable(bound_calculator_main src/bound_calculator.cpp src/bound_calculator_main.cpp src/improver.cpp src/machine.cpp src/object.cpp src/problem.cpp src/process.cpp src/scheduler.cpp src/tempstorage.cpp)
+add_executable(bound_calculator src/bound_calculator.cpp src/bound_calculator_main.cpp src/improver.cpp src/machine.cpp src/object.cpp src/problem.cpp src/process.cpp src/scheduler.cpp src/tempstorage.cpp)
+add_executable(improver src/bound_calculator.cpp src/improver.cpp src/improver_main.cpp src/machine.cpp src/object.cpp src/problem.cpp src/process.cpp src/scheduler.cpp src/tempstorage.cpp)
