@@ -1,0 +1,3 @@
+[submodule "instance_generator"]
+	path = instance_generator
+	url = https://github.com/markuspg/instance_generator.git
